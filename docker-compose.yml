@@ -1,0 +1,20 @@
+# Local or single-server run: MongoDB + the help app on http://localhost:3000
+#   docker compose up --build
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+  help:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/enflite-help
+      PORT: 3000
+    ports:
+      - "3000:3000"
+volumes:
+  mongo-data:

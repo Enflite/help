@@ -1,0 +1,17 @@
+{
+  "name": "@enflite-help/server",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "seed": "node scripts/seed.js",
+    "check": "node scripts/seed.js --check",
+    "test": "node --test \"test/*.test.js\""
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^8.24.4"
+  }
+}
