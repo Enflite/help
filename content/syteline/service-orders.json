@@ -1,0 +1,615 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "service-orders",
+      "type": "form",
+      "icon": "form",
+      "title": "Service Orders",
+      "eyebrow": "Field Service · Service orders",
+      "subtitle": "Enflite fields on Infor's Service Orders form.",
+      "summary": "Service orders (SROs): the Enflite milestone dates, Zero Time, OEM or AS and LORC fields on the General tab.",
+      "group": "Forms",
+      "order": 2,
+      "groups": [
+        "General tab"
+      ],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "**Service Orders** is Infor's form for service repair orders (SROs). Enflite added milestone dates, **Zero Time**, **OEM or AS** and the **LORC** fields to the **General** tab, and shows **Close Date** as **Commit Date** and **End Date** as **Receipt Date**. These pages cover the Enflite fields."
+        },
+        {
+          "t": "p",
+          "text": "For every other field on the form, see [Infor's Service Orders help](https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=mergedProjects/fsp/forms/fstopics/service_orders.htm)."
+        },
+        {
+          "t": "h2",
+          "text": "On the **General** tab"
+        },
+        {
+          "t": "p",
+          "text": "In this order, under the existing Projected, Open and Start Date: **Commit Date**, **Receipt Date**, **Eval Date**, **Quote Sent Date**, **Quote Approved Date**, **Last Parts Due**, **Parts Received**, **Ship Date**, then **Zero Time** and **OEM or AS**. The **LORC** box below holds **LORC1**, **LORC2** and **LORC Notes**. Every new field except LORC Notes is also a column in the grid view."
+        },
+        {
+          "t": "children"
+        },
+        {
+          "t": "h3",
+          "text": "For the service team to confirm"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The meaning of each date is written from its label in the team's spreadsheet (SRO_form_changes_2.xlsx). Correct anything that reads wrong.",
+            "What LORC stands for and what each LORC code means."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Live in production since 2026-09-25. Built in [Enflite/ServiceOrders](https://github.com/Enflite/ServiceOrders)."
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "service-orders/fields/commit_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Commit Date",
+      "eyebrow": "General tab",
+      "subtitle": "Relabelled field on the Service Orders form",
+      "summary": "Infor's **Close Date** field, shown as **Commit Date** at Enflite. Only the label changed: it is the same field, with the same data as before.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Infor's **Close Date** field, shown as **Commit Date** at Enflite. Only the label changed: it is the same field, with the same data as before."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        }
+      ],
+      "related": [
+        "service-orders/fields/receipt_date"
+      ],
+      "aliases": [
+        "CloseDateEdit",
+        "CloseDateStatic",
+        "CloseDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/receipt_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Receipt Date",
+      "eyebrow": "General tab",
+      "subtitle": "Relabelled field on the Service Orders form",
+      "summary": "Infor's **End Date** field, shown as **Receipt Date** at Enflite. Only the label changed: it is the same field, with the same data as before.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Infor's **End Date** field, shown as **Receipt Date** at Enflite. Only the label changed: it is the same field, with the same data as before."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        }
+      ],
+      "related": [
+        "service-orders/fields/commit_date"
+      ],
+      "aliases": [
+        "EndDateEdit",
+        "EndDateStatic",
+        "EndDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/eval_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Eval Date",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the unit was evaluated.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 3,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the unit was evaluated."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_EvalDate` on the **FSSROs** IDO (column `Uf_ENF_EvalDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/quote_sent_date"
+      ],
+      "aliases": [
+        "UfEvalDateEdit",
+        "UfEvalDateStatic",
+        "UfEvalDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/quote_sent_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Quote Sent Date",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the quote was sent to the customer.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 4,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the quote was sent to the customer."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_QuoteSentDate` on the **FSSROs** IDO (column `Uf_ENF_QuoteSentDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/eval_date",
+        "service-orders/fields/quote_approved_date"
+      ],
+      "aliases": [
+        "UfQuoteSentDateEdit",
+        "UfQuoteSentDateStatic",
+        "UfQuoteSentDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/quote_approved_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Quote Approved Date",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the customer approved the quote.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 5,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the customer approved the quote."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_QuoteApprovedDate` on the **FSSROs** IDO (column `Uf_ENF_QuoteApprovedDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/quote_sent_date",
+        "service-orders/fields/last_parts_due"
+      ],
+      "aliases": [
+        "UfQuoteApprovedDateEdit",
+        "UfQuoteApprovedDateStatic",
+        "UfQuoteApprovedDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/last_parts_due",
+      "type": "field",
+      "icon": "field",
+      "title": "Last Parts Due",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the last parts needed for the SRO are due.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 6,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the last parts needed for the SRO are due."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_LastPartsDueDate` on the **FSSROs** IDO (column `Uf_ENF_LastPartsDueDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/parts_received"
+      ],
+      "aliases": [
+        "UfLastPartsDueDateEdit",
+        "UfLastPartsDueDateStatic",
+        "UfLastPartsDueDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/parts_received",
+      "type": "field",
+      "icon": "field",
+      "title": "Parts Received",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the parts for the SRO were received.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 7,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the parts for the SRO were received."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_PartsReceivedDate` on the **FSSROs** IDO (column `Uf_ENF_PartsReceivedDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/last_parts_due",
+        "service-orders/fields/ship_date"
+      ],
+      "aliases": [
+        "UfPartsReceivedDateEdit",
+        "UfPartsReceivedDateStatic",
+        "UfPartsReceivedDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/ship_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Ship Date",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The date the unit shipped.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 8,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the unit shipped."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_ShipDate` on the **FSSROs** IDO (column `Uf_ENF_ShipDate` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/parts_received"
+      ],
+      "aliases": [
+        "UfShipDateEdit",
+        "UfShipDateStatic",
+        "UfShipDateGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/zero_time",
+      "type": "field",
+      "icon": "field",
+      "title": "Zero Time",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "Whether the unit is zero time.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 9,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Whether the unit is zero time."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick from the list. Only the values below are allowed. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Yes",
+            "No"
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_ZeroTime` on the **FSSROs** IDO (column `Uf_ENF_ZeroTime` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/oem_or_as"
+      ],
+      "aliases": [
+        "UfZeroTimeEdit",
+        "UfZeroTimeStatic",
+        "UfZeroTimeGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/oem_or_as",
+      "type": "field",
+      "icon": "field",
+      "title": "OEM or AS",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "Whether the SRO is for an OEM (original equipment manufacturer) or AS (aftermarket) unit.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 10,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Whether the SRO is for an OEM (original equipment manufacturer) or AS (aftermarket) unit."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick from the list. Only the values below are allowed. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "OEM",
+            "AS"
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_OemOrAs` on the **FSSROs** IDO (column `Uf_ENF_OemOrAs` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/zero_time"
+      ],
+      "aliases": [
+        "UfOemOrAsEdit",
+        "UfOemOrAsStatic",
+        "UfOemOrAsGridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/lorc1",
+      "type": "field",
+      "icon": "field",
+      "title": "LORC1",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The first LORC code for the SRO, from the same list as **LORC1** on **Customer Order Lines**.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 11,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The first LORC code for the SRO, from the same list as **LORC1** on **Customer Order Lines**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick from the list. The values are the same as on Customer Order Lines, but an SRO keeps its own LORC values: they are not copied to or from order lines. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_COL_LORC1` on the **FSSROs** IDO (column `Uf_ENF_COL_LORC1` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/lorc2",
+        "service-orders/fields/lorc_notes"
+      ],
+      "aliases": [
+        "UfLorc1Edit",
+        "UfLorc1Static",
+        "UfLorc1GridCol",
+        "UfLorcGroupBox"
+      ]
+    },
+    {
+      "path": "service-orders/fields/lorc2",
+      "type": "field",
+      "icon": "field",
+      "title": "LORC2",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "The second LORC code for the SRO, from the same list as **LORC2** on **Customer Order Lines**.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 12,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The second LORC code for the SRO, from the same list as **LORC2** on **Customer Order Lines**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick from the list. The values are the same as on Customer Order Lines, but an SRO keeps its own LORC values. Also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_COL_LORC2` on the **FSSROs** IDO (column `Uf_ENF_COL_LORC2` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/lorc1",
+        "service-orders/fields/lorc_notes"
+      ],
+      "aliases": [
+        "UfLorc2Edit",
+        "UfLorc2Static",
+        "UfLorc2GridCol"
+      ]
+    },
+    {
+      "path": "service-orders/fields/lorc_notes",
+      "type": "field",
+      "icon": "field",
+      "title": "LORC Notes",
+      "eyebrow": "General tab",
+      "subtitle": "Enflite field on the Service Orders form",
+      "summary": "Notes about the LORC codes for the SRO, the same field as **LORC Notes** on **Customer Order Lines**.",
+      "parent": "service-orders",
+      "group": "General tab",
+      "order": 13,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Notes about the LORC codes for the SRO, the same field as **LORC Notes** on **Customer Order Lines**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the notes. An SRO keeps its own notes: they are not copied to or from order lines."
+        },
+        {
+          "t": "h3",
+          "text": "In reports"
+        },
+        {
+          "t": "p",
+          "text": "CyberQuery: `sroUf_ENF_COL_LORC_NOTES` on the **FSSROs** IDO (column `Uf_ENF_COL_LORC_NOTES` on `fs_sro_mst`)."
+        }
+      ],
+      "related": [
+        "service-orders/fields/lorc1",
+        "service-orders/fields/lorc2"
+      ],
+      "aliases": [
+        "UfLorcNotesEdit",
+        "UfLorcNotesStatic"
+      ]
+    }
+  ]
+}

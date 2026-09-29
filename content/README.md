@@ -34,7 +34,7 @@ A page's URL is `/<space>/<path>`, e.g. `/syteline/ecmrs/fields/item`.
 
 ## Blocks
 
-Text may use `**bold**` and links `[label](/syteline/ecmrs)` or `[PDF](/files/syteline/x.pdf)`.
+Text may use `**bold**`, `` `code` `` (field and property names) and links `[label](/syteline/ecmrs)` or `[PDF](/files/syteline/x.pdf)`.
 
 | `t` | Keys | Shows |
 |---|---|---|
@@ -64,3 +64,9 @@ two pages claim the same component.
 [Enflite/eCMRs](https://github.com/Enflite/eCMRs) help (`scripts/help_content.py`,
 `scripts/procedures_content.py`, component names from `exports/eCMRs_v2.XML`). From now on they
 are edited here.
+
+`syteline/service-orders.json` and `syteline/incidents.json` (2026-09-29) document the Enflite
+changes built in [Enflite/ServiceOrders](https://github.com/Enflite/ServiceOrders) and
+[Enflite/Incidents-](https://github.com/Enflite/Incidents-): fields, values, placement and status
+from those repos' plans and form exports (component names from `ServiceOrders.xml` /
+`Incidents.xml`). For Infor's own fields the form page links to Infor's help.
