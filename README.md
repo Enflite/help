@@ -67,6 +67,7 @@ When it has an address, the SyteLine forms point their right-click Help at
 | `client/` | React app: `src/components/` (Layout, Sidebar, Blocks, Rich text, Flowchart), `src/pages/`, `src/styles.css` (brand), `public/` (logo, icons) |
 | `server/src/` | `app.js` (routes), `models/` (Space, Topic), `content.js` (load + check content), `seed.js`, `config.js`, `index.js` |
 | `server/scripts/seed.js` | `npm run seed` / `npm run check` |
+| `scripts/dev.mjs` | `npm run dev`: starts the API and the client together (works on Windows too) |
 | `server/test/` | `node --test` tests |
 | `content/` | Help content (JSON) and `files/` (PDFs) - see its README |
 | `Dockerfile`, `docker-compose.yml` | Build and run with MongoDB |
