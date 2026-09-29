@@ -33,7 +33,7 @@ export default function SpacePage() {
             {roots.filter((r) => (r.group || "") === g).map((r) => (
               <div key={r.path}>
                 <dt><Link to={`/${key}/${r.path}`}>{r.title}</Link></dt>
-                <dd>{count(r.path) ? `${count(r.path)} pages` : ""}</dd>
+                <dd>{r.summary}{count(r.path) ? <span className="count"> &middot; {count(r.path)} pages</span> : null}</dd>
               </div>
             ))}
           </dl>

@@ -11,7 +11,7 @@ const TOPIC_KEYS = ["path", "type", "title"];
 
 // Plain text of a block, for search: drops **bold** markers and keeps link labels.
 export function plain(text = "") {
-  return String(text).replace(/\*\*/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  return String(text).replace(/\*\*|`/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
 }
 
 export function blockText(b) {

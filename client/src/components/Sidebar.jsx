@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
-// Roots (topics without a parent) under their group label; a root's children under
-// collapsible sections, in the order of the root's `groups`. The section holding the current
-// page is open and the current page is marked.
+// Roots (topics without a parent) under their group label. Only the root you are in expands:
+// its children under collapsible sections, in the order of the root's `groups` (a flat list
+// when it has one group). The section holding the current page is open and the page is marked.
 export default function Sidebar({ space, currentPath }) {
   const nav = space.nav;
   const roots = nav.filter((t) => !t.parent);
@@ -23,10 +23,10 @@ export default function Sidebar({ space, currentPath }) {
             return (
               <div key={root.path}>
                 <ul><li><Link className={["top", cls(root)].filter(Boolean).join(" ")} to={href(root)}>{root.title}</Link></li></ul>
-                {groups.length <= 1 ? (
+                {groups.length <= 1 ? inRoot && (
                   <ul>{children.map((c) => <li key={c.path}><Link className={cls(c)} to={href(c)}>{label(c)}</Link></li>)}</ul>
                 ) : (
-                  groups.map((g) => {
+                  inRoot && groups.map((g) => {
                     const items = children.filter((c) => (c.group || "") === g);
                     if (!items.length) return null;
                     const open = inRoot && items.some((c) => c.path === currentPath);

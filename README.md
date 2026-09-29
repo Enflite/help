@@ -1,8 +1,9 @@
 # Enflite Help
 
 Enflite's help library: how-to, field definitions and procedures for the systems we use, in the
-Enflite brand style. It starts with **SyteLine** (the **eCMRs** form, its 55 fields and the two
-procedures updated for it); other systems are added as new *spaces*.
+Enflite brand style. It starts with **SyteLine**: the **eCMRs** form (55 fields), the Enflite
+fields on **Service Orders** and **Incidents**, and the two procedures updated for eCMRs. Other
+systems are added as new *spaces*.
 
 - **React** client (Vite) in `client/`: the SyteLine help-library layout (toolbar, navigation
   tree, topic pages, search).
