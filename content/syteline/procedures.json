@@ -1,0 +1,1326 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "procedures",
+      "type": "index",
+      "icon": "procedure",
+      "title": "Procedures",
+      "eyebrow": "Quality · Procedures",
+      "subtitle": "Updated for the eCMRs form",
+      "summary": "The quality procedures that use CMRs, updated for the eCMRs form.",
+      "group": "Procedures",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The quality procedures that use CMRs, updated for the **eCMRs** form. The wording is kept as released; only the steps the new form changes are changed, and each one shows what it was and why. These are drafts for the team to review - the released copy in “Released QMS Documents” stays in effect until the new revision is approved."
+        },
+        {
+          "t": "children"
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "procedures/qa-300-037",
+      "type": "procedure",
+      "icon": "procedure",
+      "title": "MRR, CMR, and TRR Processing",
+      "eyebrow": "Procedure · QA-300-037 · Rev B (draft)",
+      "subtitle": "QA-300-037, updated for the eCMRs form",
+      "summary": "QA-300-037. Rev A → B (draft). Section 5.5 (CMR Processing) and the CMR definition are updated for the eCMRs form. MRR (5.3) and TRR (5.4) processing are unchanged.",
+      "parent": "procedures",
+      "group": "Procedures",
+      "order": 1,
+      "number": "QA-300-037",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Section 5.5 (CMR Processing) and the CMR definition are updated for the eCMRs form. MRR (5.3) and TRR (5.4) processing are unchanged."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Document number",
+              "QA-300-037"
+            ],
+            [
+              "Title",
+              "MRR, CMR, and TRR Processing"
+            ],
+            [
+              "Current revision",
+              "A, issued 7/7/2026 ([released PDF](/files/syteline/QA-300-037_Rev_A.pdf))"
+            ],
+            [
+              "This revision",
+              "B (draft) · for review, not released"
+            ]
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "A hard copy of this document may not be the document currently in effect. The current version is always the version located and accessed on the designated secure shared file folder, “Released QMS Documents”. Company private: see the proprietary notice on the cover page of the released document."
+        },
+        {
+          "t": "legend",
+          "text": "Steps changed for the eCMRs form. **Rev was** shows the wording in the current revision."
+        },
+        {
+          "t": "h2",
+          "text": "Changes from the current revision"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Step",
+            "Change"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "5.5.1.",
+              "CMRs are created on the eCMRs form; there is no separate Create Change Request form."
+            ],
+            [
+              "5.5.2.",
+              "Names the eCMRs fields. The Requirement check boxes are ticked automatically from Initial Change."
+            ],
+            [
+              "5.5.3.",
+              "No Process step, change number or second form: the CMR is one record, numbered on New."
+            ],
+            [
+              "5.5.4.",
+              "There is no separate Change Request form."
+            ],
+            [
+              "5.5.4.1.",
+              "The eCMRs Priority field has no default, so it is always set."
+            ],
+            [
+              "5.5.4.1.1.",
+              "The eCMRs drop-down lists High, Medium, Low."
+            ],
+            [
+              "5.5.4.1.2.",
+              "The eCMRs drop-down lists High, Medium, Low."
+            ],
+            [
+              "5.5.4.1.3.",
+              "The eCMRs drop-down lists High, Medium, Low; Low is not filled in by default."
+            ],
+            [
+              "5.5.4.2.",
+              "Removed. Not needed: the change request and the CMR are the same eCMRs record."
+            ],
+            [
+              "5.5.5.",
+              "Names the eCMRs field: Reviewer ID in the Quality section (the name fills in)."
+            ],
+            [
+              "5.5.9.4.",
+              "Names the eCMRs field: Reviewer ID (the name fills in)."
+            ],
+            [
+              "5.5.10.",
+              "The eCMRs Status value is “Complete”; ticking Closed fills Close Date and Closed By."
+            ],
+            [
+              "CMR",
+              "CMRs are now one form, eCMRs."
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "For the team to review"
+        },
+        {
+          "t": "list",
+          "items": [
+            "IDM: steps 5.5.5, 5.5.7 and 5.5.8 attach documents within IDM of the CMR record. The eCMRs form sends its record to the IDM documents widget like Infor's forms do; confirm on TRN which documents it shows (the **Item**'s) and how attaching works, before release.",
+            "**Notify**: step 5.5.9.4 emails the **Assigned** person with the **Notify** button. In eCMRs, **Notify** uses the same Enflite email event as **QC CMRs** - confirm on TRN that the email arrives before release.",
+            "Flowchart (section 6): unchanged; the “Create CMR” box is marked “(eCMRs)” in this draft."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "I. Revision log"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Rev",
+            "Description",
+            "Date",
+            "Prepared",
+            "Checked",
+            "Approved",
+            "Regulatory"
+          ],
+          "rows": [
+            [
+              "A",
+              "Original Release",
+              "07/07/26",
+              "K. Montgomery",
+              "E. Laney",
+              "J Nabe",
+              "N/A"
+            ],
+            [
+              "B",
+              "Updated CMR definition and section 5.5 CMR Processing for the eCMRs form (replaces Create Change Request, Change Request Management and QC CMRs).",
+              "Draft",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "wide": 1
+        },
+        {
+          "t": "h2",
+          "text": "1. Scope"
+        },
+        {
+          "t": "p",
+          "text": "This procedure applies to Enflite personnel responsible for the disposition, use, and management of the MRR, CMR, and TRR forms within Syteline."
+        },
+        {
+          "t": "h2",
+          "text": "2. Purpose"
+        },
+        {
+          "t": "p",
+          "text": "To establish a standardized procedure and process flow for processing MRR’s, CMR’s, and TRR’s in Syteline."
+        },
+        {
+          "t": "h2",
+          "text": "3. Reference"
+        },
+        {
+          "t": "table",
+          "rows": [
+            [
+              "QA 300-008",
+              "Receiving Inspection"
+            ],
+            [
+              "QA 300-010",
+              "Material Review Board"
+            ],
+            [
+              "QA 300-029",
+              "Material Review"
+            ],
+            [
+              "QA 300-066",
+              "Streamlined Rework Nonconformance Process"
+            ],
+            [
+              "QA 300-003",
+              "Supplier Deviation Request"
+            ],
+            [
+              "ENG 310-005",
+              "Engineering Orders – Policy, Process and Work Instruction"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "4. Definitions"
+        },
+        {
+          "t": "pstep",
+          "num": "MRR",
+          "text": "Material Review Report;  a Syteline quality control form used to manage nonconforming, suspected, or damaged materials, including documentation, review, and disposition (e.g., scrap, rework, return to vendor).",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "CMR",
+          "text": "Change Management Request; the “eCMRs” Syteline form used to manage deviations, clarifications, and process gaps identified by vendors, customers, and Enflite internal personnel. It replaces the **Create Change Request**, **Change Request Management** and **QC CMRs** forms.",
+          "kind": "changed",
+          "was": "Change Management Request; A specialized Syteline quality control form used to manage deviations, clarifications, and process gaps identified by vendors, customers, and Enflite internal personnel.",
+          "why": "CMRs are now one form, eCMRs."
+        },
+        {
+          "t": "pstep",
+          "num": "TRR",
+          "text": "Topic Review Request; A specialized Syteline quality control form used to track and manage errors by Enflite production personnel.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "Streamline",
+          "text": "Does not require detailed rework instructions or **Engineering Disposition** to return to type design.  (e.g. Loose screws, missing washer, etc.)",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "Syteline",
+          "text": "The Enflite ERP system used to manage end-to-end business operations.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "ECO",
+          "text": "Engineering Change Order: Used to explain changes to manufacturing documents.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "NEI",
+          "text": "Notice of Engineering Intent: Used to make minor changes to drawings to provide clarity or to address a discrepancy.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "TS",
+          "text": "Temporary Solution: Used to make minor temporary changes to a specific article or articles and provide valid acceptance.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h2",
+          "text": "5. Procedure"
+        },
+        {
+          "t": "h3",
+          "text": "5.1. General Requirements"
+        },
+        {
+          "t": "pstep",
+          "num": "5.1.1.",
+          "text": "All nonconformances, discrepancies, issues, deviations, clarifications, and process gaps will be documented in the applicable form outlined by the requirements of this procedure. Anything not defined in the process will be brought to the attention of the Quality Manager (or Designee).",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h3",
+          "text": "5.2. Problem identification and verification"
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.1.",
+          "text": "For In-process discrepancy, a PIR will be generated by the Production Tech using PIR template, describing the issue along with pertinent details of part in question and job order.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.2.",
+          "text": "Quality will review and verify reported issue on the production floor prior to initiation of discrepancy in Syteline.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.3.",
+          "text": "Quality will determine if this PIR will be an MRR, CMR or TRR",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.3.1.",
+          "text": "For issues that will include material transactions within Syteline, go to section 5.3 MMR Processing.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.3.2.",
+          "text": "For issues that does not require detailed rework instructions or **Engineering Disposition** to return to type design, go to section 5.4 TRR (Streamline) Processing.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.3.3.",
+          "text": "For issues that does not include material transactions, or to capture issues from the supplier (such as a SDR) go to section 5.5 CMR Processing.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h3",
+          "text": "5.3. MRR Processing"
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.1.",
+          "text": "Trace the affected part back to its original “Supplier Inspect/ Disposition” receiver. If the issue was identified during receiving inspection, proceed to Step 5.3.4. Otherwise, go to Step 5.3.2",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.2.",
+          "text": "If the MRR is being created outside of the receiving inspection, open the “Supplier Inspect/Disposition” form and filter by the part’s lot number. Use the “IP Job Inspect/Disposition” form if the part was manufactured at Enflite. If the lot number is unavailable, locate it via the “Material Transactions” form and filtering by the affected part number and job number.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.3.",
+          "text": "If the part is associated with an IP Job, contact planning to open the job operation: otherwise, proceed to 5.3.4.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.3.1.",
+          "text": "**Planning** will open the applicable job operation used by the inspector and when complete will notify QC Inspector the job operation is open.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.4.",
+          "text": "Select “Disposition QC Receiver”.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.5.",
+          "text": "Enter the affected quantity in the QC MRR/Hold section of the Disposition Receiving form and input the appropriate reason code.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.6.",
+          "text": "Click “Process”, then click “OK” on the pop-up.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.7.",
+          "text": "Close the Qc Tags Report tab after making note of the MRR number.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.8.",
+          "text": "On the Syteline tab, click “OK” to confirm MRR creation.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.9.",
+          "text": "Click “OK” to confirm the quantity move.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.10.",
+          "text": "Verify the “to location” is correct, then click “Process.” If prompted that the location does not exist, click “OK” to add it.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.11.",
+          "text": "When prompted “[Quantity Move] was successful,” click “OK.” If the prompt does not appear, notify Quality Leadership.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.12.",
+          "text": "Open the MRR form using the part number and MRR number recorded in Step 5.3.7.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.13.",
+          "text": "Enter a clear problem description in the designated block. If created from an IP Job, include at minimum: job number, top-level part number, affected part number, lot number, and issue. Always state what the part should be versus what it is (e.g., “Part should be 3.00 ± 0.010 inches; part is 2.75 inches”). Include Sheet number and zone if applicable.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.14.",
+          "text": "Select the appropriate cause code from the drop-down menu.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.15.",
+          "text": "If the cause of defect is known, document it in the designated field.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.16.",
+          "text": "In the “**Assigned** To” field, select the appropriate party. If the issue is related to tooling or measurement capability, assign to the Quality Manager or designee; otherwise, assign to Engineering.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.17.",
+          "text": "If priority is required for processing, change **Priority** Field to one of the following (based on need by date)",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.17.1.",
+          "text": "**Priority** 1, High.  Select if ships or needs that day.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.17.2.",
+          "text": "**Priority** 2, Medium.  Select if ships or needed within 24 hours.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.17.3.",
+          "text": "**Priority** 3 Low (default), for all others.  Expected processing time within the week.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.18.",
+          "text": "Save the form.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.19.",
+          "text": "On Build Record, enter the MRR number for traceability within the Notes section at the end.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.20.",
+          "text": "Engineering/Quality reviews the issue and documents remarks in the Correction/Containment block, including initials and date.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.21.",
+          "text": "Engineering finalizes disposition in the Correction/Containment block, saves supporting documentation within IDM and reassigns the MRR to **Planning**/**Purchasing**. If an NEI or TS is used, it must first be approved by the Quality.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.22.",
+          "text": "**Planning** and **Purchasing** review the MRR. **Planning** enters disposition in the Correction/Containment block and shall not authorize rework or use-as-is if it conflicts with Engineering’s disposition.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.23.",
+          "text": "**Planning**/**Purchasing** reassigns the MRR to the originating Quality Inspector.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.24.",
+          "text": "The Quality Inspector reviews all information for accuracy.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.25.",
+          "text": "The Quality Inspector dispositions the MRR per instructions from **Planning**, Engineering, or Quality Manager.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.26.",
+          "text": "To disposition, click “Disposition MRR” and enter applicable information. If the part is to be returned to stock, complete the “Accepted” section; otherwise, complete the “Rejected” section.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.27.",
+          "text": "When accepting, always disposition as “MTS – Move to Stock,” then click “Process.”",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.28.",
+          "text": "Print the QC Tags Report that appears, then close the tab.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.29.",
+          "text": "Click “OK” on the “Disposition Completed” pop-up. If it does not appear, contact Quality Leadership.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.30.",
+          "text": "Click “OK” two additional times.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.31.",
+          "text": "Select the appropriate destination location. For RTV, enter “QC RTV.” Otherwise, select QC Hold or inventory location.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.32.",
+          "text": "Click “Process”.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.33.",
+          "text": "Click “OK,” then enter the close date on the MRR and save the form. This completes the MRR process in Syteline.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h3",
+          "text": "5.4. TRR (Streamline) Processing"
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.1.",
+          "text": "For Open the “Create Quality Control Topics” form.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.2.",
+          "text": "Select “Production” from the initial topic drop-down.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.3.",
+          "text": "Enter the employee who made the error in “**Reported By**,” along with department, top-level item number, and work center.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.4.",
+          "text": "In the notes, at minimum state: who made the error, affected assembly, job number, and specific details of the error. Then click “Process.”",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.5.",
+          "text": "Record the topic number from the new tab, close it, and navigate to that topic in “Quality Control Topics.”",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.6.",
+          "text": "Select “X-Ref TRR” and record the generated TRR number.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.7.",
+          "text": "Open the TRR form and navigate to the recorded number.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.8.",
+          "text": "Set status to “**Closed**,” reason code to “STRMLINE,” re-enter the original note details in the description block, check “Close TRR,” and save. This completes the TRR.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h3",
+          "text": "5.5. CMR Processing"
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.1.",
+          "text": "For all other discrepancies defined as CMRs, open the “eCMRs” form and click “**New**.” The CMR number (**CMR Num**, e.g. CMR-260929-111742) is assigned automatically.",
+          "kind": "changed",
+          "was": "For all other discrepancies defined as CMRs, navigate to “Create Change Request.”",
+          "why": "CMRs are created on the eCMRs form; there is no separate Create Change Request form."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.2.",
+          "text": "Select the “**Initial Change**,” enter “**Reported By**,” and select the item number (if applicable). Provide a full description of the issue or request in “**Requested Action**.” The Requirement check boxes are set from the **Initial Change**. Leave all other fields blank.",
+          "kind": "changed",
+          "was": "Enter initial change reason code, “Reported By,” and item number (if applicable). Provide a full description of the issue or request. Leave all other fields blank.",
+          "why": "Names the eCMRs fields. The Requirement check boxes are ticked automatically from Initial Change."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.3.",
+          "text": "Save the form and record the CMR number.",
+          "kind": "changed",
+          "was": "Click “Process,” close the new tab, click “OK” on the pop-up, record the change number, and navigate to “Change Request Management.”",
+          "why": "No Process step, change number or second form: the CMR is one record, numbered on New."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.",
+          "text": "Do not enter additional fields at this time.",
+          "kind": "changed",
+          "was": "On the Change Request form, do not enter additional fields.",
+          "why": "There is no separate Change Request form."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.1.",
+          "text": "Set the **Priority** Field to one of the following (based on need by date)",
+          "kind": "changed",
+          "was": "If priority is required for processing, change Priority Field to one of the following (based on need by date)",
+          "why": "The eCMRs Priority field has no default, so it is always set."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.1.1.",
+          "text": "High (**Priority** 1).  Select if ships or needs that day.",
+          "kind": "changed",
+          "was": "Priority 1, High.  Select if ships or needs that day.",
+          "why": "The eCMRs drop-down lists High, Medium, Low."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.1.2.",
+          "text": "Medium (**Priority** 2).  Select if ships or needed within 24 hours.",
+          "kind": "changed",
+          "was": "Priority 2, Medium.  Select if ships or needed within 24 hours.",
+          "why": "The eCMRs drop-down lists High, Medium, Low."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.1.3.",
+          "text": "Low (**Priority** 3), for all others.  Expected processing time within the week.",
+          "kind": "changed",
+          "was": "Priority 3 Low (default), for all others.  Expected processing time within the week.",
+          "why": "The eCMRs drop-down lists High, Medium, Low; Low is not filled in by default."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.4.2.",
+          "text": "",
+          "kind": "removed",
+          "was": "Click “X-Ref CMR,” record the CMR number, and navigate to that CMR.",
+          "why": "Not needed: the change request and the CMR are the same eCMRs record."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.5.",
+          "text": "Complete all available fields.  Attach any support documentation within IDM of CMR record. Set the Quality **Reviewer ID** (Quality section) as the Quality team member who will work CMR to completion with the assistance of Engineering.  Save form.  Assign to Manufacturing Engineering (**Assigned** Field) for review and remarks.",
+          "kind": "changed",
+          "was": "Complete all available fields.  Attach any support documentation within IDM of CMR record. Set the Quality reviewer as the Quality team member who will work CMR to completion with the assistance of Engineering.  Save form.  Assign to Manufacturing Engineering (Assigned Field) for review and remarks.",
+          "why": "Names the eCMRs field: Reviewer ID in the Quality section (the name fills in)."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.6.",
+          "text": "On Build Record, enter the CMR number for traceability within the Notes section at the end.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.7.",
+          "text": "Engineering will review, determine the CMR solution and load supporting documentation to IDM within CMR record (if applicable). Once complete, reassign to Quality and change status to “QC Approval.”",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.8.",
+          "text": "Review data for accuracy. If an NEI or TS was generated and attached in IDM, review and sign if approved.  Replace existing copy with signed copy within IDM in CMR record.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.",
+          "text": "Route the CMR through all departments listed in the Implementation section.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.1.",
+          "text": "**Planning**, if communication is required to the floor.  **Planning** will distribute documentation/information to the floor.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.2.",
+          "text": "**Purchasing**, if the deviation is a Supplier Deviation Request.  **Purchasing** will provide copies of documentation to the Supplier.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.3.",
+          "text": "**CM**, if an NEI or ECO was generated, CMR will be reassigned to Configuration Management and will be released into Drawing Books.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.4.",
+          "text": "After completion of activity (select check box and select yourself as **Reviewer ID**), CMR will need to be reassigned back to Quality (**Status** to QC Approval and **Assigned** to QC team member identified within Quality section).  Once assigned, Click **Notify** to send email to the **Assigned**.",
+          "kind": "changed",
+          "was": "After completion of activity (select check box and select yourself as Reviewer), CMR will need to be reassigned back to Quality (Status to QC Approval and Assigned to QC team member identified within Quality section).  Once assigned, Click Notify to send email to the Assigned.",
+          "why": "Names the eCMRs field: Reviewer ID (the name fills in)."
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.9.5.",
+          "text": "If a department is not required, select corresponding check box, indicating implementation is complete for that department (in this instance, not required).",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.10.",
+          "text": "After all reviews are complete, check “**Closed**” (**Close Date** and **Closed By** fill in) and change status to “Complete.” Save the form. This completes the CMR process.",
+          "kind": "changed",
+          "was": "After all reviews are complete, check “Closed” and change status to “Completed.” This completes the CMR process.",
+          "why": "The eCMRs Status value is “Complete”; ticking Closed fills Close Date and Closed By."
+        },
+        {
+          "t": "pstep",
+          "num": "5.6.",
+          "text": "If there are additional questions regarding processing MRRs, CMRs, and TRRs, contact the Quality Manager (or Designee).",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h2",
+          "text": "6. Flowchart"
+        },
+        {
+          "t": "p",
+          "text": "Unchanged, except that **Create CMR** is marked as the **eCMRs** form."
+        },
+        {
+          "t": "flowchart",
+          "name": "mrr-cmr-trr"
+        }
+      ],
+      "related": [
+        "ecmrs",
+        "procedures/qa-300-003"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "procedures/qa-300-003",
+      "type": "procedure",
+      "icon": "procedure",
+      "title": "Supplier Deviation Request (SDR)",
+      "eyebrow": "Procedure · QA-300-003 · Rev F (draft)",
+      "subtitle": "QA-300-003, updated for the eCMRs form",
+      "summary": "QA-300-003. Rev E → F (draft). Step 5.5 names the eCMRs form. Everything else is unchanged.",
+      "parent": "procedures",
+      "group": "Procedures",
+      "order": 2,
+      "number": "QA-300-003",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Step 5.5 names the eCMRs form. Everything else is unchanged."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Document number",
+              "QA-300-003"
+            ],
+            [
+              "Title",
+              "Supplier Deviation Request (SDR)"
+            ],
+            [
+              "Current revision",
+              "E, issued 07/07/2026 ([released PDF](/files/syteline/QA-300-003_Rev_E.pdf))"
+            ],
+            [
+              "This revision",
+              "F (draft) · for review, not released"
+            ]
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "A hard copy of this document may not be the document currently in effect. The current version is always the version located and accessed on the designated secure shared file folder, “Released QMS Documents”."
+        },
+        {
+          "t": "legend",
+          "text": "Steps changed for the eCMRs form. **Rev was** shows the wording in the current revision."
+        },
+        {
+          "t": "h2",
+          "text": "Changes from the current revision"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Step",
+            "Change"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "5.5.",
+              "CMRs are now entered on the eCMRs form."
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "For the team to review"
+        },
+        {
+          "t": "list",
+          "items": [
+            "IDM: step 5.6 saves the SDR form into IDM under the CMR number. Attaching IDM documents to an eCMRs record has not been tested yet - confirm on TRN before release.",
+            "Optional, not changed: when entering an SDR in eCMRs, the SDR's Supplier Name, PO#, Part Number, Part Revision and Quantity go in **Vendor**, **PO Num**, **Item**, **Drawing Revision** and **Qty**; the description and requested action go in **Requested Action**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "I. Revision log"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Rev",
+            "Description",
+            "Date",
+            "Prepared",
+            "Checked",
+            "Approved",
+            "Regulatory"
+          ],
+          "rows": [
+            [
+              "A",
+              "Changed from PUR-300-007 to SQ-300-004; added additional supplier actions in step 3; changed from Purchasing POC to Supplier Quality POC; updated routing instructions since form is now electronic; combined former individual rows to consolidate",
+              "07/05/18",
+              "Estep",
+              "Nel",
+              "Schilling",
+              "N/A"
+            ],
+            [
+              "B",
+              "Changed Document Number from “SQ-300-004” to “QA-300-003”.Removed references to “LifePort” throughout. Changed Refer Documents from “SQ” to “QC” and Roster “-544” to “-044”. Removed Definitions “EGL”, “SQ” and “QCL”. Removed LifePort GRP and references to SQ Rep in section 5. Removed section 6.",
+              "3/22/19",
+              "G Stetler",
+              "J Nabe&T Arguelles",
+              "G Stetler",
+              "G Stetler"
+            ],
+            [
+              "C",
+              "Corrected references to Tech Help Work Instructions, ENG-310-301.",
+              "07/17/19",
+              "G Stetler",
+              "J Nabe",
+              "G Stetler",
+              "G Stetler"
+            ],
+            [
+              "D",
+              "Corrected Performed By to align with current practices (Step 19).  Update format of SDR file naming (step 9).",
+              "8/17/2023",
+              "J Nabe",
+              "E Laney",
+              "J Nabe",
+              "J Nabe"
+            ],
+            [
+              "E",
+              "Updated procedure to incorporate usage of Syteline CMR’s; changes throughout.",
+              "7/6/2026",
+              "J Nabe",
+              "E Laney",
+              "J Nabe",
+              "J Nabe"
+            ],
+            [
+              "F",
+              "Step 5.5: SDRs are entered in the eCMRs form (replaces the former CMR forms).",
+              "Draft",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "wide": 1
+        },
+        {
+          "t": "h2",
+          "text": "1. Scope"
+        },
+        {
+          "t": "p",
+          "text": "This work instruction applies to Enflite. The Supplier Deviation Request work instruction does not cover the requirements of the Tech Help Work Instruction (ENG-310-301)."
+        },
+        {
+          "t": "p",
+          "text": "Department: Quality, Purchasing and Engineering"
+        },
+        {
+          "t": "p",
+          "text": "Job Position:  Quality Control, Buyer and Designated Engineer"
+        },
+        {
+          "t": "h2",
+          "text": "2. Purpose"
+        },
+        {
+          "t": "p",
+          "text": "This work instruction defines the process for suppliers to document any departure from drawing, specification, or other purchase order requirement and request disposition from Enflite. This policy supports the requirements of ISO 9001 and AS9100, as applicable."
+        },
+        {
+          "t": "h2",
+          "text": "3. Reference"
+        },
+        {
+          "t": "table",
+          "rows": [
+            [
+              "QA-300-037",
+              "MRR, CMR AND TRR PROCESSING"
+            ],
+            [
+              "QA-400-005",
+              "SUPPLIER DEVIATION REQUEST"
+            ],
+            [
+              "QA-400-044",
+              "AUTHORITY AND ROSTER OF AUTHORIZED PERSONNEL"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "4. Definitions"
+        },
+        {
+          "t": "pstep",
+          "num": "BUYER",
+          "text": "**Purchasing** Agent",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "PO",
+          "text": "Purchase Order",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "ECO",
+          "text": "Engineering Change Order",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "MRB",
+          "text": "Material Review Board",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "NEI",
+          "text": "Notice of Engineering Intent",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "QC",
+          "text": "Quality Control",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "SDR",
+          "text": "Supplier Deviation Request",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "TRR",
+          "text": "Topic Review Request",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "TS",
+          "text": "Temporary Solution",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "h2",
+          "text": "5. WORK INSTRUCTION"
+        },
+        {
+          "t": "pstep",
+          "num": "5.1.",
+          "text": "If a supplier has departed from drawing, specification, or other purchase order requirement with physical product (oversized hole, undersized length) that cannot be reworked to blueprint requirements, they shall fill out the supplier section of the Supplier Deviation Request, QA-400-005.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.2.",
+          "text": "If a supplier has a question on a drawing because of missing or incomplete information (dimensions, radius, material, etc.) or the part cannot be manufactured from the information given on the drawing, QA-400-005 may also be used for this purpose.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.3.",
+          "text": "The Supplier shall fill out the Supplier Section of the form, which includes Supplier Name, PO#, Part Number, Part Revision, Quantity, SDR Request Date, PO Promise Date, Requestor, Phone, and Email. A brief description of the deviation (or clarification) shall also be included, along with the requested action.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.4.",
+          "text": "Once the supplier has filled out the form, they shall submit it via email to Enflite SDR@enflite.com",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.5.",
+          "text": "The SDR received from the supplier will be entered into Syteline via the eCMRs form.  For further details, please refer to QA-300-037 MRR, CMR, and TRR Processing.",
+          "kind": "changed",
+          "was": "The SDR received from the supplier will be entered into Syteline via CMR form.  For further details, please refer to QA-300-037 MRR, CMR, and TRR Processing.",
+          "why": "CMRs are now entered on the eCMRs form."
+        },
+        {
+          "t": "pstep",
+          "num": "5.6.",
+          "text": "The SDR form will be saved into IDM in Syteline under the CMR number.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.7.",
+          "text": "If Enflite requires additional information to address issue, the Supplier will be notified by Manufacturing Engineering requesting further details.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.8.",
+          "text": "If the supplier makes the decision to ship the article without receiving the signed SDR, they are doing so at their own risk and article may be rejected.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.9.",
+          "text": "Manufacturing Engineering shall monitor activities within Syteline regarding CMR’s for newly entered SDRs.  Engineering Representative will review issue and complete the disposition.  Upon completion, Engineering will notify Quality for further processing.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.9.1.",
+          "text": "The Engineering Representative shall be defined by the MRB Authority Roster, QA-400-044.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.10.",
+          "text": "Quality will complete remaining items on SDR form and the approved form will be sent to **Purchasing** who will email the completed form and supporting documentation (such as drawings, ECO, NEI, or TS), if applicable, back to the supplier.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.11.",
+          "text": "The Buyer is responsible for adding comments, if required, to the PO showing the details of the SDR.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.12.",
+          "text": "The Supplier must reference the SDR number on the packing list where applicable and attach a copy of the completed and approved SDR with the articles paperwork.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        },
+        {
+          "t": "pstep",
+          "num": "5.13.",
+          "text": "A copy of the approved Supplier Deviation Request must accompany the article(s) shipment or the article(s) may be returned to the supplier at the supplier’s expense.",
+          "kind": "",
+          "was": "",
+          "why": ""
+        }
+      ],
+      "related": [
+        "ecmrs",
+        "procedures/qa-300-037"
+      ],
+      "aliases": []
+    }
+  ]
+}

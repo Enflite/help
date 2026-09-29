@@ -1,0 +1,1785 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "ecmrs",
+      "type": "form",
+      "icon": "form",
+      "title": "eCMRs",
+      "eyebrow": "Quality · Change management",
+      "subtitle": "Change Management Requests: create, track and close a CMR on one form.",
+      "summary": "Create, track and close a Change Management Request (CMR) on one form.",
+      "group": "Forms",
+      "order": 1,
+      "groups": [
+        "Header",
+        "Change Request Fields",
+        "Additional Fields",
+        "Quality",
+        "Engineering",
+        "Implementation"
+      ],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Use this form to create, track and close a Change Management Request (CMR): a request to change a part, drawing, process, tooling, material or documentation. One CMR record holds everything from the request through Quality and Engineering review to Implementation and closing."
+        },
+        {
+          "t": "p",
+          "text": "eCMRs replaces the **Create Change Request**, **Change Request Management** and **QC CMRs** forms. It is an Enflite form on its own table and IDO (ue_ecmrs); standard SyteLine forms and data are not changed."
+        },
+        {
+          "t": "h2",
+          "text": "Working a **CMR**"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Click **New**. The form fills in **CMR Num** (CMR-YYMMDD-HHMMSS), **Create Date** and **Created By**.",
+            "Fill in the top of the form: PO, **Item**, **Vendor**, **Priority** and the **Requested Action**.",
+            "Under Change Request Fields, pick the **Dept**, **Work Center** and **Initial Change**. The **Requirement checkboxes** are ticked for you; change them if needed.",
+            "Quality and Engineering fill in their sections: codes, disposition, reviewer and RCA notes.",
+            "**Planning**, **Purchasing** and **CM** tick their box when their part is done and pick a reviewer.",
+            "Select **Closed** to close the CMR. Save after each step."
+          ]
+        },
+        {
+          "t": "children"
+        },
+        {
+          "t": "links",
+          "title": "Procedures",
+          "items": [
+            "procedures/qa-300-037",
+            "procedures/qa-300-003"
+          ]
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "ecmrs/fields/status",
+      "type": "field",
+      "icon": "field",
+      "title": "Status",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The stage the CMR is at in the change process.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The stage the CMR is at in the change process."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Data Input",
+            "QC Approval",
+            "Eng Review",
+            "Planning",
+            "Purchasing",
+            "CM",
+            "Complete"
+          ]
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_status",
+        "grid_status",
+        "l_status"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/assigned",
+      "type": "field",
+      "icon": "field",
+      "title": "Assigned",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The employee the CMR is assigned to. The first box is the employee number; the second box shows the employee's name.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The employee the CMR is assigned to. The first box is the employee number; the second box shows the employee's name."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_assigned_empnum_v2",
+        "c_assigned_username_v2",
+        "l_assigned_username"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/notify",
+      "type": "field",
+      "icon": "field",
+      "title": "Notify",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Emails the person in **Assigned** that the CMR needs their attention, with the **CMR Num** and **Priority**. The email goes to the **Assigned** employee's SyteLine user (their email address). Save the CMR first, and make sure **Assigned** is filled in.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 3,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Emails the person in **Assigned** that the CMR needs their attention, with the **CMR Num** and **Priority**. The email goes to the **Assigned** employee's SyteLine user (their email address). Save the CMR first, and make sure **Assigned** is filled in."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/assigned"
+      ],
+      "aliases": [
+        "btn_notify"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/cmr_num",
+      "type": "field",
+      "icon": "field",
+      "title": "CMR Num",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The CMR's unique number, in the form CMR-YYMMDD-HHMMSS: the date and time **New** was clicked (for example CMR-260929-111742). It can't be changed.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 4,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The CMR's unique number, in the form CMR-YYMMDD-HHMMSS: the date and time **New** was clicked (for example CMR-260929-111742). It can't be changed."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Set by the form when you click **New**."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_cmr_num",
+        "grid_cmr_num",
+        "l_cmr_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/create_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Create Date",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The date the CMR was created.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 5,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the CMR was created."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Set by the system when the CMR is saved."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_create_date",
+        "grid_create_date",
+        "l_create_date"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/created_by",
+      "type": "field",
+      "icon": "field",
+      "title": "Created By",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The user who created the CMR.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 6,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The user who created the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Set by the system when the CMR is saved."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_created_by",
+        "grid_created_by",
+        "l_created_by"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/po_num",
+      "type": "field",
+      "icon": "field",
+      "title": "PO Num",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The purchase order the change relates to, if any. The list shows every purchase order line (PO, item and line); type to narrow it down.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 7,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The purchase order the change relates to, if any. The list shows every purchase order line (PO, item and line); type to narrow it down."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/po_line",
+        "ecmrs/fields/vendor"
+      ],
+      "aliases": [
+        "c_po_num",
+        "l_po_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/po_line",
+      "type": "field",
+      "icon": "field",
+      "title": "PO Line",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The line on the selected PO. The list shows only the lines of the PO in **PO Num**, with their item.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 8,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The line on the selected PO. The list shows only the lines of the PO in **PO Num**, with their item."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/po_num"
+      ],
+      "aliases": [
+        "c_po_line",
+        "l_po_line"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/assigned_buyer",
+      "type": "field",
+      "icon": "field",
+      "title": "Assigned Buyer",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The buyer responsible for the purchasing side of the change. Select an employee from the list; the employee number is stored.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 9,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The buyer responsible for the purchasing side of the change. Select an employee from the list; the employee number is stored."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_assigned_buyer",
+        "l_assigned_buyer"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/qty",
+      "type": "field",
+      "icon": "field",
+      "title": "Qty",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The quantity affected by the change.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 10,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The quantity affected by the change."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_qty",
+        "l_qty"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/poc",
+      "type": "field",
+      "icon": "field",
+      "title": "POC",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The point of contact for this CMR.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 11,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The point of contact for this CMR."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_poc",
+        "l_poc"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/rfq_num",
+      "type": "field",
+      "icon": "field",
+      "title": "RFQ Num",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The request for quote number, if the change involves a quote.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 12,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The request for quote number, if the change involves a quote."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_rfq_num",
+        "l_rfq_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/job_num",
+      "type": "field",
+      "icon": "field",
+      "title": "Job Num",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The job the change relates to, if any. The list shows job numbers from material transactions; type to narrow it down.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 13,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The job the change relates to, if any. The list shows job numbers from material transactions; type to narrow it down."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_job_num",
+        "l_job_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/revision",
+      "type": "field",
+      "icon": "field",
+      "title": "Drawing Revision",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The drawing revision the request is based on.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 14,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The drawing revision the request is based on."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/latest_revision"
+      ],
+      "aliases": [
+        "c_revision",
+        "l_revision"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/latest_revision",
+      "type": "field",
+      "icon": "field",
+      "title": "Latest Revision",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The latest drawing revision, when it differs from the **Drawing Revision**.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 15,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The latest drawing revision, when it differs from the **Drawing Revision**."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/revision"
+      ],
+      "aliases": [
+        "c_latest_revision",
+        "l_latest_revision"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/requested_action",
+      "type": "field",
+      "icon": "field",
+      "title": "Requested Action",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "What is being asked for: describe the problem and the change requested. Always state what the part should be versus what it is, with sheet number and zone if applicable.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 16,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "What is being asked for: describe the problem and the change requested. Always state what the part should be versus what it is, with sheet number and zone if applicable."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_requested_action",
+        "l_requested_action"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/item",
+      "type": "field",
+      "icon": "field",
+      "title": "Item",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The item (part number) the change is for. Selecting an item also filters the **Next Lvl Assy**, **Serial #** and **LOT #** lists.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 17,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The item (part number) the change is for. Selecting an item also filters the **Next Lvl Assy**, **Serial #** and **LOT #** lists."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "**Item Desc** is filled in from the item."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/item_description",
+        "ecmrs/fields/serial_num",
+        "ecmrs/fields/lot_num"
+      ],
+      "aliases": [
+        "c_item",
+        "grid_item",
+        "l_item"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/item_description",
+      "type": "field",
+      "icon": "field",
+      "title": "Item Desc",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The description of the selected item.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 18,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The description of the selected item."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled in when an **Item** is selected. You can type over it."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/item"
+      ],
+      "aliases": [
+        "edit1_SITE",
+        "l_item1_SITE"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/next_assy_item",
+      "type": "field",
+      "icon": "field",
+      "title": "Next Lvl Assy",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The next-level assembly that uses the item. The list shows the job items that use the selected **Item**.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 19,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The next-level assembly that uses the item. The list shows the job items that use the selected **Item**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "**Assy Desc** is filled in from the assembly."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/item",
+        "ecmrs/fields/next_assy_description"
+      ],
+      "aliases": [
+        "c_next_assy_item",
+        "l_next_assy_item"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/next_assy_description",
+      "type": "field",
+      "icon": "field",
+      "title": "Assy Desc",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The description of the next-level assembly.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 20,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The description of the next-level assembly."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled in when a **Next Lvl Assy** is selected. You can type over it."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/next_assy_item"
+      ],
+      "aliases": [
+        "c_next_assy_description",
+        "l_next_assy_description"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/vendor",
+      "type": "field",
+      "icon": "field",
+      "title": "Vendor",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The vendor involved in the change, if any.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 21,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The vendor involved in the change, if any."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "**Vendor Name** is filled in from the vendor."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/vendor_name"
+      ],
+      "aliases": [
+        "c_vendor",
+        "l_vendor"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/vendor_name",
+      "type": "field",
+      "icon": "field",
+      "title": "Vendor Name",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The name of the selected vendor.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 22,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The name of the selected vendor."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled in when a **Vendor** is selected. You can type over it."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/vendor"
+      ],
+      "aliases": [
+        "c_vendor_name",
+        "l_vendor_name"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/priority",
+      "type": "field",
+      "icon": "field",
+      "title": "Priority",
+      "eyebrow": "Header",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "How urgent the change is.",
+      "parent": "ecmrs",
+      "group": "Header",
+      "order": 23,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "How urgent the change is."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "High",
+            "Medium",
+            "Low"
+          ]
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_priority",
+        "grid_priority",
+        "l_priority"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/dept",
+      "type": "field",
+      "icon": "field",
+      "title": "Dept",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The department where the change is needed.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 24,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The department where the change is needed."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "**Dept Description** is filled in from the department."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/dept_description"
+      ],
+      "aliases": [
+        "c_dept",
+        "grid_dept",
+        "l_dept"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/dept_description",
+      "type": "field",
+      "icon": "field",
+      "title": "Dept Description",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The name of the selected department.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 25,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The name of the selected department."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled in as soon as a **Dept** is selected."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/dept"
+      ],
+      "aliases": [
+        "c_dept_description",
+        "l_dept_description"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/wc",
+      "type": "field",
+      "icon": "field",
+      "title": "Work Center",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The work center where the change is needed.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 26,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The work center where the change is needed."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "**WC Description** is filled in from the work center."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/wc_description"
+      ],
+      "aliases": [
+        "c_wc",
+        "grid_wc",
+        "l_wc"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/wc_description",
+      "type": "field",
+      "icon": "field",
+      "title": "WC Description",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The name of the selected work center.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 27,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The name of the selected work center."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled in as soon as a **Work Center** is selected."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/wc"
+      ],
+      "aliases": [
+        "c_wc_description",
+        "l_wc_description"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/reported_by",
+      "type": "field",
+      "icon": "field",
+      "title": "Reported By",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Who reported or requested the change (free text).",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 28,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Who reported or requested the change (free text)."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_reported_by",
+        "l_reported_by"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/due_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Due Date",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The date the change should be completed by.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 29,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the change should be completed by."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_due_date",
+        "grid_due_date",
+        "l_due_date"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/initial_change",
+      "type": "field",
+      "icon": "field",
+      "title": "Initial Change",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The type of change requested. Selecting it ticks the **Requirement checkboxes** that apply (see the table); you can then change the checkboxes by hand.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 30,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The type of change requested. Selecting it ticks the **Requirement checkboxes** that apply (see the table); you can then change the checkboxes by hand."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Documentation",
+            "Machine",
+            "Material",
+            "Other",
+            "Process",
+            "Specification",
+            "Tooling",
+            "Variance(waiver)"
+          ]
+        },
+        {
+          "t": "table",
+          "head": [
+            "Initial Change",
+            "Costing",
+            "Documentation",
+            "Process",
+            "Tool/Machine",
+            "Material"
+          ],
+          "rows": [
+            [
+              "Documentation",
+              "",
+              "✓",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Machine",
+              "✓",
+              "✓",
+              "✓",
+              "✓",
+              ""
+            ],
+            [
+              "Material",
+              "✓",
+              "✓",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Other",
+              "",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "Process",
+              "✓",
+              "✓",
+              "✓",
+              "✓",
+              ""
+            ],
+            [
+              "Specification",
+              "✓",
+              "✓",
+              "✓",
+              "✓",
+              ""
+            ],
+            [
+              "Tooling",
+              "",
+              "",
+              "",
+              "✓",
+              ""
+            ],
+            [
+              "Variance(waiver)",
+              "✓",
+              "✓",
+              "✓",
+              "✓",
+              ""
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "ecmrs/fields/requirements"
+      ],
+      "aliases": [
+        "c_initial_change",
+        "l_initial_change"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/requirements",
+      "type": "field",
+      "icon": "field",
+      "title": "Req: Costing, Documentation, Tool/Machine, Process, Material",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material. Select each one that applies.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 31,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material. Select each one that applies."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Ticked for you when **Initial Change** is selected. You can change them."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/initial_change"
+      ],
+      "aliases": [
+        "c_req_costing",
+        "c_req_documentation",
+        "c_req_material",
+        "c_req_process",
+        "c_req_tool_machine"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/general_note",
+      "type": "field",
+      "icon": "field",
+      "title": "General Note",
+      "eyebrow": "Change Request Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Any other information about the request.",
+      "parent": "ecmrs",
+      "group": "Change Request Fields",
+      "order": 32,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Any other information about the request."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_general_note",
+        "l_general_note"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/serial_num",
+      "type": "field",
+      "icon": "field",
+      "title": "Serial #",
+      "eyebrow": "Additional Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The serial number of the affected unit. The list shows the serial numbers of the selected **Item**; it is empty for items that aren't serial-tracked. You can also type a value.",
+      "parent": "ecmrs",
+      "group": "Additional Fields",
+      "order": 33,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The serial number of the affected unit. The list shows the serial numbers of the selected **Item**; it is empty for items that aren't serial-tracked. You can also type a value."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/item",
+        "ecmrs/fields/lot_num"
+      ],
+      "aliases": [
+        "c_serial_num_v2",
+        "l_serial_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/lot_num",
+      "type": "field",
+      "icon": "field",
+      "title": "LOT #",
+      "eyebrow": "Additional Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The lot of the affected material. The list shows the lots of the selected **Item**; it is empty for items that aren't lot-tracked. You can also type a value.",
+      "parent": "ecmrs",
+      "group": "Additional Fields",
+      "order": 34,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The lot of the affected material. The list shows the lots of the selected **Item**; it is empty for items that aren't lot-tracked. You can also type a value."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/item",
+        "ecmrs/fields/serial_num"
+      ],
+      "aliases": [
+        "c_lot_num_v2",
+        "l_lot_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/sub_assembly",
+      "type": "field",
+      "icon": "field",
+      "title": "Sub Assembly",
+      "eyebrow": "Additional Fields",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The sub-assembly the affected part belongs to.",
+      "parent": "ecmrs",
+      "group": "Additional Fields",
+      "order": 35,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The sub-assembly the affected part belongs to."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_sub_assembly",
+        "l_sub_assembly"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/sox_impacted",
+      "type": "field",
+      "icon": "field",
+      "title": "SOX Impacted",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Select if the change affects Sarbanes-Oxley (SOX) controls.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 36,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Select if the change affects Sarbanes-Oxley (SOX) controls."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_sox_impacted"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/hold_on_po",
+      "type": "field",
+      "icon": "field",
+      "title": "Hold On PO",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Select if the purchase order is on hold because of this CMR.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 37,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Select if the purchase order is on hold because of this CMR."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_hold_on_po"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/auth_supplier_ship",
+      "type": "field",
+      "icon": "field",
+      "title": "Authorization For Supplier To Ship",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Select when the supplier is authorized to ship.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 38,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Select when the supplier is authorized to ship."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_auth_supplier_ship"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/reason_code",
+      "type": "field",
+      "icon": "field",
+      "title": "Reason Code",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Why the CMR was raised. The codes are the same as on **QC MRRs**.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 39,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Why the CMR was raised. The codes are the same as on **QC MRRs**."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "ASMBL - Incorrect Assembly",
+            "DAMAGED - Damaged in house",
+            "DELIVERY - Vendor delivered wrong product",
+            "DOCUMENT - Missing / Incorrect document",
+            "FEATURE - Missing feature",
+            "FUNCTION - Part does not work",
+            "INTERNAL - Enflite at Fault",
+            "MATERIAL - Material mismatch",
+            "MEASURE - Dimensional Issue",
+            "PURCHASE - Purchased incorrect item",
+            "REVISION - Incorrect Revision",
+            "SUPDAM - Damaged by supplier or shipping",
+            "VISUAL - Visual defect"
+          ]
+        }
+      ],
+      "related": [
+        "ecmrs/fields/cause_code"
+      ],
+      "aliases": [
+        "c_reason_code_v2",
+        "l_reason_code"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/cause_code",
+      "type": "field",
+      "icon": "field",
+      "title": "Cause Code",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The cause found for the problem. The codes are the same as on **QC MRRs**.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 40,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The cause found for the problem. The codes are the same as on **QC MRRs**."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "ENF - Enflite error",
+            "ENG - Engineering/Drawing/Design error",
+            "EXC - Supplier Exception",
+            "FUNC - Functional Issue",
+            "HANDLE - Internal handling error",
+            "NFF - No fault found",
+            "QCM - Supplier Error / Enflite Quality Miss",
+            "SHIP - Damaged in Shipping",
+            "SHORTAGE - Parts Shortage",
+            "SUP - Supplier Error",
+            "TOOL - Inadequate Tooling",
+            "UNK - Cause Unknown",
+            "VOID - VOID"
+          ]
+        }
+      ],
+      "related": [
+        "ecmrs/fields/reason_code"
+      ],
+      "aliases": [
+        "c_cause_code_v2",
+        "l_cause_code"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/qc_disposition",
+      "type": "field",
+      "icon": "field",
+      "title": "QC Disposition",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Quality's decision on the affected material or parts.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 41,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Quality's decision on the affected material or parts."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Accept",
+            "Hold",
+            "NFF",
+            "NRS",
+            "Other",
+            "Reject",
+            "Rework",
+            "Scrap"
+          ]
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_qc_disposition",
+        "l_qc_disposition"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/qc_reviewer",
+      "type": "field",
+      "icon": "field",
+      "title": "Reviewer ID / Reviewer (Quality)",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The Quality reviewer for this CMR.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 42,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The Quality reviewer for this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_qc_reviewer_empnum_v2",
+        "c_qc_reviewer_username_v2",
+        "l_qc_reviewer_empnum",
+        "l_qc_reviewer_username"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/qc_rca_notes",
+      "type": "field",
+      "icon": "field",
+      "title": "QC RCA Notes",
+      "eyebrow": "Quality",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Quality's root cause analysis notes.",
+      "parent": "ecmrs",
+      "group": "Quality",
+      "order": 43,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Quality's root cause analysis notes."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_qc_rca_notes",
+        "l_qc_rca_notes"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/eo_num",
+      "type": "field",
+      "icon": "field",
+      "title": "EO Num",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The engineering order number for the change.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 44,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The engineering order number for the change."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_eo_num",
+        "l_eo_num"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/mdl",
+      "type": "field",
+      "icon": "field",
+      "title": "MDL",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The **MDL** reference for the change.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 45,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The **MDL** reference for the change."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_mdl",
+        "l_mdl"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/eng_disposition",
+      "type": "field",
+      "icon": "field",
+      "title": "Engineering Disposition",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Engineering's decision on the affected material or parts.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 46,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Engineering's decision on the affected material or parts."
+        },
+        {
+          "t": "h3",
+          "text": "Valid values"
+        },
+        {
+          "t": "list",
+          "items": [
+            "NFF",
+            "NRS",
+            "Other",
+            "Rework",
+            "Scrap"
+          ]
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_eng_disposition",
+        "l_eng_disposition"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/eng_reviewer",
+      "type": "field",
+      "icon": "field",
+      "title": "Reviewer ID / Reviewer (Engineering)",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The Engineering reviewer for this CMR.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 47,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The Engineering reviewer for this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_eng_reviewer_empnum_v2",
+        "c_eng_reviewer_username_v2",
+        "l_eng_reviewer_empnum",
+        "l_eng_reviewer_username"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/internal_review_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Internal Review Date",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The date of Engineering's internal review.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 48,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date of Engineering's internal review."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_internal_review_date",
+        "l_internal_review_date"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/eng_rca_notes",
+      "type": "field",
+      "icon": "field",
+      "title": "Eng RCA Notes",
+      "eyebrow": "Engineering",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Engineering's root cause analysis notes.",
+      "parent": "ecmrs",
+      "group": "Engineering",
+      "order": 49,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Engineering's root cause analysis notes."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_eng_rca_notes",
+        "l_eng_rca_notes"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/planning",
+      "type": "field",
+      "icon": "field",
+      "title": "Planning",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "**Planning**'s part of the change. Select the checkbox when **Planning** is done, and pick the **Planning** reviewer in **Reviewer ID**.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 50,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "**Planning**'s part of the change. Select the checkbox when **Planning** is done, and pick the **Planning** reviewer in **Reviewer ID**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_planning_complete",
+        "c_planning_reviewer_empnum_v2",
+        "c_planning_reviewer_name_v2",
+        "l_planning_reviewer_empnum",
+        "l_planning_reviewer_name"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/purchasing",
+      "type": "field",
+      "icon": "field",
+      "title": "Purchasing",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "**Purchasing**'s part of the change. Select the checkbox when **Purchasing** is done, and pick the **Purchasing** reviewer in **Reviewer ID**.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 51,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "**Purchasing**'s part of the change. Select the checkbox when **Purchasing** is done, and pick the **Purchasing** reviewer in **Reviewer ID**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_purchasing_complete",
+        "c_purchasing_reviewer_empnum_v2",
+        "c_purchasing_reviewer_name_v2",
+        "l_purchasing_reviewer_empnum",
+        "l_purchasing_reviewer_name"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/cm",
+      "type": "field",
+      "icon": "field",
+      "title": "CM",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Configuration Management's part of the change. Select the checkbox when **CM** is done, and pick the **CM** reviewer in **Reviewer ID**.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 52,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Configuration Management's part of the change. Select the checkbox when **CM** is done, and pick the **CM** reviewer in **Reviewer ID**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "c_cm_complete",
+        "c_cm_reviewer_empnum_v2",
+        "c_cm_reviewer_name_v2",
+        "l_cm_reviewer_empnum",
+        "l_cm_reviewer_name"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/closed",
+      "type": "field",
+      "icon": "field",
+      "title": "Closed",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "Select to close the CMR. Clear it to reopen the CMR.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 53,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Select to close the CMR. Clear it to reopen the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Selecting it fills in **Close Date** (today) and **Closed By** (you); clearing it empties both."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/close_date",
+        "ecmrs/fields/closed_by"
+      ],
+      "aliases": [
+        "c_closed",
+        "grid_closed"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/close_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Close Date",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The date the CMR was closed.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 54,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the CMR was closed."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Set when **Closed** is selected."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/closed"
+      ],
+      "aliases": [
+        "c_close_date",
+        "l_close_date"
+      ]
+    },
+    {
+      "path": "ecmrs/fields/closed_by",
+      "type": "field",
+      "icon": "field",
+      "title": "Closed By",
+      "eyebrow": "Implementation",
+      "subtitle": "Field on the eCMRs form",
+      "summary": "The user who closed the CMR.",
+      "parent": "ecmrs",
+      "group": "Implementation",
+      "order": 55,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The user who closed the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Set when **Closed** is selected."
+        }
+      ],
+      "related": [
+        "ecmrs/fields/closed"
+      ],
+      "aliases": [
+        "c_closed_by",
+        "l_closed_by"
+      ]
+    }
+  ]
+}
