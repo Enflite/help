@@ -7,7 +7,7 @@
     "server"
   ],
   "scripts": {
-    "dev": "npm run dev -w server & npm run dev -w client",
+    "dev": "node scripts/dev.mjs",
     "build": "npm run build -w client",
     "start": "npm start -w server",
     "seed": "npm run seed -w server",
