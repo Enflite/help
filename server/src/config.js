@@ -1,7 +1,12 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+
+// Read <repo>/.env if there is one (Node 20.12+). Variables already set in the environment win.
+const envFile = path.join(root, ".env");
+if (fs.existsSync(envFile) && typeof process.loadEnvFile === "function") process.loadEnvFile(envFile);
 
 export const config = {
   port: Number(process.env.PORT) || 3000,

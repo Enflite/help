@@ -15,6 +15,6 @@
     "test": "npm test -w server"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.12"
   }
 }

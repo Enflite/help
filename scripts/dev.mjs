@@ -2,9 +2,18 @@
 // (A plain "a & b" in package.json runs them one after the other under Windows cmd, so the
 // client never starts.) Ctrl+C stops both.
 import { spawn } from "node:child_process";
+import fs from "node:fs";
 
+// Load .env here too, so the Vite client (its /api proxy) sees the same PORT / API_URL as the API.
+const envFile = new URL("../.env", import.meta.url);
+if (fs.existsSync(envFile) && typeof process.loadEnvFile === "function") process.loadEnvFile(envFile);
+
+// Windows needs a shell to find npm.cmd; pass it one command string (args with shell: true is
+// deprecated, DEP0190).
 const children = ["server", "client"].map((ws) =>
-  spawn("npm", ["run", "dev", "-w", ws], { stdio: "inherit", shell: process.platform === "win32" }),
+  process.platform === "win32"
+    ? spawn(`npm run dev -w ${ws}`, { stdio: "inherit", shell: true })
+    : spawn("npm", ["run", "dev", "-w", ws], { stdio: "inherit" }),
 );
 
 let stopping = false;

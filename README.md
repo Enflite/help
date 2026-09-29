@@ -13,7 +13,9 @@ procedures updated for it); other systems are added as new *spaces*.
 
 ## Run it
 
-Needs Node.js 20+ and a MongoDB (local, Docker, or a server: set `MONGODB_URI`).
+Needs Node.js 20.12+ and a MongoDB (local, Docker, or a server such as Atlas: set `MONGODB_URI`).
+Put your settings in `.env` in the repo root (copy [`.env.example`](.env.example)); `npm run dev`,
+`npm start` and `npm run seed` read it. A variable already set in the shell wins over the file.
 
 ```sh
 npm install
