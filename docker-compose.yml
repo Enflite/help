@@ -14,6 +14,10 @@ services:
     environment:
       MONGODB_URI: mongodb://mongo:27017/enflite-help
       PORT: 3000
+      # Enflite AI chat (optional; see README "AI assistant")
+      # AI_API_URL: http://<backend-ai-host>:<port>
+      # AI_SERVICE_EMAIL: help-site@enflite.com
+      # AI_SERVICE_PASSWORD: <service account password>
     ports:
       - "3000:3000"
 volumes:

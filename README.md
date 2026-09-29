@@ -36,6 +36,39 @@ app seeds the content on start).
 | `MONGODB_URI` | `mongodb://127.0.0.1:27017/enflite-help` |
 | `PORT` | `3000` |
 | `CONTENT_DIR`, `CLIENT_DIST` | `content/`, `client/dist/` |
+| `AI_API_URL` | (unset: AI chat disabled) |
+| `AI_SERVICE_EMAIL`, `AI_SERVICE_PASSWORD` | (unset: AI chat disabled) |
+
+## AI assistant
+
+Every page has an **Ask Enflite AI** button (bottom right) that opens a chat with the Enflite AI.
+The help server proxies to the company's backend-ai API (`server/src/aiClient.js`,
+`server/src/aiRoutes.js`): the browser never sees the backend-ai credentials, all AI traffic stays
+server-side. When the three `AI_*` variables are not all set, the button is hidden entirely.
+
+- **Anonymous sessions.** Each browser gets a random session key (in localStorage) that the server
+  maps to one upstream conversation (`AiSession` collection), so employees never see each other's
+  threads. There is no login on the help site itself. **New chat** starts a fresh thread.
+- **Streaming.** Answers stream over SSE; status notices (e.g. when content is kept on the local
+  model for privacy) appear as small status lines in the chat.
+- **Privacy.** backend-ai's own privacy routing applies automatically: customer, finance and
+  proprietary content is forced to the local model regardless of this integration, and source code
+  may be routed to Claude for coding help per the tenant's setting.
+
+Setup:
+
+1. In backend-ai, an admin creates a service user (email + password) with chat permission. That
+   account's conversations belong to the help site.
+2. Set the environment on the help server:
+
+```sh
+AI_API_URL=http://<backend-ai-host>:<port>   # the API root, without /api/v1
+AI_SERVICE_EMAIL=help-site@enflite.com
+AI_SERVICE_PASSWORD=<the service account's password>
+```
+
+3. Docker (`docker-compose.yml`): add the three variables to the `help` service's `environment`.
+   Restart and check `GET /api/ai/status` returns `{ "enabled": true }`.
 
 ## Check and test
 
@@ -87,3 +120,5 @@ When it has an address, the SyteLine forms point their right-click Help at
 | `GET /api/search?q=&space=` | Up to 25 matching pages |
 | `GET /go/:space/:form/:component?` | Redirect for right-click → Help |
 | `GET /files/...` | Documents from `content/files/` |
+| `GET /api/ai/status` | `{ enabled }`: whether the AI chat is configured |
+| `POST /api/ai/chat` | `{ sessionKey, content }` → SSE stream proxied from the Enflite AI |

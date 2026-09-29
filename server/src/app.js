@@ -4,6 +4,9 @@ import express from "express";
 import mongoose from "mongoose";
 import { Space } from "./models/Space.js";
 import { Topic } from "./models/Topic.js";
+import { AiClient } from "./aiClient.js";
+import { createAiRouter } from "./aiRoutes.js";
+import { config } from "./config.js";
 
 const NAV_FIELDS = "path title type icon parent group groups order number summary";
 const LIST_FIELDS = "path title type icon summary group order number eyebrow";
@@ -11,7 +14,7 @@ const LIST_FIELDS = "path title type icon summary group order number eyebrow";
 const wrap = (fn) => (req, res, next) => fn(req, res, next).catch(next);
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export function createApp({ contentDir, clientDist } = {}) {
+export function createApp({ contentDir, clientDist, aiConfig } = {}) {
   const app = express();
   app.disable("x-powered-by");
   app.set("trust proxy", true);
@@ -21,6 +24,8 @@ export function createApp({ contentDir, clientDist } = {}) {
   api.get("/health", (req, res) => {
     res.json({ ok: true, db: mongoose.connection.readyState === 1 });
   });
+
+  api.use("/ai", createAiRouter({ ai: new AiClient(aiConfig ?? config.ai) }));
 
   api.get("/spaces", wrap(async (req, res) => {
     res.json(await Space.find({}, "-_id key name description home order").sort({ order: 1, name: 1 }).lean());

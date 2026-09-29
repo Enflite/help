@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useJson } from "../api.js";
 import Sidebar from "./Sidebar.jsx";
+import AiChat from "./AiChat.jsx";
 
 // Header, toolbar and (inside a space) the navigation tree - the SyteLine help library layout.
 export default function Layout() {
@@ -28,6 +29,7 @@ export default function Layout() {
           </div>
         </main>
       </div>
+      <AiChat />
     </>
   );
 }
