@@ -81,7 +81,11 @@ export function createApp({ contentDir, clientDist } = {}) {
       ).lean();
     }
     if (!target) target = await Topic.findOne({ space, path: form }, "path").lean();
-    res.redirect(302, target ? `/${space}/${target.path}` : `/${space}`);
+    const to = target ? `/${space}/${target.path}` : `/${space}`;
+    // One line per right-click -> Help: which component SyteLine sent, how its script found it
+    // (?via=parm|focus|none) and where it went. Shows whether field-level help is working.
+    console.log(`help link ${space}/${form} component=${component || "-"} via=${req.query.via || "-"} -> ${to}`);
+    res.redirect(302, to);
   }));
 
   if (contentDir) {
