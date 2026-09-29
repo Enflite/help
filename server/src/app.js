@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { Space } from "./models/Space.js";
 import { Topic } from "./models/Topic.js";
 
-const NAV_FIELDS = "path title type icon parent group groups order number";
+const NAV_FIELDS = "path title type icon parent group groups order number summary";
 const LIST_FIELDS = "path title type icon summary group order number eyebrow";
 
 const wrap = (fn) => (req, res, next) => fn(req, res, next).catch(next);

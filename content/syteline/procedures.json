@@ -10,7 +10,7 @@
       "subtitle": "Updated for the eCMRs form",
       "summary": "The quality procedures that use CMRs, updated for the eCMRs form.",
       "group": "Procedures",
-      "order": 2,
+      "order": 10,
       "blocks": [
         {
           "t": "p",

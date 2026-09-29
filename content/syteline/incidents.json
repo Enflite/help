@@ -1,0 +1,105 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "incidents",
+      "type": "form",
+      "icon": "form",
+      "title": "Incidents",
+      "eyebrow": "Field Service · Incidents",
+      "subtitle": "Enflite changes to Infor's Incidents form.",
+      "summary": "Incidents: Date Of Manufacture on the Unit tab and Product Code on the Reasons tab.",
+      "group": "Forms",
+      "order": 3,
+      "groups": [
+        "Unit tab",
+        "Reasons tab"
+      ],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "**Incidents** is Infor's form for customer service incidents. Enflite adds a **Date Of Manufacture** field on the **Unit** tab and shows the **General Reason** column as **Product Code** on the **Reasons** tab. These pages cover those two changes."
+        },
+        {
+          "t": "p",
+          "text": "For every other field on the form, see [Infor's Incidents help](https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=mergedProjects/fsp/forms/fstopics/Incidents.htm)."
+        },
+        {
+          "t": "children"
+        },
+        {
+          "t": "p",
+          "text": "Built in [Enflite/Incidents-](https://github.com/Enflite/Incidents-)."
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "incidents/fields/date_of_manufacture",
+      "type": "field",
+      "icon": "field",
+      "title": "Date Of Manufacture",
+      "eyebrow": "Unit tab",
+      "subtitle": "Enflite field on the Incidents form",
+      "summary": "The date the unit was manufactured. It sits to the right of the Unit and Item descriptions on the **Unit** tab, and is also a column in the grid view.",
+      "parent": "incidents",
+      "group": "Unit tab",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "**Not live yet.** This field is on hold until a walkthrough with the requester, which may change where the date is stored (on the incident or on the unit) or how it is filled in."
+        },
+        {
+          "t": "p",
+          "text": "The date the unit was manufactured. It sits to the right of the Unit and Item descriptions on the **Unit** tab, and is also a column in the grid view."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "UfDateOfManufactureEdit",
+        "UfDateOfManufactureStatic",
+        "UfDateOfManufactureGridCol"
+      ]
+    },
+    {
+      "path": "incidents/fields/product_code",
+      "type": "field",
+      "icon": "field",
+      "title": "Product Code",
+      "eyebrow": "Reasons tab",
+      "subtitle": "Relabelled column on the Incidents form",
+      "summary": "Infor's **General Reason** column on the **Reasons** tab, shown as **Product Code** at Enflite. Only the heading changed: the same codes and the same data as before.",
+      "parent": "incidents",
+      "group": "Reasons tab",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Infor's **General Reason** column on the **Reasons** tab, shown as **Product Code** at Enflite. Only the heading changed: the same codes and the same data as before."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a code from the list, as before."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "FSIncReasons_ReasonSubGridCol"
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@
     "key": "syteline",
     "name": "SyteLine",
     "order": 1,
-    "description": "Infor CloudSuite (SyteLine): Enflite forms, fields and the procedures that use them.",
+    "description": "Infor CloudSuite (SyteLine): Enflite forms and fields (eCMRs, Service Orders, Incidents) and the procedures that use them.",
     "home": "ecmrs"
   }
 ]
