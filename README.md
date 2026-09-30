@@ -90,7 +90,7 @@ Edit the JSON in `content/` (format: [`content/README.md`](content/README.md)), 
 
 | Service | Folder | Public paths |
 |---|---|---|
-| `client` | `client/` (Vite) | everything else, including `/files/...` (the build copies `content/files/` in) |
+| `client` | `client/` (Vite) | everything else, including `/files/...`. The build copies `content/files/` in, and writes the app's `index.html` at every page's path and as `404.html`, so links straight to a page open |
 | `server` | `server/` (Express, `src/index.js`) | `/api/...`, `/go/...` |
 
 The browser calls `/api` on the same address, so the services don't call each other and there are

@@ -107,7 +107,7 @@ export function createApp({ contentDir, clientDist, aiConfig } = {}) {
   }
 
   if (clientDist && fs.existsSync(path.join(clientDist, "index.html"))) {
-    app.use(express.static(clientDist, { index: false }));
+    app.use(express.static(clientDist, { index: false, redirect: false })); // page folders: SPA below
     app.get("/*splat", (req, res) => res.sendFile(path.join(clientDist, "index.html")));
   }
 
