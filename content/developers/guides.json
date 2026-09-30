@@ -298,7 +298,89 @@
       "related": [
         "standards",
         "naming",
-        "formsync"
+        "formsync",
+        "new-tables-idos"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "new-tables-idos",
+      "type": "guide",
+      "title": "New tables and IDOs",
+      "parent": "index",
+      "group": "Standards",
+      "order": 5,
+      "summary": "When UET does not fit: Enflite's pattern for a custom table and IDO, worked in eCMRs.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "When a feature needs its own record and UET on an Infor table does not fit \u2014 Infor's key makes **New** impossible, or most fields would be read-only joins \u2014 build a custom table and IDO. The worked example is [Enflite/eCMRs](https://github.com/Enflite/eCMRs)."
+        },
+        {
+          "t": "h2",
+          "text": "Two mechanisms, in order"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Table + IDO** first, built in **Application Studio** (project `ue_ENF`). **FormSync** cannot create these.",
+            "**Form** second, imported through **FormSync** once the IDO exists. It binds by the exact property names."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "One master field list"
+        },
+        {
+          "t": "p",
+          "text": "Keep one field list in `scripts/` and generate everything from it: the table-columns CSV, the IDO-properties CSV, the form XML, and `docs/deploy-checklist.md`. Run the consistency check before every commit."
+        },
+        {
+          "t": "h2",
+          "text": "Build steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Create the table and columns (**Application Studio** \u2192 **Tables**). The key column gets `AUTONUMBER(STEP(1))` so **New** works. `CreatedBy`, `CreateDate`, `UpdatedBy`, `RecordDate`, and `RowPointer` are generated automatically \u2014 do not add them.",
+            "Create the IDO on the table and add one property per column (or import the CSVs).",
+            "**Check In** the IDO (**IDOs** tab \u2192 the IDO \u2192 **Check In**). Property edits do not take effect until check-in.",
+            "Work through `docs/deploy-checklist.md` for the steps import cannot do.",
+            "Import the form through **FormSync**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "CSV rules"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Match a fresh live export exactly: header names (including leading `*`), column count, and quoting. A mismatch fails silently.",
+            "SQL column **Data Type** must be a real type (`nvarchar`, `datetime`, `decimal`, `ItemType`) \u2014 never `String`.",
+            "Leave IDO **Property Class** and **Column Data Type** blank for custom properties."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Steps import never does"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Read Only**: re-import never changes an existing property's flag. Uncheck it in the IDO Properties grid, then **Check In**.",
+            "**Inline lists** (fixed drop-downs): set `ENTRIES(A,B,C)` on the property itself; leave **Property Class** blank."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Full procedure: [07-new-table-and-ido.md](https://github.com/Enflite/Form-Project-Templates/blob/main/procedures/07-new-table-and-ido.md)."
+        }
+      ],
+      "related": [
+        "standards",
+        "naming",
+        "lifecycle"
       ],
       "aliases": []
     }
