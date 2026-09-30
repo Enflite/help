@@ -2,8 +2,15 @@
   {
     "key": "syteline",
     "name": "SyteLine",
-    "order": 1,
     "description": "Infor CloudSuite (SyteLine): Enflite forms and fields (eCMRs, Service Orders, Incidents) and the procedures that use them.",
-    "home": "ecmrs"
+    "home": "ecmrs",
+    "order": 1
+  },
+  {
+    "key": "developers",
+    "name": "Developer",
+    "description": "How Enflite builds and changes SyteLine forms: project standards, personalization layers, and FormSync.",
+    "home": "index",
+    "order": 2
   }
 ]
