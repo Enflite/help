@@ -17,7 +17,8 @@
         "Additional Fields",
         "Quality",
         "Engineering",
-        "Implementation"
+        "Implementation",
+        "Reference"
       ],
       "blocks": [
         {
@@ -73,6 +74,52 @@
         {
           "t": "p",
           "text": "The stage the CMR is at. Change it as the CMR moves from one team to the next."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The stage of the CMR's workflow, which also says which team has it:"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Status",
+            "Means"
+          ],
+          "rows": [
+            [
+              "Data Input",
+              "The CMR is being entered: the request, item and Initial Change (QA-300-037 5.5.1-5.5.4)."
+            ],
+            [
+              "Eng Review",
+              "With Engineering, to review the issue and decide the solution (5.5.5-5.5.7)."
+            ],
+            [
+              "QC Approval",
+              "With Quality: after Engineering's review, and after each Implementation step (5.5.7, 5.5.9.4)."
+            ],
+            [
+              "Planning",
+              "With Planning, to communicate the change to the floor (5.5.9.1)."
+            ],
+            [
+              "Purchasing",
+              "With Purchasing, for a Supplier Deviation Request: documents go to the supplier (5.5.9.2)."
+            ],
+            [
+              "CM",
+              "With Configuration Management, to release an NEI or ECO into the Drawing Books (5.5.9.3)."
+            ],
+            [
+              "Complete",
+              "All reviews done and the CMR closed (5.5.10)."
+            ]
+          ],
+          "align": "left"
         },
         {
           "t": "meta",
@@ -154,7 +201,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_status",
         "grid_status",
@@ -176,6 +225,14 @@
         {
           "t": "p",
           "text": "The employee who has the CMR now. Reassign it whenever the CMR moves to another team."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The person responsible for the next action on the CMR. The CMR moves between people by changing this field; **Notify** tells them."
         },
         {
           "t": "meta",
@@ -241,7 +298,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_assigned_empnum_v2",
         "c_assigned_username_v2",
@@ -263,6 +322,14 @@
         {
           "t": "p",
           "text": "A button that emails the person in **Assigned** that the CMR needs their attention. The email includes the **CMR Num** and **Priority**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Not a stored field: an action. It emails whoever is in **Assigned**, so a reassigned CMR doesn't wait unnoticed."
         },
         {
           "t": "meta",
@@ -324,7 +391,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/assigned"
+        "ecmrs/fields/assigned",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "btn_notify"
@@ -345,6 +413,14 @@
         {
           "t": "p",
           "text": "The CMR's unique number, in the form **CMR-YYMMDD-HHMMSS**: the date and time **New** was clicked (for example CMR-260929-111742)."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **CMR** is a Change Management Request: the record used to manage deviations, clarifications and process gaps found by vendors, customers and Enflite staff (QA-300-037). **CMR Num** identifies one CMR; use it on build records and in emails."
         },
         {
           "t": "meta",
@@ -413,7 +489,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_cmr_num",
         "grid_cmr_num",
@@ -435,6 +513,14 @@
         {
           "t": "p",
           "text": "The date the CMR was created."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "When the CMR was first saved in SyteLine. It doesn't change later."
         },
         {
           "t": "meta",
@@ -470,7 +556,9 @@
           "text": "Nothing to do: it's set when the CMR is first saved."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_create_date",
         "grid_create_date",
@@ -492,6 +580,14 @@
         {
           "t": "p",
           "text": "The SyteLine user who created the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The SyteLine user who entered the CMR, which may not be the person who reported the issue (see **Reported By**)."
         },
         {
           "t": "meta",
@@ -537,7 +633,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_created_by",
         "grid_created_by",
@@ -559,6 +657,14 @@
         {
           "t": "p",
           "text": "The purchase order the change relates to, if there is one."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **PO** (purchase order) is Enflite's order to a supplier. This is the PO the issue or change concerns, for example the PO the nonconforming parts arrived on."
         },
         {
           "t": "meta",
@@ -613,7 +719,8 @@
       ],
       "related": [
         "ecmrs/fields/po_line",
-        "ecmrs/fields/vendor"
+        "ecmrs/fields/vendor",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_po_num",
@@ -635,6 +742,14 @@
         {
           "t": "p",
           "text": "The line on the purchase order in **PO Num**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "One line of the PO: a single item ordered on it, with its own quantity and due date."
         },
         {
           "t": "meta",
@@ -678,7 +793,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/po_num"
+        "ecmrs/fields/po_num",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_po_line",
@@ -700,6 +816,14 @@
         {
           "t": "p",
           "text": "The buyer responsible for the purchasing side of the change."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The **buyer** (purchasing agent, QA-300-003) who handles the supplier side: the PO, and supplier documents for a deviation."
         },
         {
           "t": "meta",
@@ -749,7 +873,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_assigned_buyer",
         "l_assigned_buyer"
@@ -770,6 +896,14 @@
         {
           "t": "p",
           "text": "The quantity affected by the change."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "How many of the item the issue or change affects (for example the number of nonconforming parts)."
         },
         {
           "t": "meta",
@@ -801,7 +935,9 @@
           "text": "Type the quantity."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_qty",
         "l_qty"
@@ -822,6 +958,14 @@
         {
           "t": "p",
           "text": "The point of contact for this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "**POC** means point of contact: the person to go to with questions about this CMR."
         },
         {
           "t": "meta",
@@ -867,7 +1011,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_poc",
         "l_poc"
@@ -888,6 +1034,14 @@
         {
           "t": "p",
           "text": "The request for quotation (RFQ) number related to the change, if any."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "**RFQ** means request for quotation: a request to suppliers for a price quote. Record its number when the change is tied to one."
         },
         {
           "t": "meta",
@@ -923,7 +1077,9 @@
           "text": "Type the RFQ number."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_rfq_num",
         "l_rfq_num"
@@ -944,6 +1100,14 @@
         {
           "t": "p",
           "text": "The job the change relates to, if any."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **job** is a SyteLine production order: the order to make a quantity of an item, with its operations and materials. This is the job the issue came up on or affects."
         },
         {
           "t": "meta",
@@ -993,7 +1157,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_job_num",
         "l_job_num"
@@ -1014,6 +1180,14 @@
         {
           "t": "p",
           "text": "The drawing revision the change is about."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The **revision** of the engineering drawing the part was made or inspected to (the letter or number on the drawing)."
         },
         {
           "t": "meta",
@@ -1050,7 +1224,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/latest_revision"
+        "ecmrs/fields/latest_revision",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_revision",
@@ -1072,6 +1247,14 @@
         {
           "t": "p",
           "text": "The latest revision of the drawing, to compare with **Drawing Revision**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The newest released revision of the same drawing. If it differs from **Drawing Revision**, the part was made to an older drawing."
         },
         {
           "t": "meta",
@@ -1118,7 +1301,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/revision"
+        "ecmrs/fields/revision",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_latest_revision",
@@ -1140,6 +1324,14 @@
         {
           "t": "p",
           "text": "A full description of the issue or the change being asked for. This is the main text of the request."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The request itself: what the issue is and what change, deviation or clarification is being asked for. Every later step works from this text."
         },
         {
           "t": "meta",
@@ -1202,7 +1394,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_requested_action",
         "l_requested_action"
@@ -1223,6 +1417,14 @@
         {
           "t": "p",
           "text": "The item (part number) the change is for."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "An **item** is a part number in SyteLine: anything Enflite makes, buys or stocks. This is the part the CMR is about."
         },
         {
           "t": "meta",
@@ -1292,7 +1494,8 @@
       "related": [
         "ecmrs/fields/item_description",
         "ecmrs/fields/serial_num",
-        "ecmrs/fields/lot_num"
+        "ecmrs/fields/lot_num",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_item",
@@ -1315,6 +1518,14 @@
         {
           "t": "p",
           "text": "The description of the item in **Item**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The item's description as recorded in SyteLine, shown so you can check you picked the right part."
         },
         {
           "t": "meta",
@@ -1355,7 +1566,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/item"
+        "ecmrs/fields/item",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "edit1_SITE",
@@ -1377,6 +1589,14 @@
         {
           "t": "p",
           "text": "The next-level assembly the item goes into."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The **next-level assembly**: the assembly the item is built into (its parent in the product structure). A change to the item may affect this assembly."
         },
         {
           "t": "meta",
@@ -1431,7 +1651,8 @@
       ],
       "related": [
         "ecmrs/fields/item",
-        "ecmrs/fields/next_assy_description"
+        "ecmrs/fields/next_assy_description",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_next_assy_item",
@@ -1453,6 +1674,14 @@
         {
           "t": "p",
           "text": "The description of the assembly in **Next Lvl Assy**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The assembly's description in SyteLine."
         },
         {
           "t": "meta",
@@ -1503,7 +1732,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/next_assy_item"
+        "ecmrs/fields/next_assy_item",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_next_assy_description",
@@ -1525,6 +1755,14 @@
         {
           "t": "p",
           "text": "The vendor involved in the change, if any."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **vendor** is a supplier in SyteLine. This is the supplier involved, for example the one that made or shipped the parts."
         },
         {
           "t": "meta",
@@ -1565,7 +1803,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/vendor_name"
+        "ecmrs/fields/vendor_name",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_vendor",
@@ -1587,6 +1826,14 @@
         {
           "t": "p",
           "text": "The name of the vendor in **Vendor**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The vendor's name as recorded in SyteLine."
         },
         {
           "t": "meta",
@@ -1627,7 +1874,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/vendor"
+        "ecmrs/fields/vendor",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_vendor_name",
@@ -1649,6 +1897,14 @@
         {
           "t": "p",
           "text": "How urgent the change is, based on when it's needed."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "How soon the CMR has to be worked, set by when the parts ship or are needed (QA-300-037 5.5.4.1). The table below gives the rule."
         },
         {
           "t": "meta",
@@ -1706,7 +1962,8 @@
               "Low",
               "All others. Expected processing time within the week."
             ]
-          ]
+          ],
+          "align": "left"
         },
         {
           "t": "h3",
@@ -1733,7 +1990,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_priority",
         "grid_priority",
@@ -1755,6 +2014,14 @@
         {
           "t": "p",
           "text": "The department where the change is needed."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **department** is an Enflite organizational unit in SyteLine. This is the department where the change applies."
         },
         {
           "t": "meta",
@@ -1795,7 +2062,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/dept_description"
+        "ecmrs/fields/dept_description",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_dept",
@@ -1818,6 +2086,14 @@
         {
           "t": "p",
           "text": "The name of the department in **Dept**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The department's name in SyteLine."
         },
         {
           "t": "meta",
@@ -1858,7 +2134,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/dept"
+        "ecmrs/fields/dept",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_dept_description",
@@ -1880,6 +2157,14 @@
         {
           "t": "p",
           "text": "The work center where the change is needed."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **work center** is a production area or group of machines in SyteLine, where job operations are done. This is the work center where the change applies."
         },
         {
           "t": "meta",
@@ -1920,7 +2205,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/wc_description"
+        "ecmrs/fields/wc_description",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_wc",
@@ -1943,6 +2229,14 @@
         {
           "t": "p",
           "text": "The name of the work center in **Work Center**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The work center's name in SyteLine."
         },
         {
           "t": "meta",
@@ -1983,7 +2277,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/wc"
+        "ecmrs/fields/wc",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_wc_description",
@@ -2005,6 +2300,14 @@
         {
           "t": "p",
           "text": "Who reported or asked for the change."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The person who found or raised the issue. CMRs can come from vendors, customers or Enflite staff (QA-300-037), so this can be someone outside Enflite."
         },
         {
           "t": "meta",
@@ -2064,7 +2367,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_reported_by",
         "l_reported_by"
@@ -2085,6 +2390,14 @@
         {
           "t": "p",
           "text": "The date the change should be done by."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The date the change is needed by."
         },
         {
           "t": "meta",
@@ -2116,7 +2429,9 @@
           "text": "Pick the date from the calendar, or type it."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_due_date",
         "grid_due_date",
@@ -2138,6 +2453,56 @@
         {
           "t": "p",
           "text": "The type of change being asked for. Picking it ticks the **Requirement** checkboxes that apply."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The kind of change the request is about. It decides which reviews the CMR needs (the **Req:** checkboxes):"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Initial Change",
+            "Means the change is to"
+          ],
+          "rows": [
+            [
+              "Documentation",
+              "A drawing, work instruction or other document."
+            ],
+            [
+              "Machine",
+              "A machine or equipment."
+            ],
+            [
+              "Material",
+              "The material used."
+            ],
+            [
+              "Process",
+              "How the part is made: the manufacturing process or steps."
+            ],
+            [
+              "Specification",
+              "A specification or requirement the part must meet."
+            ],
+            [
+              "Tooling",
+              "Tools or fixtures."
+            ],
+            [
+              "Variance(waiver)",
+              "Accepting a departure from requirements (a deviation or waiver), rather than changing them."
+            ],
+            [
+              "Other",
+              "Anything else."
+            ]
+          ],
+          "align": "left"
         },
         {
           "t": "meta",
@@ -2267,7 +2632,8 @@
               "✓",
               ""
             ]
-          ]
+          ],
+          "align": "left"
         },
         {
           "t": "h3",
@@ -2285,7 +2651,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/requirements"
+        "ecmrs/fields/requirements",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_initial_change",
@@ -2307,6 +2674,44 @@
         {
           "t": "p",
           "text": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Each checkbox is an area the change has to be reviewed for:"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Checkbox",
+            "Means"
+          ],
+          "rows": [
+            [
+              "Req: Costing",
+              "The change may affect cost."
+            ],
+            [
+              "Req: Documentation",
+              "Documents (drawings, instructions) need updating."
+            ],
+            [
+              "Req: Tool/Machine",
+              "Tools, fixtures or machines are affected."
+            ],
+            [
+              "Req: Process",
+              "The manufacturing process is affected."
+            ],
+            [
+              "Req: Material",
+              "The material is affected."
+            ]
+          ],
+          "align": "left"
         },
         {
           "t": "meta",
@@ -2371,7 +2776,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/initial_change"
+        "ecmrs/fields/initial_change",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_req_costing",
@@ -2396,6 +2802,14 @@
         {
           "t": "p",
           "text": "Any other notes about the request that don't belong in **Requested Action**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Running notes: anything learned or decided along the way that isn't part of the original request."
         },
         {
           "t": "meta",
@@ -2441,7 +2855,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_general_note",
         "l_general_note"
@@ -2462,6 +2878,14 @@
         {
           "t": "p",
           "text": "The serial number of the affected unit."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **serial number** identifies one individual unit of a serial-tracked item."
         },
         {
           "t": "meta",
@@ -2517,7 +2941,8 @@
       ],
       "related": [
         "ecmrs/fields/item",
-        "ecmrs/fields/lot_num"
+        "ecmrs/fields/lot_num",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_serial_num_v2",
@@ -2539,6 +2964,14 @@
         {
           "t": "p",
           "text": "The lot of the affected material."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **lot** is a batch of a lot-tracked item made or received together. The lot traces the affected material back to its receipt or job."
         },
         {
           "t": "meta",
@@ -2594,7 +3027,8 @@
       ],
       "related": [
         "ecmrs/fields/item",
-        "ecmrs/fields/serial_num"
+        "ecmrs/fields/serial_num",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_lot_num_v2",
@@ -2684,6 +3118,14 @@
           "text": "Tick if the change affects Sarbanes-Oxley (SOX) controls."
         },
         {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "**SOX** is the Sarbanes-Oxley Act, a US law on controls over financial reporting. Ticked means the change affects something those controls cover."
+        },
+        {
           "t": "meta",
           "items": [
             [
@@ -2713,7 +3155,9 @@
           "text": "Tick the box if SOX controls are affected; leave it clear if not."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_sox_impacted"
       ]
@@ -2733,6 +3177,14 @@
         {
           "t": "p",
           "text": "Tick if the purchase order is on hold because of this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Records that the purchase order in **PO Num** is on hold because of this CMR."
         },
         {
           "t": "meta",
@@ -2764,7 +3216,9 @@
           "text": "Tick the box while the PO is on hold; clear it when the hold is lifted."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_hold_on_po"
       ]
@@ -2784,6 +3238,14 @@
         {
           "t": "p",
           "text": "Tick when the supplier is authorized to ship."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "For a **Supplier Deviation Request (SDR)**: the supplier may ship the parts. Per QA-300-003, a supplier that ships before the SDR is signed does so at its own risk, and a copy of the approved SDR must go with the shipment or the parts may be returned."
         },
         {
           "t": "meta",
@@ -2815,7 +3277,9 @@
           "text": "Tick the box once the supplier is authorized to ship."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_auth_supplier_ship"
       ]
@@ -2835,6 +3299,14 @@
         {
           "t": "p",
           "text": "Why the CMR was raised. The codes are the same as on **QC MRRs**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The **reason** the issue was raised: what was found wrong. It's recorded when the CMR is opened, before the cause is known. Each code is explained below."
         },
         {
           "t": "meta",
@@ -2893,7 +3365,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/cause_code"
+        "ecmrs/fields/cause_code",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_reason_code_v2",
@@ -2915,6 +3388,14 @@
         {
           "t": "p",
           "text": "The cause found for the problem. The codes are the same as on **QC MRRs**."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The **cause**: why it went wrong, once that's known (for example a supplier error or a drawing error). Each code is explained below."
         },
         {
           "t": "meta",
@@ -2973,7 +3454,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/reason_code"
+        "ecmrs/fields/reason_code",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_cause_code_v2",
@@ -2995,6 +3477,52 @@
         {
           "t": "p",
           "text": "Quality's decision on the affected material or parts."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "A **disposition** is the decision on what to do with the affected parts (QA-300-037). This is Quality's decision:"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Value",
+            "Means"
+          ],
+          "rows": [
+            [
+              "Accept",
+              "The parts are accepted as they are (use as is) and can go to stock."
+            ],
+            [
+              "Hold",
+              "The parts stay on hold (QC Hold) until a decision is made."
+            ],
+            [
+              "NFF",
+              "No fault found: nothing wrong was found."
+            ],
+            [
+              "Reject",
+              "The parts are rejected, for example returned to the vendor (RTV)."
+            ],
+            [
+              "Rework",
+              "The parts are reworked to meet the drawing."
+            ],
+            [
+              "Scrap",
+              "The parts are scrapped."
+            ],
+            [
+              "Other",
+              "Something else, explained in the notes."
+            ]
+          ],
+          "align": "left"
         },
         {
           "t": "meta",
@@ -3057,7 +3585,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_qc_disposition",
         "l_qc_disposition"
@@ -3078,6 +3608,14 @@
         {
           "t": "p",
           "text": "The Quality team member who works the CMR through to completion, with Engineering's help."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The Quality team member who owns the CMR from start to finish and gets it back after each step (QA-300-037 5.5.5, 5.5.9.4)."
         },
         {
           "t": "meta",
@@ -3131,7 +3669,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_qc_reviewer_empnum_v2",
         "c_qc_reviewer_username_v2",
@@ -3154,6 +3694,14 @@
         {
           "t": "p",
           "text": "Quality's root cause analysis (RCA) notes."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "**RCA** means root cause analysis: finding the underlying reason a problem happened, not just the symptom. These are Quality's findings."
         },
         {
           "t": "meta",
@@ -3199,7 +3747,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_qc_rca_notes",
         "l_qc_rca_notes"
@@ -3220,6 +3770,14 @@
         {
           "t": "p",
           "text": "The engineering order (EO) number for the change."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "An **EO** is an Engineering Order, issued under ENG 310-005 (Engineering Orders – Policy, Process and Work Instruction). Record the EO that carries out the change."
         },
         {
           "t": "meta",
@@ -3255,7 +3813,9 @@
           "text": "Type the EO number."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_eo_num",
         "l_eo_num"
@@ -3334,6 +3894,14 @@
           "text": "Engineering's decision on the affected material or parts."
         },
         {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Engineering's decision on what to do with the affected parts (see **QC Disposition** for what the words mean). Its list has no Accept, Hold or Reject."
+        },
+        {
           "t": "meta",
           "items": [
             [
@@ -3381,7 +3949,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_eng_disposition",
         "l_eng_disposition"
@@ -3402,6 +3972,14 @@
         {
           "t": "p",
           "text": "The Engineering reviewer for this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The engineer who reviews the CMR and decides the solution (QA-300-037 5.5.7)."
         },
         {
           "t": "meta",
@@ -3440,7 +4018,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_eng_reviewer_empnum_v2",
         "c_eng_reviewer_username_v2",
@@ -3463,6 +4043,14 @@
         {
           "t": "p",
           "text": "The date of Engineering's internal review."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "When Engineering reviewed the CMR internally."
         },
         {
           "t": "meta",
@@ -3494,7 +4082,9 @@
           "text": "Pick the date from the calendar, or type it."
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_internal_review_date",
         "l_internal_review_date"
@@ -3515,6 +4105,14 @@
         {
           "t": "p",
           "text": "Engineering's root cause analysis (RCA) notes."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Engineering's root cause analysis (RCA): why the problem happened from a design or drawing point of view, and the solution chosen."
         },
         {
           "t": "meta",
@@ -3560,7 +4158,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_eng_rca_notes",
         "l_eng_rca_notes"
@@ -3581,6 +4181,14 @@
         {
           "t": "p",
           "text": "Planning's part of the change: communicating it to the floor."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Planning's implementation step: passing the change (documents or information) to the production floor (QA-300-037 5.5.9.1). The checkbox means that step is done, or not needed; **Reviewer ID** is who did it."
         },
         {
           "t": "meta",
@@ -3636,7 +4244,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_planning_complete",
         "c_planning_reviewer_empnum_v2",
@@ -3660,6 +4270,14 @@
         {
           "t": "p",
           "text": "Purchasing's part of the change: for a Supplier Deviation Request, giving the supplier copies of the documentation."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "Purchasing's implementation step for a Supplier Deviation Request: sending the supplier copies of the documentation (5.5.9.2). The checkbox means it's done, or not needed."
         },
         {
           "t": "meta",
@@ -3715,7 +4333,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_purchasing_complete",
         "c_purchasing_reviewer_empnum_v2",
@@ -3739,6 +4359,14 @@
         {
           "t": "p",
           "text": "Configuration Management's part of the change: releasing an NEI or ECO into the Drawing Books."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "**CM** is Configuration Management: keeping drawings and their revisions controlled. Its step is releasing an NEI or ECO into the Drawing Books (5.5.9.3). The checkbox means it's done, or not needed."
         },
         {
           "t": "meta",
@@ -3794,7 +4422,9 @@
           ]
         }
       ],
-      "related": [],
+      "related": [
+        "ecmrs/glossary"
+      ],
       "aliases": [
         "c_cm_complete",
         "c_cm_reviewer_empnum_v2",
@@ -3818,6 +4448,14 @@
         {
           "t": "p",
           "text": "Closes the CMR. Clear it to reopen the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "The CMR is finished: every review and implementation step is done (QA-300-037 5.5.10)."
         },
         {
           "t": "meta",
@@ -3881,7 +4519,8 @@
       ],
       "related": [
         "ecmrs/fields/close_date",
-        "ecmrs/fields/closed_by"
+        "ecmrs/fields/closed_by",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_closed",
@@ -3903,6 +4542,14 @@
         {
           "t": "p",
           "text": "The date the CMR was closed."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
+        {
+          "t": "p",
+          "text": "When the CMR was closed."
         },
         {
           "t": "meta",
@@ -3939,7 +4586,8 @@
         }
       ],
       "related": [
-        "ecmrs/fields/closed"
+        "ecmrs/fields/closed",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_close_date",
@@ -3958,6 +4606,14 @@
       "group": "Implementation",
       "order": 55,
       "blocks": [
+        {
+          "t": "p",
+          "text": "The SyteLine user who closed the CMR."
+        },
+        {
+          "t": "h3",
+          "text": "What it means"
+        },
         {
           "t": "p",
           "text": "The SyteLine user who closed the CMR."
@@ -4001,12 +4657,150 @@
         }
       ],
       "related": [
-        "ecmrs/fields/closed"
+        "ecmrs/fields/closed",
+        "ecmrs/glossary"
       ],
       "aliases": [
         "c_closed_by",
         "l_closed_by"
       ]
+    },
+    {
+      "path": "ecmrs/glossary",
+      "type": "index",
+      "icon": "form",
+      "title": "eCMRs glossary",
+      "eyebrow": "Reference",
+      "subtitle": "Terms, abbreviations and codes used on the eCMRs form",
+      "summary": "What the terms and abbreviations on the eCMRs form and in its procedures mean.",
+      "parent": "ecmrs",
+      "group": "Reference",
+      "order": 100,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Terms and abbreviations used on the eCMRs form and in the procedures that use it. Where a term comes from a procedure, the procedure is named."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Term",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "**CMR**",
+              "Change Management Request: the eCMRs record used to manage deviations, clarifications and process gaps found by vendors, customers and Enflite staff. (QA-300-037)"
+            ],
+            [
+              "**MRR**",
+              "Material Review Report: the SyteLine form for nonconforming, suspected or damaged material, including its review and disposition. (QA-300-037)"
+            ],
+            [
+              "**TRR**",
+              "Topic Review Request: the SyteLine form for errors by Enflite production staff. (QA-300-037)"
+            ],
+            [
+              "**Streamline**",
+              "An issue that needs no detailed rework instructions or Engineering Disposition to return to type design (for example a loose screw or missing washer); handled as a TRR. (QA-300-037)"
+            ],
+            [
+              "**SDR**",
+              "Supplier Deviation Request: a supplier's request to accept parts that depart from the drawing, specification or PO. (QA-300-003)"
+            ],
+            [
+              "**ECO**",
+              "Engineering Change Order: explains changes to manufacturing documents. (QA-300-037)"
+            ],
+            [
+              "**NEI**",
+              "Notice of Engineering Intent: a minor change to a drawing, for clarity or to address a discrepancy. (QA-300-037)"
+            ],
+            [
+              "**TS**",
+              "Temporary Solution: a minor temporary change to specific articles, with valid acceptance. (QA-300-037)"
+            ],
+            [
+              "**EO**",
+              "Engineering Order, issued under ENG 310-005."
+            ],
+            [
+              "**MRB**",
+              "Material Review Board. (QA-300-003)"
+            ],
+            [
+              "**CM**",
+              "Configuration Management: control of drawings and their revisions; releases NEIs and ECOs into the Drawing Books."
+            ],
+            [
+              "**Disposition**",
+              "The decision on what to do with affected parts: accept (use as is), hold, rework, scrap, reject / return to vendor."
+            ],
+            [
+              "**RTV**",
+              "Return to vendor: rejected parts sent back to the supplier."
+            ],
+            [
+              "**NFF**",
+              "No fault found."
+            ],
+            [
+              "**RCA**",
+              "Root cause analysis: finding why a problem happened."
+            ],
+            [
+              "**RFQ**",
+              "Request for quotation: a request to suppliers for a price quote."
+            ],
+            [
+              "**PO**",
+              "Purchase order: Enflite's order to a supplier. A PO line is one item on it."
+            ],
+            [
+              "**Buyer**",
+              "Purchasing agent. (QA-300-003)"
+            ],
+            [
+              "**POC**",
+              "Point of contact."
+            ],
+            [
+              "**SOX**",
+              "Sarbanes-Oxley Act: US law on controls over financial reporting."
+            ],
+            [
+              "**Item**",
+              "A SyteLine part number."
+            ],
+            [
+              "**Job**",
+              "A SyteLine production order to make a quantity of an item."
+            ],
+            [
+              "**Work center**",
+              "A SyteLine production area or machine group where job operations are done."
+            ],
+            [
+              "**Lot / Serial**",
+              "A batch of a lot-tracked item / one unit of a serial-tracked item."
+            ],
+            [
+              "**IDM**",
+              "Infor Document Management, where supporting documents are attached to the CMR record."
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "p",
+          "text": "The Reason and Cause codes are explained on the [Reason Code](/syteline/ecmrs/fields/reason_code) and [Cause Code](/syteline/ecmrs/fields/cause_code) pages; the disposition values on [QC Disposition](/syteline/ecmrs/fields/qc_disposition)."
+        }
+      ],
+      "related": [
+        "procedures/qa-300-037",
+        "procedures/qa-300-003"
+      ],
+      "aliases": []
     }
   ]
 }
