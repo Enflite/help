@@ -1446,6 +1446,10 @@
               "By you"
             ],
             [
+              "Required",
+              "Yes: a CMR can't be saved without an Item"
+            ],
+            [
               "Length",
               "Up to 30 characters"
             ],
@@ -1462,7 +1466,7 @@
         {
           "t": "steps",
           "items": [
-            "Pick the item, or type it.",
+            "Pick the item, or type it. Every CMR needs one.",
             "**Item Desc** fills in by itself."
           ]
         },
@@ -1477,7 +1481,7 @@
         {
           "t": "list",
           "items": [
-            "**5.5.2** Select the item number, if applicable."
+            "**5.5.2** Select the item number."
           ]
         },
         {
@@ -1487,7 +1491,8 @@
         {
           "t": "list",
           "items": [
-            "The item also sets what's in the **Next Lvl Assy**, **Serial #** and **LOT #** lists."
+            "The item also sets what's in the **Next Lvl Assy**, **Serial #** and **LOT #** lists.",
+            "The **IDM Related Info** panel shows the documents attached from eCMRs for this item, on every CMR with the same item."
           ]
         }
       ],
@@ -3033,72 +3038,6 @@
       "aliases": [
         "c_lot_num_v2",
         "l_lot_num"
-      ]
-    },
-    {
-      "path": "ecmrs/fields/sub_assembly",
-      "type": "field",
-      "icon": "field",
-      "title": "Sub Assembly",
-      "eyebrow": "Additional Fields",
-      "subtitle": "Field on the eCMRs form",
-      "summary": "The sub-assembly the affected part belongs to.",
-      "parent": "ecmrs",
-      "group": "Additional Fields",
-      "order": 35,
-      "blocks": [
-        {
-          "t": "p",
-          "text": "The sub-assembly the affected part belongs to."
-        },
-        {
-          "t": "meta",
-          "items": [
-            [
-              "Section",
-              "Additional Fields"
-            ],
-            [
-              "Entry",
-              "Text"
-            ],
-            [
-              "Filled in",
-              "By you"
-            ],
-            [
-              "Length",
-              "Up to 255 characters"
-            ],
-            [
-              "List view",
-              "No"
-            ]
-          ]
-        },
-        {
-          "t": "h3",
-          "text": "How to fill it in"
-        },
-        {
-          "t": "p",
-          "text": "Type the sub-assembly."
-        },
-        {
-          "t": "h3",
-          "text": "Good to know"
-        },
-        {
-          "t": "list",
-          "items": [
-            "New on eCMRs. It's a separate field from **Next Lvl Assy**."
-          ]
-        }
-      ],
-      "related": [],
-      "aliases": [
-        "c_sub_assembly",
-        "l_sub_assembly"
       ]
     },
     {

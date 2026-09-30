@@ -753,10 +753,10 @@
         {
           "t": "pstep",
           "num": "5.5.2.",
-          "text": "Select the “**Initial Change**,” enter “**Reported By**,” and select the item number (if applicable). Provide a full description of the issue or request in “**Requested Action**.” The Requirement check boxes are set from the **Initial Change**. Leave all other fields blank.",
+          "text": "Select the “**Initial Change**,” enter “**Reported By**,” and select the item number (required). Provide a full description of the issue or request in “**Requested Action**.” The Requirement check boxes are set from the **Initial Change**. Leave all other fields blank.",
           "kind": "changed",
           "was": "Enter initial change reason code, “Reported By,” and item number (if applicable). Provide a full description of the issue or request. Leave all other fields blank.",
-          "why": "Names the eCMRs fields. The Requirement check boxes are ticked automatically from Initial Change."
+          "why": "Names the eCMRs fields. The Requirement check boxes are ticked automatically from Initial Change. The Item is required on eCMRs (IDM looks documents up by Item)."
         },
         {
           "t": "pstep",
