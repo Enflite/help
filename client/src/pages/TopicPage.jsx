@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useJson } from "../api.js";
 import Blocks from "../components/Blocks.jsx";
 
@@ -26,6 +26,7 @@ export default function TopicPage() {
           {topic.subtitle && <div className="sub">{topic.subtitle}</div>}
         </div>
       </div>
+      <HelpLinkNote />
       <Blocks topic={topic} space={space} />
       {related.length > 0 && (
         <>
@@ -37,6 +38,22 @@ export default function TopicPage() {
       )}
       {parent && topic.group && <p className="meta">{parent.title} &middot; {topic.group}</p>}
     </article>
+  );
+}
+
+// Right-click -> Help that found no page for the field lands on the form's page with
+// ?from=<component>&via=parm|focus|none (set by /go): say why, so it can be reported.
+function HelpLinkNote() {
+  const [params] = useSearchParams();
+  if (!params.has("from")) return null;
+  const from = params.get("from");
+  const via = params.get("via") || "none";
+  return (
+    <p className="notice">
+      {from
+        ? <>Right-click → Help: there is no help page for the component <code>{from}</code> yet (found by <code>{via}</code>), so this is the form&rsquo;s page.</>
+        : <>Right-click → Help: SyteLine didn&rsquo;t say which field was clicked (<code>via={via}</code>), so this is the form&rsquo;s page.</>}
+    </p>
   );
 }
 

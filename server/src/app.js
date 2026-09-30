@@ -89,11 +89,19 @@ export function createApp({ contentDir, clientDist, clientUrl, aiConfig } = {}) 
         $or: [{ path: form }, { path: new RegExp(`^${escapeRegex(form)}/`) }],
       }, "path").lean();
     }
-    if (!target && space && form) target = await Topic.findOne({ space, path: form }, "path").lean();
-    const to = target ? `/${space}/${target.path}` : space ? `/${space}` : "/";
+    let to = target ? `/${space}/${target.path}` : null;
+    if (!to && space && form) {
+      // No page for that component: the form's page, told what SyteLine sent (it shows a note), so
+      // "why didn't it open the field?" can be answered from the screen.
+      const formPage = await Topic.findOne({ space, path: form }, "path").lean();
+      const from = new URLSearchParams({ from: component, via: one(q.via) || "none" });
+      if (formPage) to = `/${space}/${formPage.path}?${from}`;
+    }
+    if (!to) to = space ? `/${space}` : "/";
     // One line per right-click -> Help: which component SyteLine sent, how its script found it
     // (?via=parm|focus|none) and where it went. Shows whether field-level help is working.
-    console.log(`help link ${space || "-"}/${form || "-"} component=${component || "-"} via=${one(q.via) || "-"} -> ${to}`);
+    // ev= is the SyteLine event that sent it (component = right-click a field, form = the form's Help).
+    console.log(`help link ${space || "-"}/${form || "-"} component=${component || "-"} via=${one(q.via) || "-"} ev=${one(q.ev) || "-"} -> ${to}`);
     return to;
   };
   const goPaths = ["/go", "/go/:space", "/go/:space/:form", "/go/:space/:form/:component"];

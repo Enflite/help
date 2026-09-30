@@ -64,8 +64,10 @@ t("right-click help redirects a component to its page", async () => {
   assert.equal(await where("/go/syteline/ecmrs/c_item"), "/syteline/ecmrs/fields/item");
   assert.equal(await where("/go/syteline/ecmrs/l_item"), "/syteline/ecmrs/fields/item");
   assert.equal(await where("/go/syteline/ecmrs/c_item.html"), "/syteline/ecmrs/fields/item");
-  assert.equal(await where("/go/syteline/ecmrs/hdr_QUALITY"), "/syteline/ecmrs");
-  assert.equal(await where("/go/syteline/ecmrs"), "/syteline/ecmrs");
+  // No page for the component: the form's page, told what SyteLine sent (the page shows a note).
+  assert.equal(await where("/go/syteline/ecmrs/hdr_QUALITY?via=parm"), "/syteline/ecmrs?from=hdr_QUALITY&via=parm");
+  assert.equal(await where("/go/syteline/ecmrs?via=none"), "/syteline/ecmrs?from=&via=none");
+  assert.equal(await where("/go/syteline/ecmrs"), "/syteline/ecmrs?from=&via=none");
   assert.equal(await where("/go/syteline/nope/c_item"), "/syteline");
 });
 
