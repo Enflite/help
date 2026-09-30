@@ -1,0 +1,734 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "build",
+      "type": "index",
+      "icon": "form",
+      "title": "Building SyteLine forms",
+      "eyebrow": "Builders · How-to",
+      "subtitle": "For the people who build and change Enflite forms in SyteLine",
+      "summary": "How Enflite builds and changes SyteLine forms: backups, UET fields or a new table and IDO, report layouts, data types, and fixes for errors we have hit.",
+      "group": "Building forms",
+      "order": 20,
+      "groups": [
+        "How-to",
+        "Reference",
+        "Troubleshooting"
+      ],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "These pages are for the people who build and change Enflite forms and reports, not for the people who fill them in. They collect what we have learned building **eCMRs**, **Service Orders** and **Incidents**, and changing the **Purchase Order** report."
+        },
+        {
+          "t": "h2",
+          "text": "Pick the approach"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Situation",
+            "Approach",
+            "Example"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "You need a few more fields on a form Infor already has",
+              "Add **UET** fields to Infor's form, and import the changed form through **FormSync**",
+              "[Service Orders](/syteline/service-orders), [Incidents](/syteline/incidents)"
+            ],
+            [
+              "No existing form fits, and the new form doesn't have to work with other forms or their event handlers",
+              "Build a **new table + new IDO + new form**",
+              "[eCMRs](/syteline/ecmrs)"
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Never change Infor's own tables, IDOs or forms. Build everything on **TRN** first; production repeats the same steps from the same files."
+        },
+        {
+          "t": "children"
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "build/back-up-a-form",
+      "type": "procedure",
+      "icon": "procedure",
+      "title": "Back up a form before changing it",
+      "eyebrow": "How-to · Backup",
+      "subtitle": "Export the unchanged form with FormSync first",
+      "summary": "Before any change to a form or report, export the unchanged form with FormSync and keep the file: it is the rollback.",
+      "parent": "build",
+      "group": "How-to",
+      "order": 0,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Before changing any form or report, even just looking around in **Design Mode**, export the form as it is now. If anything goes wrong, importing this file puts the form back."
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open **FormSync**.",
+            "Choose the **Source** configuration (the environment the form is in, e.g. TRN). Choose a **Target** too: FormSync needs one to open.",
+            "Find the form and click **Refresh List**. If it doesn't show in the list, look the form up by its name (e.g. **Purchase Order Detail Report Viewer**) and refresh again.",
+            "Set the **Scope Type** to the scope you will change (normally **Site**; the scope the form's current version is at).",
+            "**Export** the form to a file.",
+            "Save the file where the project keeps its backups: the project repo's `original/` folder, named `<Form>.<environment>.original.xml`. Write down when you exported it.",
+            "Close **FormSync**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "To undo your changes, import the backup file through **FormSync** at the same scope.",
+            "Back up each environment separately (TRN, then production), right before its first change.",
+            "Copying a form from **User** scope to a wider scope with FormSync didn't work when we tried. Make changes at the scope you will deliver them at.",
+            "If people use the form every day, make the change when it won't catch them out (e.g. live in a meeting with them). A change to a report's defaults applies to everyone as soon as it is saved."
+          ]
+        }
+      ],
+      "related": [
+        "build/custom-table-and-ido",
+        "build/report-layouts"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/custom-table-and-ido",
+      "type": "procedure",
+      "icon": "procedure",
+      "title": "Create a custom table and IDO",
+      "eyebrow": "How-to · New table + IDO",
+      "subtitle": "The table, the IDO on top of it, then the form",
+      "summary": "Create a ue_ table in Application Studio, add its columns, build an IDO on it and check it in, then import the form through FormSync.",
+      "parent": "build",
+      "group": "How-to",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Use this when no existing form fits (see [Building SyteLine forms](/syteline/build)). The order matters: **table**, then **IDO**, then **form**. The form binds every field to an IDO property by name, and FormSync can only import forms: it can't create a table or an IDO."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Where",
+              "**Application Studio**, project `ue_ENF`"
+            ],
+            [
+              "Environment",
+              "TRN first, then production"
+            ],
+            [
+              "Worked example",
+              "`ue_ecmrs` (eCMRs), live on TRN"
+            ],
+            [
+              "Sources",
+              "Recorded walkthrough of a new `ue_` table (2026); the eCMRs build ([Implementation Plan](https://github.com/Enflite/eCMRs/blob/main/docs/Implementation-Plan.md), [troubleshooting](https://github.com/Enflite/eCMRs/blob/main/docs/troubleshooting.md))"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Before you start"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Write down every field the form needs, from the team's source (their spreadsheet or mockup): name, what it holds, how long it can be, and whether it can be empty.",
+            "Pick the table name: `ue_<name>`, lower case (e.g. `ue_ecmrs`). `ue_` marks a table we created; everything else is Infor's.",
+            "Check the name isn't used yet: no table, IDO or form by that name in the environment."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1. Create the table"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In **Application Studio**, open **SQL Tables** and click **New**.",
+            "Enter the table name (`ue_<name>`) and **Save**. Application Studio adds seven standard columns itself: `CreatedBy`, `UpdatedBy`, `CreateDate`, `RecordDate`, `RowPointer`, `NoteExistsFlag` and `InWorkflow`. Don't add them again.",
+            "Open the table's **Columns** and add one row per field. Name each column in `snake_case` (`computer_name`, `cmr_num`).",
+            "For each column choose its **Data Type**: an existing SyteLine type when one fits, else a plain type with a length. See [Choosing a column's data type](/syteline/build/data-types).",
+            "Set **Nullable**. Leave it ticked when the field may be empty. Clear it only for fields every record must have (the key, and fields like a serial number): SyteLine then refuses to save a record without them.",
+            "Make the key column the table's **Primary Key** (on eCMRs: `cmr_num`). Each record's key must be different, and the form or the user has to fill it in before saving.",
+            "**Save**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "2. Create the IDO"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open **IDOs** and start a new IDO (the **IDO wizard**). Project `ue_ENF`.",
+            "Name the IDO the same as the table (`ue_<name>`), set the **Primary Base Table** to your table and give it a short **table alias** (eCMRs uses `ec`).",
+            "Add one **IDO Property** per column: **Bind To** the column, and name the property in `PascalCase` (`cmr_num` → `CmrNum`). The form binds to the property name (`object.CmrNum`), not the column.",
+            "Set each property's **Data Type** (`String`, `Date`, `Decimal`...) and give it the **same Length as its column**.",
+            "Leave **Property Class** and **Column Data Type** blank on your own properties.",
+            "On the key property, mark the key (**Pseudo Key** 1 on eCMRs).",
+            "Set what the form needs: an **Inline List** for fixed drop-down values, and clear **Read Only Record** on fields the form fills in itself.",
+            "**Check In** the IDO (IDOs tab → your IDO → **Check In**). Changes to IDO properties don't take effect until you do. The message “Source control integration is currently disabled” is harmless: click **OK**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "3. Check it"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Export the **SQL Columns** and **IDO Properties** grids to Excel.",
+            "Check every column is there with the right type, and every IDO property's length equals its column's.",
+            "Keep the exports in the project repo (`docs/reference/`). They are the checklist for building production, and the exact format any import file has to match."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "4. Build and import the form"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Build the form XML from the project's build script (never by hand, and never as a Design Mode change).",
+            "Import it through **FormSync** at **Site** scope.",
+            "Test: **New**, fill in, **Save**, reopen. Then make the form available to users (menu, form security)."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Instead of typing every row, columns and properties can be imported from CSV files on the **SQL Columns** and **IDO Properties** grids (eCMRs did this for production). The file must match a fresh export of the same grid exactly (header, column count, quoting). A mismatch fails silently rather than with an error.",
+            "In an SQL Columns import, **Data Type** must be a real type (`nvarchar`, `char`, `datetime`, `decimal`, or a named type like `UsernameType`). The word `String` is refused: *“String is not a valid Data Type.”*",
+            "If an IDO property is longer than its column, saving fails with *“String or binary data would be truncated in table ...”*. If it's shorter than the value, the message is *“Data length for <field> (n) is greater than effective length (m)”*.",
+            "Don't generate the key with `AUTONUMBER` in the IDO's **Default Value**: on eCMRs it repeated numbers and saves failed with `PK_ue_ecmrs`. eCMRs sets the key from a form script on **New** instead (`CMR-YYMMDD-HHMMSS`).",
+            "A table you create in **SQL Tables** is a real database table. No separate database step is needed."
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "Not yet confirmed: the recorded walkthrough named its columns `Uf_ComputerName`, `Uf_SerialNumber`... . `Uf_` is our prefix for UET fields; on a table we own, columns are `snake_case` like eCMRs'. The recording also ends at the start of the IDO wizard, so the IDO steps above come from the eCMRs build."
+        }
+      ],
+      "related": [
+        "build/data-types",
+        "build/glossary",
+        "ecmrs"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/report-layouts",
+      "type": "reference",
+      "icon": "form",
+      "title": "Report layouts: collections, regions and flex layouts",
+      "eyebrow": "Reference · Reports",
+      "subtitle": "How a report viewer form gets its data and lays out its page",
+      "summary": "How a report form reads its data (primary collection and custom load method) and lays out its page with regions, group footers and proportional flex layouts. Example: terms and conditions on the PO report.",
+      "parent": "build",
+      "group": "Reference",
+      "order": 0,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Report viewer forms (e.g. **Purchase Order Detail Report Viewer**) are laid out differently from entry forms. The page is built from **regions** (header, detail, footers), each holding **flex layouts** of fields and statics. Worked example: adding the terms and conditions to the Purchase Order detail report, copied from the customized simple PO report."
+        },
+        {
+          "t": "h2",
+          "text": "Where the data comes from"
+        },
+        {
+          "t": "list",
+          "items": [
+            "A report reads its records from its **primary collection** (an IDO).",
+            "To show the same data as another report, use that report's collection **and** its **custom load method**. The load method is what fills in the data, so changing only the collection isn't enough.",
+            "On the PO report, both come from the customized simple PO report built for us: the `ue_` collection and its custom load method."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Regions"
+        },
+        {
+          "t": "p",
+          "text": "Regions are the bands of the page, listed in the main flex layout's **Layout** → **Flex Attributes**. To print something once per PO, at the end of that PO:"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Add a **new region** at the bottom of the list.",
+            "Make it a **Group Footer**, with **Group Property** set to the PO (the property that changes from one PO to the next).",
+            "Tick **Page Break Before**, so it starts on a page of its own.",
+            "Give the region enough height for its content (the terms block needs about 30), and make the main flex layout that much taller as well. Too big does no harm; shrink it afterwards."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Flex layouts divide space in proportion"
+        },
+        {
+          "t": "p",
+          "text": "A flex layout with several columns shares its width by the numbers you give each column. Columns set to **1**, **3** and **1** divide the width into five parts: the middle column gets three fifths and the outer ones one fifth each. A vertical flex layout does the same for rows."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Columns",
+            "Share of the width"
+          ],
+          "rows": [
+            [
+              "1 · 1 · 1",
+              "a third each"
+            ],
+            [
+              "1 · 2 · 1",
+              "a quarter · a half · a quarter"
+            ],
+            [
+              "1 · 3 · 1",
+              "a fifth · three fifths · a fifth"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Fixed text (statics)"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Inside the region, add a flex layout (three columns, 1 · 3 · 1, with the text in the middle), and in its middle column a vertical flex layout with one row per paragraph.",
+            "Put a **Static** in each row and paste the paragraph into its **Caption**. Not into its **Name** (see [Troubleshooting](/syteline/build/troubleshooting)).",
+            "**Appearance** → **Justification**: **Left**.",
+            "**Miscellaneous** → **Specific Attributes**: **No Colon** = **True**. Otherwise SyteLine adds a colon after the text as if it were a label.",
+            "**Save**. The designer doesn't always redraw straight away; reopen the form to see the result."
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "Not yet confirmed: taken from a recording of the change on TRN, which ends before the terms block was saved and tested. The recording made the change in Design Mode at Default scope. Our rule is to deliver form changes as XML through FormSync (see [Back up a form](/syteline/build/back-up-a-form))."
+        }
+      ],
+      "related": [
+        "build/back-up-a-form",
+        "build/troubleshooting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/data-types",
+      "type": "reference",
+      "icon": "field",
+      "title": "Choosing a column's data type",
+      "eyebrow": "Reference · Data types",
+      "subtitle": "Reuse the types SyteLine already has",
+      "summary": "Use an existing SyteLine data type when one fits (it brings its length and format), how to find the type a standard field uses, and what to use when none fits.",
+      "parent": "build",
+      "group": "Reference",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Every column needs a data type. Where SyteLine already has a type for that kind of value (a username, an item, a date), use it: its length and format are already decided, and your field then matches Infor's fields that hold the same thing."
+        },
+        {
+          "t": "h2",
+          "text": "Types we have used"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Holds",
+            "Type",
+            "Notes"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "A username or user email",
+              "`UsernameType`",
+              "128 characters"
+            ],
+            [
+              "A first or last name",
+              "`NameType`",
+              ""
+            ],
+            [
+              "A long name (e.g. a computer name)",
+              "`LongObjectNameType`",
+              "250 characters"
+            ],
+            [
+              "An employee number",
+              "`EmpNumType`",
+              ""
+            ],
+            [
+              "An item (part number)",
+              "`ItemType`",
+              ""
+            ],
+            [
+              "A department / a work center",
+              "`DeptType` / `WcType`",
+              ""
+            ],
+            [
+              "A revision",
+              "`RevisionType`",
+              ""
+            ],
+            [
+              "A short / long description",
+              "`DescriptionType` / `LongDescType`",
+              ""
+            ],
+            [
+              "Yes / No (a check box)",
+              "`FlagNyType`",
+              "What SyteLine uses for its own `InWorkflow` column"
+            ],
+            [
+              "A date, or date and time",
+              "`datetime`",
+              "SyteLine's own date columns use `CurrentDateType`"
+            ],
+            [
+              "Our own text, with no matching type",
+              "`char(255)` or `nvarchar(<length>)`",
+              "eCMRs uses `char(255)` for its own text"
+            ],
+            [
+              "A number with decimals",
+              "`decimal`",
+              ""
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Find the type a standard field uses"
+        },
+        {
+          "t": "p",
+          "text": "To store the same kind of value as a field on one of Infor's forms (for example the username on **Employees**), look up the type that field uses:"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open the form (e.g. **Employees**) in **Design Mode**.",
+            "Select the field and read its **Binding**: the IDO property it shows (`object.<Property>`). The form's collection names the IDO.",
+            "Open **IDOs**, find that IDO and open its **Properties**.",
+            "Select the property and read its **Column Data Type** (e.g. `UsernameType`).",
+            "Use that type for your column."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Only look in Design Mode. Don't change the form there: our form changes go through the build script and FormSync."
+        },
+        {
+          "t": "h2",
+          "text": "When no type fits"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Use `nvarchar` (or `char`) with a length that fits the longest real value, with some room. Short codes and statuses: 60. Notes: 600 or more.",
+            "In **SQL Columns**, the **Data Type** must be a real type (`nvarchar`, `char`, `datetime`, `decimal`, or a named type). The word `String` is refused.",
+            "The IDO property's **Data Type** is the generic kind (`String`, `Date`, `Decimal`), and its **Length** must equal the column's."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Nullable"
+        },
+        {
+          "t": "p",
+          "text": "**Nullable** ticked means the field may be left empty. Leave it ticked unless every record must have a value. Cleared, SyteLine won't save a record without it, so clear it only for the key and fields that are always known (e.g. a serial number)."
+        }
+      ],
+      "related": [
+        "build/custom-table-and-ido",
+        "build/glossary"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/glossary",
+      "type": "index",
+      "icon": "form",
+      "title": "Builder glossary",
+      "eyebrow": "Reference",
+      "subtitle": "SyteLine terms used when building forms",
+      "summary": "What the SyteLine terms used when building forms mean: IDO, UET, data type, nullable, primary key, FormSync and our naming prefixes.",
+      "parent": "build",
+      "group": "Reference",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "table",
+          "head": [
+            "Term",
+            "Meaning"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "**SyteLine / CSI**",
+              "Infor CloudSuite Industrial, our ERP. Its web client is built on Infor **Mongoose**."
+            ],
+            [
+              "**TRN**",
+              "The training (test) environment. Everything is built and proven here before production."
+            ],
+            [
+              "**Application Studio**",
+              "Where tables and IDOs are created and changed (**SQL Tables**, **IDOs**)."
+            ],
+            [
+              "**Table / column**",
+              "Where the data is stored. A column is one field of every record."
+            ],
+            [
+              "**IDO**",
+              "Intelligent Data Object: the layer between a form and its table(s). Forms read and save data only through an IDO."
+            ],
+            [
+              "**IDO property**",
+              "One field of an IDO, bound to a table column. A form field binds to it as `object.<Property>`."
+            ],
+            [
+              "**Data type**",
+              "What a column holds and how long it can be. SyteLine has named types (`UsernameType`, `ItemType`...) that carry a length and format."
+            ],
+            [
+              "**Nullable**",
+              "The field may be left empty. When cleared, a record can't be saved without it."
+            ],
+            [
+              "**Primary key**",
+              "The column that identifies each record. No two records can have the same value."
+            ],
+            [
+              "**Index**",
+              "A lookup the database keeps on one or more columns, so searches and joins on them are fast."
+            ],
+            [
+              "**Inline List**",
+              "A fixed list of values set on an IDO property, used for a drop-down."
+            ],
+            [
+              "**Read Only Record**",
+              "An IDO property flag: the property can't be changed. Clear it on fields the form fills in."
+            ],
+            [
+              "**Check In**",
+              "Saves IDO changes so they take effect."
+            ],
+            [
+              "**UET**",
+              "User Extended Tables: adds our own fields to Infor's tables without changing them. Used on Service Orders and Incidents."
+            ],
+            [
+              "**Design Mode**",
+              "SyteLine's form designer. We use it to look at a form, never to deliver changes."
+            ],
+            [
+              "**FormSync**",
+              "Imports a form XML file into SyteLine. We import at **Site** scope, never over Infor's own (Vendor) version."
+            ],
+            [
+              "**Scope**",
+              "Which version of a form a user gets: **Vendor** (Infor's), **Site**, **Group** or **User**. A change at a narrower scope overrides the wider one for those users."
+            ],
+            [
+              "**Primary collection**",
+              "The IDO a form (or report) reads its records from."
+            ],
+            [
+              "**Custom load method**",
+              "A method the IDO runs to load the records, instead of a plain read. A report copied from another must use the same one to get the same data."
+            ],
+            [
+              "**Flex layout**",
+              "A layout box on a report form that holds components in rows or columns, sized in proportion to each other."
+            ],
+            [
+              "**Region**",
+              "A band of a report layout: a header, detail line, footer or group footer."
+            ],
+            [
+              "**Group footer**",
+              "A region printed once after each group of records (e.g. after each PO)."
+            ],
+            [
+              "**Static**",
+              "A fixed label or block of text on a form, not bound to data. Its text is its **Caption**."
+            ],
+            [
+              "`ue_`",
+              "A table or IDO we created (e.g. `ue_ecmrs`)."
+            ],
+            [
+              "`Uf_ENF_`",
+              "A UET field we created (e.g. `Uf_ENF_EvalDate`)."
+            ],
+            [
+              "`ENF`",
+              "Marks anything Enflite created. Without it, it's Infor's."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "build/custom-table-and-ido",
+        "build/data-types",
+        "ecmrs/glossary"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/troubleshooting",
+      "type": "reference",
+      "icon": "procedure",
+      "title": "Troubleshooting form changes",
+      "eyebrow": "Troubleshooting",
+      "subtitle": "Errors we have hit changing forms, and the fixes",
+      "summary": "Errors seen while building and changing SyteLine forms: what they mean and how to fix them.",
+      "parent": "build",
+      "group": "Troubleshooting",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Each entry gives the message as SyteLine shows it, the cause, the fix, and whether the fix is confirmed. More, specific to eCMRs: [eCMRs troubleshooting](https://github.com/Enflite/eCMRs/blob/main/docs/troubleshooting.md)."
+        },
+        {
+          "t": "h2",
+          "text": "“String or binary data would be truncated in table ... column 'Name'” when saving a form"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Seen",
+              "Saving the Purchase Order detail report in **Design Mode**, after pasting the terms and conditions into a static (TRN, 2026)"
+            ],
+            [
+              "Cause",
+              "The long text was pasted into the **Name** of the form itself (the main form was selected) instead of the static's **Caption**. A name is short, so the save fails."
+            ],
+            [
+              "Fix",
+              "Select the form, put its original name back. Select the static and paste the text into its **Caption**. Save."
+            ],
+            [
+              "Check",
+              "Before pasting, look at what is selected: the properties panel shows the form's properties when nothing else is."
+            ],
+            [
+              "Status",
+              "Not yet confirmed: in the recording the error came back after the name was restored, and a later save seemed to change the **Simple Report Viewer** as well. If it happens, close the form without saving and import the backup."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“String or binary data would be truncated in table ...” when saving a record"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "An IDO property is longer than its table column, so a value fits the form but not the table."
+            ],
+            [
+              "Fix",
+              "Give the property the same **Length** as its column, then **Check In** the IDO. See [Create a custom table and IDO](/syteline/build/custom-table-and-ido)."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-29)."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“Data length for <field> (n) is greater than effective length (m)”"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "The value is longer than the IDO property allows. Also seen when a drop-down writes the wrong column: it stores the **first** column in its `DISPLAY()` list."
+            ],
+            [
+              "Fix",
+              "Match the property length to the column; put the value you want stored first in `DISPLAY()`."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-29)."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“SCRIPTTEXT keyword required for InlineScript event handlers”"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "An inline script in the form XML with an apostrophe (SyteLine reads it as a quote) or longer than the limit (1500 characters)."
+            ],
+            [
+              "Fix",
+              "No apostrophes in inline scripts, not even in comments; keep them short. Fix it in the build script and re-import the XML."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-30)."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "build/back-up-a-form",
+        "build/report-layouts",
+        "build/custom-table-and-ido"
+      ],
+      "aliases": []
+    }
+  ]
+}
