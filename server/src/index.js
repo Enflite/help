@@ -4,6 +4,12 @@ import { connect } from "./db.js";
 
 await connect();
 const app = createApp({ contentDir: config.contentDir, clientDist: config.clientDist });
-app.listen(config.port, () => {
-  console.log(`Enflite help on http://localhost:${config.port} (MongoDB ${config.mongoUri.replace(/\/\/[^@]*@/, "//***@")})`);
-});
+
+// On Vercel the "server" service runs this app as a function (vercel.json): export it, no listen.
+if (!process.env.VERCEL) {
+  app.listen(config.port, () => {
+    console.log(`Enflite help on http://localhost:${config.port} (MongoDB ${config.mongoUri.replace(/\/\/[^@]*@/, "//***@")})`);
+  });
+}
+
+export default app;
