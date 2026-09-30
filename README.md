@@ -90,11 +90,15 @@ Edit the JSON in `content/` (format: [`content/README.md`](content/README.md)), 
 
 | Service | Folder | Public paths |
 |---|---|---|
-| `client` | `client/` (Vite) | everything else, including `/files/...`. The build copies `content/files/` in, and writes the app's `index.html` at every page's path and as `404.html`, so links straight to a page open |
-| `server` | `server/` (Express, `src/index.js`) | `/api/...`, `/go/...` |
+| `client` | `client/` (Vite) | `/assets/`, `/icons/`, `/files/` (the build copies `content/files/` in), `/enflite-logo.png` |
+| `server` | `server/` (Express, `src/index.js`) | `/api/...`, `/go/...`, and every page address (`/`, `/syteline/...`, `/search`) |
 
-The browser calls `/api` on the same address, so the services don't call each other and there are
-no bindings. Set `MONGODB_URI` in the Vercel project, and allow Vercel in Atlas **Network Access**.
+Page addresses go to the server because Vercel serves the client as plain files, so opening or
+refreshing `/syteline/ecmrs/fields/item` there gave Vercel's 404. The server answers them with the
+client's `index.html`, fetched from the client service through a **binding** (`CLIENT_URL`, the
+client's internal address, set by Vercel); the app then shows the page.
+
+Set `MONGODB_URI` in the Vercel project, and allow Vercel in Atlas **Network Access**.
 Vercel doesn't seed: run `npm run seed` against the same database after content changes.
 `vercel dev` runs both services locally.
 
