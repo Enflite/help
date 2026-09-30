@@ -1,1 +1,306 @@
-{"space":"developers","topics":[{"aliases":[],"blocks":[{"t":"p","text":"How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand."},{"t":"notice","text":"Draft: this section is new and the team has not confirmed these pages yet."},{"t":"children"}],"eyebrow":"Enflite · Developer","groups":["Standards","Platform"],"order":1,"path":"index","related":[],"subtitle":"How Enflite builds and changes SyteLine forms","summary":"Standards and platform notes for anyone changing Enflite's SyteLine forms.","title":"Developer","type":"index"},{"aliases":[],"blocks":[{"t":"notice","text":"Draft: the team has not confirmed this page yet."},{"t":"p","text":"Every change to an Enflite **SyteLine** form follows these rules. They keep customizations upgrade-safe and reviewable."},{"items":["**TRN first.** Build and test the change in **TRN**. If **TRN** and **PRD** have drifted, stop the build and reconcile the drift first.","**UET-only custom fields.** New fields go on user-extended tables, named `Uf_ENF_*`. Never change Infor's own fields to carry Enflite data.","**Preserve the file bytes.** Form project XML keeps its byte-order mark and **CRLF** line endings, byte for byte.","**Mark what changed.** New and changed components are highlighted purple in the form project so reviewers can see the change at a glance.","**Human review, always.** Form-project pull requests are never auto-merged."],"t":"list"},{"t":"h2","text":"What the repo is the source of truth for"},{"t":"p","text":"The form repository (for example **Enflite/eCMRs**) says what is live. Keep this help in step with it: when a form changes, its help pages change in the same pass."}],"group":"Standards","order":1,"parent":"index","path":"standards","related":["layers","formsync"],"summary":"The rules every SyteLine form change follows: TRN first, UET-only fields, byte preservation.","title":"Form project standards","type":"guide"},{"aliases":[],"blocks":[{"t":"notice","text":"Draft: the team has not confirmed this page yet."},{"t":"p","text":"A **SyteLine** form can exist in four layers. Higher layers win over lower ones."},{"head":["Layer","Whose change it is"],"rows":[["**Vendor**","The form as **Infor** shipped it."],["**Site Default**","Enflite's customization. This is where Enflite's form changes live."],["**Group**","A change for one user group."],["**User**","One person's own personalization."]],"t":"table"},{"t":"p","text":"Never edit the **Vendor** version. Put Enflite-wide changes in **Site Default** so they apply to everyone and survive upgrades through **FormSync**."}],"group":"Standards","order":2,"parent":"index","path":"layers","related":["standards","formsync"],"summary":"Vendor, Site Default, Group, and User: where Enflite's form changes live.","title":"Personalization layers","type":"guide"},{"aliases":[],"blocks":[{"t":"notice","text":"Draft: the team has not confirmed this page yet."},{"t":"p","text":"**FormSync** runs when **Infor** ships a new version of a form Enflite customized. It merges Enflite's **Site Default** changes with the new **Vendor** version instead of overwriting them."},{"t":"h2","text":"Why it matters"},{"items":["Upgrades do not silently drop Enflite's form changes.","Where the new vendor form conflicts with a customization, **FormSync** flags the conflict for review instead of guessing."],"t":"list"},{"t":"p","text":"This is platform behavior, not something form users trigger. Developers planning a customization should expect a sync pass after each **Infor** upgrade and review any flagged conflicts before signing off."}],"group":"Platform","order":1,"parent":"index","path":"formsync","related":["standards","layers"],"summary":"How Enflite's form customizations survive Infor upgrades.","title":"FormSync","type":"guide"}]}
+{
+  "space": "developers",
+  "topics": [
+    {
+      "aliases": [],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand. The project SOP and shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates)."
+        },
+        {
+          "t": "notice",
+          "text": "Draft: this section is new and the team has not confirmed these pages yet."
+        },
+        {
+          "t": "children"
+        }
+      ],
+      "eyebrow": "Enflite \u00b7 Developer",
+      "groups": [
+        "Standards",
+        "Platform"
+      ],
+      "order": 1,
+      "path": "index",
+      "related": [],
+      "subtitle": "How Enflite builds and changes SyteLine forms",
+      "summary": "Standards and platform notes for anyone changing Enflite's SyteLine forms.",
+      "title": "Developer",
+      "type": "index"
+    },
+    {
+      "aliases": [],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Every change to an Enflite **SyteLine** form follows these rules. They keep customizations upgrade-safe and reviewable. The full SOP lives in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates)."
+        },
+        {
+          "t": "list",
+          "items": [
+            "**TRN first, then production.** Everything is built and proven on **TRN**. Production repeats the same steps, in the same order, from the same files.",
+            "**Never change Infor-owned objects.** No edits to standard IDOs, tables, or Vendor forms. New fields go on user-extended tables (`Uf_ENF_*`); bigger features get a new table and a new IDO.",
+            "**Forms go in through FormSync at Site scope** \u2014 never over the Vendor definition, never by hand in Design Mode as the delivery method.",
+            "**Back up before every import.** Export the unchanged form from each environment into `original/` before the first import there.",
+            "**Never hand-edit a generated file.** Change the build script, re-run it, commit both.",
+            "**Preserve the file bytes.** Form XML stays UTF-8 with BOM and **CRLF** line endings, byte for byte.",
+            "**Mark what changed.** New and changed components are highlighted purple so testers can find them.",
+            "**Human review, always.** Form-project pull requests are never auto-merged."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "What the repo is the source of truth for"
+        },
+        {
+          "t": "p",
+          "text": "The form repository (for example **Enflite/eCMRs**) says what is live. Keep this help in step with it: when a form changes, its help pages change in the same pass."
+        }
+      ],
+      "group": "Standards",
+      "order": 1,
+      "parent": "index",
+      "path": "standards",
+      "related": [
+        "layers",
+        "formsync",
+        "naming",
+        "lifecycle"
+      ],
+      "summary": "The rules every SyteLine form change follows: TRN first, UET-only fields, byte preservation.",
+      "title": "Form project standards",
+      "type": "guide"
+    },
+    {
+      "aliases": [],
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "A **SyteLine** form can exist in four layers. Higher layers win over lower ones."
+        },
+        {
+          "head": [
+            "Layer",
+            "Whose change it is"
+          ],
+          "rows": [
+            [
+              "**Vendor**",
+              "The form as **Infor** shipped it."
+            ],
+            [
+              "**Site Default**",
+              "Enflite's customization. This is where Enflite's form changes live."
+            ],
+            [
+              "**Group**",
+              "A change for one user group."
+            ],
+            [
+              "**User**",
+              "One person's own personalization."
+            ]
+          ],
+          "t": "table"
+        },
+        {
+          "t": "p",
+          "text": "Never edit the **Vendor** version. Put Enflite-wide changes in **Site Default** so they apply to everyone and survive upgrades through **FormSync**."
+        }
+      ],
+      "group": "Standards",
+      "order": 2,
+      "parent": "index",
+      "path": "layers",
+      "related": [
+        "standards",
+        "formsync"
+      ],
+      "summary": "Vendor, Site Default, Group, and User: where Enflite's form changes live.",
+      "title": "Personalization layers",
+      "type": "guide"
+    },
+    {
+      "aliases": [],
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "**FormSync** runs when **Infor** ships a new version of a form Enflite customized. It merges Enflite's **Site Default** changes with the new **Vendor** version instead of overwriting them."
+        },
+        {
+          "t": "h2",
+          "text": "Why it matters"
+        },
+        {
+          "items": [
+            "Upgrades do not silently drop Enflite's form changes.",
+            "Where the new vendor form conflicts with a customization, **FormSync** flags the conflict for review instead of guessing."
+          ],
+          "t": "list"
+        },
+        {
+          "t": "p",
+          "text": "This is platform behavior, not something form users trigger. Developers planning a customization should expect a sync pass after each **Infor** upgrade and review any flagged conflicts before signing off."
+        }
+      ],
+      "group": "Platform",
+      "order": 1,
+      "parent": "index",
+      "path": "formsync",
+      "related": [
+        "standards",
+        "layers"
+      ],
+      "summary": "How Enflite's form customizations survive Infor upgrades.",
+      "title": "FormSync",
+      "type": "guide"
+    },
+    {
+      "path": "naming",
+      "type": "guide",
+      "title": "Naming standard",
+      "parent": "index",
+      "group": "Standards",
+      "order": 3,
+      "summary": "How Enflite names its custom fields, classes, tables, and form components.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "`ENF` marks Enflite-created objects. Anything without it is Infor's."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Object",
+            "Pattern",
+            "Example"
+          ],
+          "rows": [
+            [
+              "UET user field",
+              "`Uf_ENF_<Name>`",
+              "`Uf_ENF_DateOfManufacture`"
+            ],
+            [
+              "UET class",
+              "`ENF_<Area>`",
+              "`ENF_SroTracking`"
+            ],
+            [
+              "User defined type",
+              "`ENF_<Name>`",
+              "`ENF_ZeroTime`"
+            ],
+            [
+              "Custom table / IDO",
+              "`ue_<name>`",
+              "`ue_ecmrs`"
+            ],
+            [
+              "Table column / IDO property",
+              "snake_case column, PascalCase property",
+              "`cmr_num` \u2192 `CmrNum`"
+            ],
+            [
+              "Form component for a UET field",
+              "`Uf<Name>Edit`, `Uf<Name>GridCol`",
+              "`UfDateOfManufactureEdit`"
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Dates use User Data Type `Date4Type` with Data Type `datetime` \u2014 re-open the field after saving to check. `nvarchar` shows dates as `20260909 00:00:00.000`."
+        }
+      ],
+      "related": [
+        "standards",
+        "lifecycle"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "lifecycle",
+      "type": "guide",
+      "title": "Project lifecycle",
+      "parent": "index",
+      "group": "Standards",
+      "order": 4,
+      "summary": "The seven phases every form project goes through, from scope to optimize.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Every form project follows the same seven phases. The runbook lives in the project's `docs/Implementation-Plan.md`; the shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates) (`procedures/`)."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Phase",
+            "What happens"
+          ],
+          "rows": [
+            [
+              "**Scope**",
+              "What changes, taken from the team's source: mockup, spreadsheet, or request."
+            ],
+            [
+              "**Design**",
+              "UET types, fields, and classes, and how the form reaches each field."
+            ],
+            [
+              "**Develop**",
+              "On **TRN**: UET setup, Impact Schema, then the form through **FormSync**."
+            ],
+            [
+              "**Staging**",
+              "Confirm the fields are on the IDO before importing; then import and refresh."
+            ],
+            [
+              "**Launch**",
+              "Repeat the TRN steps in **production** in a scheduled window; smoke test."
+            ],
+            [
+              "**Test**",
+              "Saves, reloads, new and existing records, grid columns, team sign-off."
+            ],
+            [
+              "**Optimize**",
+              "Follow-up and bug fixes after two weeks live."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Gates that matter most"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Staging check:** confirm new fields are on the IDO (Design Mode property list, a throw-away Dataview) before the first form import.",
+            "**Launch:** use the **TRN** UET Excel exports as the checklist; end with a smoke test.",
+            "**Rollback:** re-import `original/<Form>.<env>.original.xml` through **FormSync**."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "The detailed procedures \u2014 UET setup, FormSync backup and import, launch, rollback, new table + IDO \u2014 are in the [templates repo](https://github.com/Enflite/Form-Project-Templates/tree/main/procedures)."
+        }
+      ],
+      "related": [
+        "standards",
+        "naming",
+        "formsync"
+      ],
+      "aliases": []
+    }
+  ]
+}
