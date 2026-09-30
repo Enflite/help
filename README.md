@@ -65,6 +65,16 @@ no bindings. Set `MONGODB_URI` in the Vercel project, and allow Vercel in Atlas 
 Vercel doesn't seed: run `npm run seed` against the same database after content changes.
 `vercel dev` runs both services locally.
 
+**Keep it private** (rule 4 in `AGENTS.md`): a Vercel address is on the public internet and the
+app has no login. Before sharing a Vercel link, turn on **Settings → Deployment Protection**
+(Vercel Authentication, or a password) for all deployments. Use Vercel for review and testing; the
+address SyteLine's right-click Help points at stays the internal HTTPS server below, since
+SyteLine users can't get past Vercel's protection.
+
+First deploy, check: a page opened directly (e.g. `/syteline/ecmrs/fields/item`) loads rather
+than 404; `/api/health` shows `"db": true`; `/go/syteline/ecmrs/c_item` redirects to the Item page;
+a procedure PDF under `/files/` opens.
+
 ## Hosting and SyteLine
 
 SyteLine runs in the browser over `https`, and browsers won't open `file:` links from it (SyteLine
