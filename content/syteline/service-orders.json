@@ -51,7 +51,16 @@
         }
       ],
       "related": [],
-      "aliases": []
+      "aliases": [],
+      "infor": {
+        "url": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=service_user_cl_sl/mergedprojects/fsp/forms/fstopics/service_orders.html",
+        "components": {
+          "DerSlsmanNameEdit": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=sales_crm_user_cl_sl/mergedprojects/sl_custvend/fields/s/salesperson_name_salesperson_master.html",
+          "DerSlsmanNameGridCol": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=sales_crm_user_cl_sl/mergedprojects/sl_custvend/fields/s/salesperson_name_salesperson_master.html",
+          "FobEdit": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=customer_svc_user_cl_sl/mergedprojects/sl_custvend/fields/f/foc_customers.html",
+          "FobGridCol": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=customer_svc_user_cl_sl/mergedprojects/sl_custvend/fields/f/foc_customers.html"
+        }
+      }
     },
     {
       "path": "service-orders/fields/commit_date",

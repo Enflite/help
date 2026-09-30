@@ -31,6 +31,7 @@ A page's URL is `/<space>/<path>`, e.g. `/syteline/ecmrs/fields/item`.
 | `blocks` | | The page body, below |
 | `related` | | Paths listed under **Related topics** (the parent is added automatically) |
 | `aliases` | | Form component names whose right-click → Help opens this page (see below) |
+| `infor` | | On the form page of an Infor form we customize: `{ "url": <Infor form topic>, "components": { <component>: <Infor field topic> } }`. Components with no Enflite page open these instead (see below) |
 
 ## Blocks
 
@@ -57,6 +58,13 @@ Text may use `**bold**`, `` `code` `` (field and property names) and links `[lab
 `<form>` and its pages, else to the form's page. Put every component of a field on its page: the
 field (`c_item`), its label (`l_item`) and its grid column (`grid_item`). `npm run check` fails if
 two pages claim the same component.
+
+On an Infor form we customize (Service Orders, Incidents: UET fields on Infor's form), only our
+fields have pages. A component with no page is Infor's, so if the form page has `infor`, `/go`
+redirects to Infor's help instead: `infor.components[<component>]` (Infor's field topic), else
+`infor.url` (Infor's form topic). The same happens when SyteLine sends no component. Infor topic
+addresses are `https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=<path>`,
+with `<path>` from that library's `sitemap.html`.
 
 ## Where the SyteLine content came from
 

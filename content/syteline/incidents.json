@@ -33,7 +33,10 @@
         }
       ],
       "related": [],
-      "aliases": []
+      "aliases": [],
+      "infor": {
+        "url": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=service_user_cl_sl/mergedprojects/fsp/forms/fstopics/incidents.html"
+      }
     },
     {
       "path": "incidents/fields/date_of_manufacture",
