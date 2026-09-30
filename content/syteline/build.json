@@ -8,17 +8,18 @@
       "title": "Building SyteLine forms",
       "eyebrow": "Builders · How-to",
       "subtitle": "For the people who build and change Enflite forms in SyteLine",
-      "summary": "How Enflite builds SyteLine forms: when to add UET fields and when to build a new table, IDO and form, and how to pick column data types.",
+      "summary": "How Enflite builds and changes SyteLine forms: backups, UET fields or a new table and IDO, report layouts, data types, and fixes for errors we have hit.",
       "group": "Building forms",
       "order": 20,
       "groups": [
         "How-to",
-        "Reference"
+        "Reference",
+        "Troubleshooting"
       ],
       "blocks": [
         {
           "t": "p",
-          "text": "These pages are for the people who build Enflite forms, not for the people who fill them in. They collect what we have learned building **eCMRs**, **Service Orders** and **Incidents**."
+          "text": "These pages are for the people who build and change Enflite forms and reports, not for the people who fill them in. They collect what we have learned building **eCMRs**, **Service Orders** and **Incidents**, and changing the **Purchase Order** report."
         },
         {
           "t": "h2",
@@ -54,6 +55,54 @@
         }
       ],
       "related": [],
+      "aliases": []
+    },
+    {
+      "path": "build/back-up-a-form",
+      "type": "procedure",
+      "icon": "procedure",
+      "title": "Back up a form before changing it",
+      "eyebrow": "How-to · Backup",
+      "subtitle": "Export the unchanged form with FormSync first",
+      "summary": "Before any change to a form or report, export the unchanged form with FormSync and keep the file: it is the rollback.",
+      "parent": "build",
+      "group": "How-to",
+      "order": 0,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Before changing any form or report, even just looking around in **Design Mode**, export the form as it is now. If anything goes wrong, importing this file puts the form back."
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open **FormSync**.",
+            "Choose the **Source** configuration (the environment the form is in, e.g. TRN). Choose a **Target** too: FormSync needs one to open.",
+            "Find the form and click **Refresh List**. If it doesn't show in the list, look the form up by its name (e.g. **Purchase Order Detail Report Viewer**) and refresh again.",
+            "Set the **Scope Type** to the scope you will change (normally **Site**; the scope the form's current version is at).",
+            "**Export** the form to a file.",
+            "Save the file where the project keeps its backups: the project repo's `original/` folder, named `<Form>.<environment>.original.xml`. Write down when you exported it.",
+            "Close **FormSync**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "To undo your changes, import the backup file through **FormSync** at the same scope.",
+            "Back up each environment separately (TRN, then production), right before its first change.",
+            "Copying a form from **User** scope to a wider scope with FormSync didn't work when we tried. Make changes at the scope you will deliver them at.",
+            "If people use the form every day, make the change when it won't catch them out (e.g. live in a meeting with them). A change to a report's defaults applies to everyone as soon as it is saved."
+          ]
+        }
+      ],
+      "related": [
+        "build/custom-table-and-ido",
+        "build/report-layouts"
+      ],
       "aliases": []
     },
     {
@@ -185,6 +234,105 @@
         "build/data-types",
         "build/glossary",
         "ecmrs"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/report-layouts",
+      "type": "reference",
+      "icon": "form",
+      "title": "Report layouts: collections, regions and flex layouts",
+      "eyebrow": "Reference · Reports",
+      "subtitle": "How a report viewer form gets its data and lays out its page",
+      "summary": "How a report form reads its data (primary collection and custom load method) and lays out its page with regions, group footers and proportional flex layouts. Example: terms and conditions on the PO report.",
+      "parent": "build",
+      "group": "Reference",
+      "order": 0,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Report viewer forms (e.g. **Purchase Order Detail Report Viewer**) are laid out differently from entry forms. The page is built from **regions** (header, detail, footers), each holding **flex layouts** of fields and statics. Worked example: adding the terms and conditions to the Purchase Order detail report, copied from the customized simple PO report."
+        },
+        {
+          "t": "h2",
+          "text": "Where the data comes from"
+        },
+        {
+          "t": "list",
+          "items": [
+            "A report reads its records from its **primary collection** (an IDO).",
+            "To show the same data as another report, use that report's collection **and** its **custom load method**. The load method is what fills in the data, so changing only the collection isn't enough.",
+            "On the PO report, both come from the customized simple PO report built for us: the `ue_` collection and its custom load method."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Regions"
+        },
+        {
+          "t": "p",
+          "text": "Regions are the bands of the page, listed in the main flex layout's **Layout** → **Flex Attributes**. To print something once per PO, at the end of that PO:"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Add a **new region** at the bottom of the list.",
+            "Make it a **Group Footer**, with **Group Property** set to the PO (the property that changes from one PO to the next).",
+            "Tick **Page Break Before**, so it starts on a page of its own.",
+            "Give the region enough height for its content (the terms block needs about 30), and make the main flex layout that much taller as well. Too big does no harm; shrink it afterwards."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Flex layouts divide space in proportion"
+        },
+        {
+          "t": "p",
+          "text": "A flex layout with several columns shares its width by the numbers you give each column. Columns set to **1**, **3** and **1** divide the width into five parts: the middle column gets three fifths and the outer ones one fifth each. A vertical flex layout does the same for rows."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Columns",
+            "Share of the width"
+          ],
+          "rows": [
+            [
+              "1 · 1 · 1",
+              "a third each"
+            ],
+            [
+              "1 · 2 · 1",
+              "a quarter · a half · a quarter"
+            ],
+            [
+              "1 · 3 · 1",
+              "a fifth · three fifths · a fifth"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Fixed text (statics)"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Inside the region, add a flex layout (three columns, 1 · 3 · 1, with the text in the middle), and in its middle column a vertical flex layout with one row per paragraph.",
+            "Put a **Static** in each row and paste the paragraph into its **Caption**. Not into its **Name** (see [Troubleshooting](/syteline/build/troubleshooting)).",
+            "**Appearance** → **Justification**: **Left**.",
+            "**Miscellaneous** → **Specific Attributes**: **No Colon** = **True**. Otherwise SyteLine adds a colon after the text as if it were a label.",
+            "**Save**. The designer doesn't always redraw straight away; reopen the form to see the result."
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "Not yet confirmed: taken from a recording of the change on TRN, which ends before the terms block was saved and tested. The recording made the change in Design Mode at Default scope. Our rule is to deliver form changes as XML through FormSync (see [Back up a form](/syteline/build/back-up-a-form))."
+        }
+      ],
+      "related": [
+        "build/back-up-a-form",
+        "build/troubleshooting"
       ],
       "aliases": []
     },
@@ -413,6 +561,34 @@
               "Imports a form XML file into SyteLine. We import at **Site** scope, never over Infor's own (Vendor) version."
             ],
             [
+              "**Scope**",
+              "Which version of a form a user gets: **Vendor** (Infor's), **Site**, **Group** or **User**. A change at a narrower scope overrides the wider one for those users."
+            ],
+            [
+              "**Primary collection**",
+              "The IDO a form (or report) reads its records from."
+            ],
+            [
+              "**Custom load method**",
+              "A method the IDO runs to load the records, instead of a plain read. A report copied from another must use the same one to get the same data."
+            ],
+            [
+              "**Flex layout**",
+              "A layout box on a report form that holds components in rows or columns, sized in proportion to each other."
+            ],
+            [
+              "**Region**",
+              "A band of a report layout: a header, detail line, footer or group footer."
+            ],
+            [
+              "**Group footer**",
+              "A region printed once after each group of records (e.g. after each PO)."
+            ],
+            [
+              "**Static**",
+              "A fixed label or block of text on a form, not bound to data. Its text is its **Caption**."
+            ],
+            [
               "`ue_`",
               "A table or IDO we created (e.g. `ue_ecmrs`)."
             ],
@@ -431,6 +607,126 @@
         "build/custom-table-and-ido",
         "build/data-types",
         "ecmrs/glossary"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "build/troubleshooting",
+      "type": "reference",
+      "icon": "procedure",
+      "title": "Troubleshooting form changes",
+      "eyebrow": "Troubleshooting",
+      "subtitle": "Errors we have hit changing forms, and the fixes",
+      "summary": "Errors seen while building and changing SyteLine forms: what they mean and how to fix them.",
+      "parent": "build",
+      "group": "Troubleshooting",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Each entry gives the message as SyteLine shows it, the cause, the fix, and whether the fix is confirmed. More, specific to eCMRs: [eCMRs troubleshooting](https://github.com/Enflite/eCMRs/blob/main/docs/troubleshooting.md)."
+        },
+        {
+          "t": "h2",
+          "text": "“String or binary data would be truncated in table ... column 'Name'” when saving a form"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Seen",
+              "Saving the Purchase Order detail report in **Design Mode**, after pasting the terms and conditions into a static (TRN, 2026)"
+            ],
+            [
+              "Cause",
+              "The long text was pasted into the **Name** of the form itself (the main form was selected) instead of the static's **Caption**. A name is short, so the save fails."
+            ],
+            [
+              "Fix",
+              "Select the form, put its original name back. Select the static and paste the text into its **Caption**. Save."
+            ],
+            [
+              "Check",
+              "Before pasting, look at what is selected: the properties panel shows the form's properties when nothing else is."
+            ],
+            [
+              "Status",
+              "Not yet confirmed: in the recording the error came back after the name was restored, and a later save seemed to change the **Simple Report Viewer** as well. If it happens, close the form without saving and import the backup."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“String or binary data would be truncated in table ...” when saving a record"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "An IDO property is longer than its table column, so a value fits the form but not the table."
+            ],
+            [
+              "Fix",
+              "Give the property the same **Length** as its column, then **Check In** the IDO. See [Create a custom table and IDO](/syteline/build/custom-table-and-ido)."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-29)."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“Data length for <field> (n) is greater than effective length (m)”"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "The value is longer than the IDO property allows. Also seen when a drop-down writes the wrong column: it stores the **first** column in its `DISPLAY()` list."
+            ],
+            [
+              "Fix",
+              "Match the property length to the column; put the value you want stored first in `DISPLAY()`."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-29)."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "“SCRIPTTEXT keyword required for InlineScript event handlers”"
+        },
+        {
+          "t": "table",
+          "align": "left",
+          "rows": [
+            [
+              "Cause",
+              "An inline script in the form XML with an apostrophe (SyteLine reads it as a quote) or longer than the limit (1500 characters)."
+            ],
+            [
+              "Fix",
+              "No apostrophes in inline scripts, not even in comments; keep them short. Fix it in the build script and re-import the XML."
+            ],
+            [
+              "Status",
+              "Confirmed on eCMRs (TRN, 2026-09-30)."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "build/back-up-a-form",
+        "build/report-layouts",
+        "build/custom-table-and-ido"
       ],
       "aliases": []
     }
