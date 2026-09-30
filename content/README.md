@@ -70,3 +70,9 @@ changes built in [Enflite/ServiceOrders](https://github.com/Enflite/ServiceOrder
 [Enflite/Incidents-](https://github.com/Enflite/Incidents-): fields, values, placement and status
 from those repos' plans and form exports (component names from `ServiceOrders.xml` /
 `Incidents.xml`). For Infor's own fields the form page links to Infor's help.
+
+`syteline/build.json` (2026-09-30) is for the people who build the forms: creating a `ue_` table
+and IDO, choosing column data types, and a builder glossary. It comes from a recorded
+walkthrough of creating a new table (up to the start of the IDO wizard) and the eCMRs build
+([Enflite/eCMRs](https://github.com/Enflite/eCMRs) `docs/Implementation-Plan.md` and
+`docs/troubleshooting.md`, confirmed on TRN).
