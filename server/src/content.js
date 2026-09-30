@@ -5,7 +5,7 @@ import path from "node:path";
 
 export const BLOCK_TYPES = new Set([
   "p", "h2", "h3", "list", "steps", "table", "children", "links", "meta", "notice", "legend",
-  "pstep", "flowchart",
+  "pstep", "flowchart", "note", "faq", "code", "endpoint",
 ]);
 const TOPIC_KEYS = ["path", "type", "title"];
 
@@ -15,8 +15,8 @@ export function plain(text = "") {
 }
 
 export function blockText(b) {
-  const parts = [b.text, b.num, b.was, b.why, b.title];
-  for (const k of ["items", "head"]) if (Array.isArray(b[k])) parts.push(...b[k].map(String));
+  const parts = [b.text, b.num, b.was, b.why, b.title, b.method, b.path];
+  for (const k of ["items", "head"]) if (Array.isArray(b[k])) parts.push(...b[k].flat().map(String));
   if (Array.isArray(b.rows)) for (const r of b.rows) parts.push(...r.map(String));
   return parts.filter(Boolean).map(plain).join(" ");
 }
@@ -83,6 +83,12 @@ export function validate(spaces, topics, dir) {
     for (const r of t.related || []) if (!has(r)) errors.push(`${where}: related "${r}" not found`);
     for (const b of t.blocks || []) {
       if (!BLOCK_TYPES.has(b.t)) errors.push(`${where}: unknown block type "${b.t}"`);
+      if (b.t === "faq" && !(b.items || []).every((x) => Array.isArray(x) && x.length === 2))
+        errors.push(`${where}: faq items must be [question, answer] pairs`);
+      if (b.t === "note" && b.kind && !["note", "warning"].includes(b.kind))
+        errors.push(`${where}: note kind must be "note" or "warning"`);
+      if ((b.t === "code" && !b.text) || (b.t === "endpoint" && !(b.method && b.path)))
+        errors.push(`${where}: ${b.t} block is missing ${b.t === "code" ? "text" : "method / path"}`);
       if (b.t === "links") for (const p of b.items || []) if (!has(p)) errors.push(`${where}: link "${p}" not found`);
       for (const target of linkTargets(JSON.stringify(b))) {
         if (target.startsWith("/files/")) {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Flowchart from "./Flowchart.jsx";
 import Rich from "./Rich.jsx";
@@ -25,7 +26,7 @@ function Block({ b, topic, space }) {
       return (
         <div className="tablewrap">
           <table className={b.align === "left" ? "left" : undefined}>
-            {b.head && <thead><tr>{b.head.map((h, i) => <th key={i}>{h}</th>)}</tr></thead>}
+            {b.head && <thead><tr>{b.head.map((h, i) => <th key={i}><Rich text={h} /></th>)}</tr></thead>}
             <tbody>{b.rows.map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}><Rich text={c} /></td>)}</tr>)}</tbody>
           </table>
         </div>
@@ -56,6 +57,34 @@ function Block({ b, topic, space }) {
       return <Step b={b} />;
     case "flowchart":
       return <Flowchart name={b.name} />;
+    case "note":
+      return (
+        <div className={`callout ${b.kind || "note"}`}>
+          <span className="lbl">{b.kind === "warning" ? "Warning" : "Note"}</span>
+          <Rich text={b.text} />
+        </div>
+      );
+    case "faq":
+      return (
+        <div className="faq">
+          {b.items.map(([q, a], i) => (
+            <details key={i}>
+              <summary><Rich text={q} /></summary>
+              <p><Rich text={a} /></p>
+            </details>
+          ))}
+        </div>
+      );
+    case "code":
+      return <Code b={b} />;
+    case "endpoint":
+      return (
+        <div className="endpoint">
+          <span className={`method ${String(b.method).toLowerCase()}`}>{b.method}</span>
+          <code>{b.path}</code>
+          {b.text && <div className="etext"><Rich text={b.text} /></div>}
+        </div>
+      );
     default:
       return null;
   }
@@ -99,6 +128,26 @@ function Step({ b }) {
         )}
         {b.why && <span className="why"><span className="lbl">Why</span>{b.why}</span>}
       </div>
+    </div>
+  );
+}
+
+// A code sample (script, request, response) with a Copy button.
+function Code({ b }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard?.writeText(b.text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    }, () => {});
+  };
+  return (
+    <div className="code">
+      <div className="codehead">
+        <span>{b.title || b.lang || "Code"}</span>
+        <button type="button" onClick={copy}>{copied ? "Copied" : "Copy"}</button>
+      </div>
+      <pre><code>{b.text}</code></pre>
     </div>
   );
 }

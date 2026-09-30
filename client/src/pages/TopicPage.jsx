@@ -28,6 +28,7 @@ export default function TopicPage() {
       </div>
       <HelpLinkNote />
       <Blocks topic={topic} space={space} />
+      <Pager topic={topic} space={space} />
       {related.length > 0 && (
         <>
           <h2>Related topics</h2>
@@ -38,6 +39,17 @@ export default function TopicPage() {
       )}
       {parent && topic.group && <p className="meta">{parent.title} &middot; {topic.group}</p>}
     </article>
+  );
+}
+
+// How-to guides: the previous and next guide in their section (sent by the API as prev / next).
+function Pager({ topic, space }) {
+  if (!topic.prev && !topic.next) return null;
+  return (
+    <nav className="pager">
+      {topic.prev && <Link to={`/${space}/${topic.prev.path}`}><span className="lbl">Previous</span><span className="t">{topic.prev.title}</span></Link>}
+      {topic.next && <Link className="next" to={`/${space}/${topic.next.path}`}><span className="lbl">Next</span><span className="t">{topic.next.title}</span></Link>}
+    </nav>
   );
 }
 

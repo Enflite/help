@@ -84,6 +84,18 @@ t("right-click help also takes a query, any letter case, and answers the client 
   assert.equal((await get("/api/nope")).status, 404);
 });
 
+t("a how-to guide links to the guides before and after it", async () => {
+  const g = await (await get("/api/spaces/syteline/topics/dev/guide-help-pages")).json();
+  assert.equal(g.prev.path, "dev/guide-right-click-help");
+  assert.equal(g.next.path, "dev/guide-infor-help");
+  const first = await (await get("/api/spaces/syteline/topics/dev/guide-right-click-help")).json();
+  assert.equal(first.prev, null);
+  const ref = await (await get("/api/spaces/syteline/topics/dev/events")).json();
+  assert.equal(ref.prev, undefined);
+  const hits = await (await get("/api/search?q=StdFormHelp")).json();
+  assert.ok(hits.some((h) => h.path === "dev/event-help"));
+});
+
 t("search finds by word and by part of a title", async () => {
   const hits = await (await get("/api/search?q=notify&space=syteline")).json();
   assert.equal(hits[0].path, "ecmrs/fields/notify");

@@ -47,11 +47,18 @@ export function createApp({ contentDir, clientDist, clientUrl, aiConfig } = {}) 
     if (!topic) return res.status(404).json({ error: "Topic not found" });
     const linked = new Set([...topic.related, ...(topic.parent ? [topic.parent] : [])]);
     for (const b of topic.blocks) if (b.t === "links") (b.items || []).forEach((p) => linked.add(p));
-    const [children, refs] = await Promise.all([
+    // A how-to guide (type "guide") links to the guides before and after it under the same parent.
+    const guides = topic.type === "guide" && topic.parent
+      ? Topic.find({ space, parent: topic.parent, type: "guide" }, "-_id path title").sort({ order: 1, title: 1 }).lean()
+      : [];
+    const [children, refs, siblings] = await Promise.all([
       Topic.find({ space, parent: topicPath }, `-_id ${LIST_FIELDS}`).sort({ order: 1, title: 1 }).lean(),
       Topic.find({ space, path: { $in: [...linked] } }, `-_id ${LIST_FIELDS}`).lean(),
+      guides,
     ]);
-    res.json({ ...topic, children, refs: Object.fromEntries(refs.map((r) => [r.path, r])) });
+    const at = siblings.findIndex((g) => g.path === topicPath);
+    const pager = at < 0 ? {} : { prev: siblings[at - 1] || null, next: siblings[at + 1] || null };
+    res.json({ ...topic, ...pager, children, refs: Object.fromEntries(refs.map((r) => [r.path, r])) });
   }));
 
   api.get("/search", wrap(async (req, res) => {

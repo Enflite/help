@@ -59,7 +59,7 @@
     },
     {
       "path": "build/back-up-a-form",
-      "type": "procedure",
+      "type": "guide",
       "icon": "procedure",
       "title": "Back up a form before changing it",
       "eyebrow": "How-to · Backup",
@@ -72,6 +72,11 @@
         {
           "t": "p",
           "text": "Before changing any form or report, even just looking around in **Design Mode**, export the form as it is now. If anything goes wrong, importing this file puts the form back."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: the backup of **Purchase Order Detail Report Viewer** before the terms and conditions change (recorded on TRN, 2026)."
         },
         {
           "t": "steps",
@@ -87,15 +92,40 @@
         },
         {
           "t": "h2",
-          "text": "Good to know"
+          "text": "Check it worked"
         },
         {
-          "t": "list",
+          "t": "p",
+          "text": "The file is saved where you expect and is not empty. Commit it to the project repo before you change anything."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "If people use the form every day, make the change when it won't catch them out (e.g. live in a meeting with them). A change to a report's defaults applies to everyone as soon as it is saved."
+        },
+        {
+          "t": "h2",
+          "text": "Frequently asked questions"
+        },
+        {
+          "t": "faq",
           "items": [
-            "To undo your changes, import the backup file through **FormSync** at the same scope.",
-            "Back up each environment separately (TRN, then production), right before its first change.",
-            "Copying a form from **User** scope to a wider scope with FormSync didn't work when we tried. Make changes at the scope you will deliver them at.",
-            "If people use the form every day, make the change when it won't catch them out (e.g. live in a meeting with them). A change to a report's defaults applies to everyone as soon as it is saved."
+            [
+              "How do I undo my changes?",
+              "Import the backup file through **FormSync** at the same scope."
+            ],
+            [
+              "Do I back up each environment?",
+              "Yes: TRN and production separately, each right before its first change there."
+            ],
+            [
+              "Can I build at User scope and copy it to Site with FormSync?",
+              "It didn't work when we tried. Make changes at the scope you will deliver them at."
+            ],
+            [
+              "The form isn't in FormSync's list",
+              "Look it up by its form name and click **Refresh List** again."
+            ]
           ]
         }
       ],
@@ -107,7 +137,7 @@
     },
     {
       "path": "build/custom-table-and-ido",
-      "type": "procedure",
+      "type": "guide",
       "icon": "procedure",
       "title": "Create a custom table and IDO",
       "eyebrow": "How-to · New table + IDO",
@@ -120,6 +150,11 @@
         {
           "t": "p",
           "text": "Use this when no existing form fits (see [Building SyteLine forms](/syteline/build)). The order matters: **table**, then **IDO**, then **form**. The form binds every field to an IDO property by name, and FormSync can only import forms: it can't create a table or an IDO."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: `ue_ecmrs`, the eCMRs table and IDO. Every property is listed in [IDO: ue_ecmrs](/syteline/dev/ido-ue-ecmrs)."
         },
         {
           "t": "meta",
@@ -212,28 +247,49 @@
           ]
         },
         {
+          "t": "note",
+          "kind": "warning",
+          "text": "The recorded walkthrough named its columns `Uf_ComputerName`, `Uf_SerialNumber`... `Uf_` is our prefix for UET fields; on a table we own, columns are `snake_case` like eCMRs'. Not confirmed: the recording ends at the start of the IDO wizard, so the IDO steps come from the eCMRs build."
+        },
+        {
           "t": "h2",
-          "text": "Good to know"
+          "text": "Frequently asked questions"
         },
         {
-          "t": "list",
+          "t": "faq",
           "items": [
-            "Instead of typing every row, columns and properties can be imported from CSV files on the **SQL Columns** and **IDO Properties** grids (eCMRs did this for production). The file must match a fresh export of the same grid exactly (header, column count, quoting). A mismatch fails silently rather than with an error.",
-            "In an SQL Columns import, **Data Type** must be a real type (`nvarchar`, `char`, `datetime`, `decimal`, or a named type like `UsernameType`). The word `String` is refused: *“String is not a valid Data Type.”*",
-            "If an IDO property is longer than its column, saving fails with *“String or binary data would be truncated in table ...”*. If it's shorter than the value, the message is *“Data length for <field> (n) is greater than effective length (m)”*.",
-            "Don't generate the key with `AUTONUMBER` in the IDO's **Default Value**: on eCMRs it repeated numbers and saves failed with `PK_ue_ecmrs`. eCMRs sets the key from a form script on **New** instead (`CMR-YYMMDD-HHMMSS`).",
-            "A table you create in **SQL Tables** is a real database table. No separate database step is needed."
+            [
+              "Do I have to type every column and property by hand?",
+              "Instead of typing every row, columns and properties can be imported from CSV files on the **SQL Columns** and **IDO Properties** grids (eCMRs did this for production). The file must match a fresh export of the same grid exactly (header, column count, quoting). A mismatch fails silently rather than with an error."
+            ],
+            [
+              "Why is String refused as a Data Type?",
+              "In an SQL Columns import, **Data Type** must be a real type (`nvarchar`, `char`, `datetime`, `decimal`, or a named type like `UsernameType`). The word `String` is refused: *“String is not a valid Data Type.”*"
+            ],
+            [
+              "Saving fails with String or binary data would be truncated",
+              "If an IDO property is longer than its column, saving fails with *“String or binary data would be truncated in table ...”*. If it's shorter than the value, the message is *“Data length for <field> (n) is greater than effective length (m)”*."
+            ],
+            [
+              "Can the IDO number the records itself?",
+              "Don't generate the key with `AUTONUMBER` in the IDO's **Default Value**: on eCMRs it repeated numbers and saves failed with `PK_ue_ecmrs`. eCMRs sets the key from a form script on **New** instead (`CMR-YYMMDD-HHMMSS`)."
+            ],
+            [
+              "Do I need a database step to create the table?",
+              "A table you create in **SQL Tables** is a real database table. No separate database step is needed."
+            ],
+            [
+              "Why not Uf_ names for the columns?",
+              "`Uf_` marks UET fields added to Infor's tables. On our own table the columns are `snake_case` and the properties `PascalCase`, as on eCMRs, so the two kinds can't be confused."
+            ]
           ]
-        },
-        {
-          "t": "notice",
-          "text": "Not yet confirmed: the recorded walkthrough named its columns `Uf_ComputerName`, `Uf_SerialNumber`... . `Uf_` is our prefix for UET fields; on a table we own, columns are `snake_case` like eCMRs'. The recording also ends at the start of the IDO wizard, so the IDO steps above come from the eCMRs build."
         }
       ],
       "related": [
         "build/data-types",
         "build/glossary",
-        "ecmrs"
+        "ecmrs",
+        "dev/ido-ue-ecmrs"
       ],
       "aliases": []
     },

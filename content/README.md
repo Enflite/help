@@ -19,7 +19,7 @@ A page's URL is `/<space>/<path>`, e.g. `/syteline/ecmrs/fields/item`.
 | Key | Required | What |
 |---|---|---|
 | `path` | yes | Unique in the space: `ecmrs`, `ecmrs/fields/item`, `procedures/qa-300-037` |
-| `type` | yes | `form`, `field`, `procedure`, `index` (free text; used for display only) |
+| `type` | yes | `form`, `field`, `procedure`, `index`, `reference`, `guide`. Free text, except `guide`: a how-to guide shows **Previous** / **Next** links to the other guides under the same parent, in `order` |
 | `title` | yes | Page title (for a field: the label as on the form) |
 | `icon` | | `form`, `field` or `procedure` (`client/public/icons/`) |
 | `eyebrow`, `subtitle` | | Small red line above the title; line under it |
@@ -50,6 +50,10 @@ Text may use `**bold**`, `` `code` `` (field and property names) and links `[lab
 | `legend` | `text` | Explains the red rule on changed steps |
 | `pstep` | `num`, `text`, `kind` (`""`, `changed`, `removed`, `added`), `was`, `why` | A numbered procedure step or definition; changed ones show the released wording and why |
 | `flowchart` | `name` | A drawn flowchart (`client/src/components/Flowchart.jsx`) |
+| `note` | `text`, `kind` (`note` or `warning`) | A labelled callout on a rule (red for a warning) |
+| `faq` | `items` (`[question, answer]` pairs) | Questions that open to show their answer |
+| `code` | `text`, `title` (optional) | A code sample (script, XML, request, log line) with a **Copy** button |
+| `endpoint` | `method`, `path`, `text` (optional) | A reference heading: a badge (`GET`, `IDO`, `EVENT`, `UET`...) and a name or path |
 
 ## Right-click → Help from a form
 
@@ -71,9 +75,31 @@ changes built in [Enflite/ServiceOrders](https://github.com/Enflite/ServiceOrder
 from those repos' plans and form exports (component names from `ServiceOrders.xml` /
 `Incidents.xml`). For Infor's own fields the form page links to Infor's help.
 
+`syteline/dev.json` (2026-09-30) is the developer section: how-to guides, form events, scripting and
+component rules, the `ue_ecmrs` IDO and UET fields, and the `/go` API. From the eCMRs, Service Orders
+and Incidents repos (form XML, IDO exports, plans and troubleshooting). The `ue_ecmrs` property table
+was generated from `Enflite/eCMRs` `exports/production/` and the form's bindings.
+
 `syteline/build.json` (2026-09-30) is for the people who build the forms: backing up a form, creating
 a `ue_` table and IDO, report layouts, choosing column data types, troubleshooting and a builder
 glossary. It comes from two recorded walkthroughs (creating a new table, up to the start of the
 IDO wizard; adding terms and conditions to the Purchase Order detail report) and the eCMRs build
 ([Enflite/eCMRs](https://github.com/Enflite/eCMRs) `docs/Implementation-Plan.md` and
 `docs/troubleshooting.md`, confirmed on TRN).
+
+## How-to guides
+
+A how-to guide (`type: "guide"`) takes the reader through one task. Use this layout:
+
+1. One paragraph: what the guide lets you do.
+2. A `note` naming the worked example and whether it is confirmed (where, when).
+3. **Before you start**: numbered prerequisites.
+4. The steps: `h2` per stage, `steps` in each. A `note` of kind `warning` where it is easy to go wrong.
+5. **Check it worked**: what success looks like, and what each failure means.
+6. **Frequently asked questions**: a `faq` block.
+
+## Reference pages
+
+A reference page (`type: "reference"`) describes one thing (an event, an IDO, an API). Start each
+item with an `endpoint` block, then its details as tables (parameters, handlers, properties), code
+samples as `code` blocks, and what we learned as a list. Say what is confirmed and what isn't.

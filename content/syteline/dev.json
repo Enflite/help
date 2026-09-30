@@ -1,0 +1,2477 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "dev",
+      "type": "index",
+      "icon": "form",
+      "title": "Developer reference",
+      "eyebrow": "Developers",
+      "subtitle": "How our SyteLine forms work under the hood, and how to build on them",
+      "summary": "For developers: how-to guides, the form events we use and what we learned about them, our IDO and UET fields, form components, scripting rules and the help link API.",
+      "group": "Developer",
+      "order": 30,
+      "groups": [
+        "How-to guides",
+        "Events",
+        "Scripting and components",
+        "Data",
+        "Help site"
+      ],
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Everything we have learned building **eCMRs**, **Service Orders** and **Incidents**, written down so the next form doesn't have to find it out again. Start with the how-to guides; the reference pages explain each piece."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "Every change to a form goes in the form XML, built by the project's script and imported through **FormSync**. Design Mode is only for looking. See [Conventions](/syteline/dev/conventions)."
+        },
+        {
+          "t": "h2",
+          "text": "Status words"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Word",
+            "Means"
+          ],
+          "rows": [
+            [
+              "**Confirmed**",
+              "Seen working on TRN (or production), with the date"
+            ],
+            [
+              "**Not confirmed**",
+              "Built or copied from Infor, but not yet seen working: the page says how to check it"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "children"
+        }
+      ],
+      "related": [],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-right-click-help",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 1,
+      "title": "Add right-click Help to a form",
+      "eyebrow": "How-to guide · Events",
+      "subtitle": "Open the Enflite help page for the field the user is in",
+      "summary": "Handle StdFormHelp and StdFormComponentHelp in the form XML so Help opens the Enflite help page for the focused field. Confirmed on eCMRs.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Right-click a field → **Help** (and **F1**) normally opens Infor's help. This guide makes it open the Enflite help page for the field the user is in: the form works out the field, builds a `/go` link and opens it. The help site then picks the page."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: eCMRs (`tools/apply_form_changes.py`, `focus_help`). Confirmed on TRN 2026-09-30 (right-click → Help). Service Orders and Incidents use the same script."
+        },
+        {
+          "t": "h2",
+          "text": "Before you start"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "The form has a build script in `tools/` that writes the form XML. You add the handlers there, not in Design Mode.",
+            "The help site has pages for the form's fields, with the component names in their `aliases`. See [Add help pages for a form](/syteline/dev/guide-help-pages).",
+            "Pick a form variable name for the link: `EcmrsHelpUrl` on eCMRs, `ENF_HelpUrl` on Service Orders and Incidents."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1. Add the variable"
+        },
+        {
+          "t": "p",
+          "text": "Add a form variable (e.g. `ENF_HelpUrl`) in the XML. The script writes the link into it; the next step reads it."
+        },
+        {
+          "t": "h2",
+          "text": "2. Handle both Help events"
+        },
+        {
+          "t": "p",
+          "text": "SyteLine raises **`StdFormHelp`** for right-click → **Help** (confirmed on TRN) and **`StdFormComponentHelp`** for **F1**. Give each two handlers:"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Sequence",
+            "Response type",
+            "Response"
+          ],
+          "rows": [
+            [
+              "0",
+              "33 (inline script)",
+              "The script below: find the focused field, write the link into the variable"
+            ],
+            [
+              "1",
+              "39 (go to URL)",
+              "`URL(V(ENF_HelpUrl)) ( )`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "code",
+          "title": "Step 0: the script (ResponseType 33)",
+          "text": "SCRIPTTEXT(Option Explicit On\nOption Strict Off\nImports System\nImports Mongoose.Scripting\nNamespace SyteLine.GlobalScripts\nPublic Class EvHandler_<Event>_0\nInherits GlobalScript\nSub Main()\nDim c As String = \"\", v As String = \"focusempty\", e As String = \"\"\nTry\nc = ThisForm.GetCurrentComponentName()\nIf c <> \"\" Then v = \"focus\"\nCatch x As Exception\nv = \"focuserr\"\ne = x.Message\nEnd Try\nThisForm.Variables(\"<HelpVar>\").Value = \"<HELP_SITE>/go/syteline/<form>\" & If(c = \"\", \"\", \"/\" & c) & \"?via=\" & v & \"&ev=<ev>&e=\" & Uri.EscapeDataString(If(e.Length > 200, e.Substring(0, 200), e))\nReturnValue = \"0\"\nEnd Sub\nEnd Class\nEnd Namespace\n)",
+          "lang": "vb"
+        },
+        {
+          "t": "p",
+          "text": "Replace `<HELP_SITE>` with `https://help-seven-xi.vercel.app`, `<form>` with the help site's form path (`ecmrs`, `service-orders`, `incidents`), `<HelpVar>` with your variable and `<ev>` with `form` (StdFormHelp) or `field` (StdFormComponentHelp)."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "No apostrophes anywhere in the script, not even in a comment: SyteLine reads `'` as a quote and reports *SCRIPTTEXT keyword required*. Scripts over 500 characters are split into `<Response>` and `<Response2>`; the whole script must stay under 1,500. The eCMRs build script checks both."
+        },
+        {
+          "t": "h2",
+          "text": "3. Build, import and test"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Run the build script and its `--check`. The XML must keep its BOM and CRLF line endings.",
+            "Import the XML through **FormSync** at **Site** scope on TRN.",
+            "Open the form, **click into a field**, then right-click it → **Help**. The field's help page opens in a new tab."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Check it worked"
+        },
+        {
+          "t": "p",
+          "text": "The help site logs one line per click (Vercel → Logs):"
+        },
+        {
+          "t": "code",
+          "title": "Help site log",
+          "text": "help link syteline/ecmrs component=c_item via=focus ev=form -> /syteline/ecmrs/fields/item"
+        },
+        {
+          "t": "table",
+          "head": [
+            "`via=`",
+            "Means"
+          ],
+          "rows": [
+            [
+              "`focus`",
+              "The script found the focused field. Working."
+            ],
+            [
+              "`focusempty`",
+              "No field had focus: the user right-clicked without clicking into a field first. The form's page opens."
+            ],
+            [
+              "`focuserr`",
+              "`GetCurrentComponentName()` failed; the error is in `e=`."
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Frequently asked questions"
+        },
+        {
+          "t": "faq",
+          "items": [
+            [
+              "Why does the user have to click into the field first?",
+              "Help events don't say which component was right-clicked; the script can only ask which one has focus (`GetCurrentComponentName()`). Right-clicking doesn't move the focus."
+            ],
+            [
+              "Why not set `HelpFileName` on each field?",
+              "SyteLine always puts Infor's help address in front of it, so it can only open pages on Infor's help site (confirmed on TRN 2026-09-29)."
+            ],
+            [
+              "Can the script read the event's parameters to find the field?",
+              "We tried (`CountParameter` / `GetParameter`, and the `ParameterCount` spelling): they didn't compile in the web client (*Error compiling script EvHandler_StdFormHelp_0*). Help events only carry parameters their handler defines, so they would not name the field anyway."
+            ],
+            [
+              "Can `StdFormComponentHelp` raise another event to share one script?",
+              "Don't: when it did (eCMRs#17) the right-click menu stopped opening. Each Help event runs its own copy of the script."
+            ],
+            [
+              "A **Your pop-up Blocker may be enabled** dialog appears",
+              "The page opens after the script, not straight from the click, so the browser treats it as a pop-up. Allow pop-ups for the SyteLine address (per user, or by IT policy `PopupsAllowedForUrls`)."
+            ],
+            [
+              "What happens on Infor fields of a form we customize?",
+              "The help site sends them to Infor's own help. See [Send Infor fields to Infor's help](/syteline/dev/guide-infor-help)."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "dev/event-help",
+        "dev/scripting",
+        "dev/help-links"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-help-pages",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 2,
+      "title": "Add help pages for a form",
+      "eyebrow": "How-to guide · Help site",
+      "subtitle": "One page per field, linked to its components",
+      "summary": "Add a form's field pages to content/, list each field's component names in aliases so right-click Help finds them, check and seed.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Right-click Help finds a field's page by the component name SyteLine sends. Each field page lists its components in `aliases`."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: `content/syteline/ecmrs.json` (a form page plus 55 field pages)."
+        },
+        {
+          "t": "h2",
+          "text": "Before you start"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Get the component names from the form XML: the field (`c_item`, `UfEvalDateEdit`), its label and its grid column.",
+            "Have the team's source for what each field means."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1. Add the pages"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In `content/syteline/<form>.json`, add the form page (path `<form>`, type `form`) with a `groups` list for its sections.",
+            "Add one page per field: path `<form>/fields/<name>`, type `field`, `parent` the form, `group` its section.",
+            "Put every component of the field in `aliases`: `[\"c_item\", \"l_item\", \"grid_item\"]`.",
+            "Write the body: what it means, how to fill it in, values, good to know (see any eCMRs field page)."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "2. Check and publish"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Run `npm run check`. It fails if two pages claim the same component or a link points nowhere.",
+            "Commit, open a pull request, merge.",
+            "After the deploy, run `npm run seed` so the database has the new pages."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Check it worked"
+        },
+        {
+          "t": "p",
+          "text": "Open `https://help-seven-xi.vercel.app/go/syteline/<form>/<component>`: it should land on the field's page. That is exactly the link the form sends."
+        },
+        {
+          "t": "h2",
+          "text": "Frequently asked questions"
+        },
+        {
+          "t": "faq",
+          "items": [
+            [
+              "Does letter case matter?",
+              "No: `/go` matches component names in any case."
+            ],
+            [
+              "What if a component has no page?",
+              "On our own forms, the form's page opens with a note naming the component. On an Infor form we customize, Infor's help opens."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "dev/guide-right-click-help",
+        "dev/help-links"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-infor-help",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 3,
+      "title": "Send Infor fields to Infor's help",
+      "eyebrow": "How-to guide · Help site",
+      "subtitle": "On forms we customize: our fields to our pages, Infor's to Infor's",
+      "summary": "Give the form page an infor block so Help on an Infor field opens Infor's field or form topic, while our UET fields open Enflite pages.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Service Orders and Incidents are Infor's forms with our UET fields added. Help on one of our fields opens our page; on any other field it should open Infor's help, as it did before."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: the `infor` block on `service-orders` and `incidents` ([Enflite/help#13](https://github.com/Enflite/help/pull/13)). Not confirmed on TRN yet."
+        },
+        {
+          "t": "h2",
+          "text": "Steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Find Infor's topic for the form in its help library's `sitemap.html` (`https://docs.infor.com/csi/latest/en-us/csbiolh/`).",
+            "On the form page in `content/`, add `\"infor\": { \"url\": \"<form topic>\", \"components\": { \"<Infor component>\": \"<field topic>\" } }`. Only list components that have their own Infor topic.",
+            "`npm run check` (Infor addresses must be `https://`), merge, deploy, `npm run seed`."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "How /go decides"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Component",
+            "Opens"
+          ],
+          "rows": [
+            [
+              "Has an Enflite page (in `aliases`)",
+              "That page"
+            ],
+            [
+              "Listed in `infor.components`",
+              "Infor's field topic"
+            ],
+            [
+              "Anything else, or none",
+              "`infor.url`, Infor's form topic"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "p",
+          "text": "The form XML doesn't change: fixing an Infor address never needs a SyteLine import."
+        }
+      ],
+      "related": [
+        "dev/help-links",
+        "dev/guide-right-click-help"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-value-on-new",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 4,
+      "title": "Fill in a value when a record is created",
+      "eyebrow": "How-to guide · Events",
+      "subtitle": "StdObjectNewCompleted: e.g. a record number on New",
+      "summary": "Use a StdObjectNewCompleted inline script to set a property (such as the key) when the user clicks New. Confirmed on eCMRs (CMR Num).",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "To fill a property the moment the user clicks **New** (a generated number, a default), handle **`StdObjectNewCompleted`**."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: eCMRs sets **CMR Num** to `CMR-YYMMDD-HHMMSS`. Confirmed on TRN 2026-09-29."
+        },
+        {
+          "t": "h2",
+          "text": "Steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Add a `StdObjectNewCompleted` handler, sequence 0, ResponseType 33, with `COLID(object)` after the script.",
+            "In the script, only set the value if it is empty, then set it with `SetCurrentObjectPropertyPlusModifyRefresh` so the form shows it.",
+            "Build, import through FormSync, click **New**: the value appears."
+          ]
+        },
+        {
+          "t": "code",
+          "title": "StdObjectNewCompleted, sequence 0 (eCMRs)",
+          "text": "SCRIPTTEXT(Option Explicit On\nOption Strict On\n\nImports System\nImports Microsoft.VisualBasic\nImports Mongoose.IDO.Protocol\nImports Mongoose.Scripting\n\nNamespace SyteLine.GlobalScripts\nPublic Class EvHandler_StdObjectNewCompleted_0\nInherits GlobalScript\n\nSub Main()\n            If ThisForm.PrimaryIDOCollection.CurrentItem.Properties.Item(\"CmrNum\").GetValueOfString(\"\") = \"\" Then\n                ThisForm.PrimaryIDOCollection.SetCurrentObjectPropertyPlusModifyRefresh(\"CmrNum\", \"CMR-\" & DateTime.Now.ToString(\"yyMMdd-HHmmss\"))\n            End If\nEnd Sub\nEnd Class\nEnd Namespace\n) COLID(object)",
+          "lang": "vb"
+        },
+        {
+          "t": "h2",
+          "text": "Frequently asked questions"
+        },
+        {
+          "t": "faq",
+          "items": [
+            [
+              "Why not the IDO's Default Value?",
+              "It only takes keywords like `AUTONUMBER(...)`, can't add a prefix, and on eCMRs AUTONUMBER repeated numbers (save failed on `PK_ue_ecmrs`)."
+            ],
+            [
+              "Two records created in the same second?",
+              "They get the same number and the second save fails; save again."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "dev/events",
+        "dev/scripting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-description-autofill",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 5,
+      "title": "Fill a description from a drop-down",
+      "eyebrow": "How-to guide · Components",
+      "subtitle": "DefaultFrom or SetPropertyFromList, never SelectionEvent",
+      "summary": "When the user picks a code, fill its description into another field: DefaultFrom for Item and Vendor, the SetPropertyFromList validator for Dept and Work Center.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Picking an Item, Vendor, Dept or Work Center should fill its description. There are two mechanisms that work, and one that breaks the whole form."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "Never use a `SelectionEvent` (ResponseType 49 with `FILTER()/MOV()/SONON()/SETP()`) on a drop-down: after one use the whole form locks, with no error. Confirmed on eCMRs."
+        },
+        {
+          "t": "h2",
+          "text": "Option A: DefaultFrom"
+        },
+        {
+          "t": "p",
+          "text": "On the code field's component: `<DefaultFrom>Item(ItemDescription)</DefaultFrom>`, with `PropertyClassName` `Item`. Confirmed on eCMRs for `Item(ItemDescription)`, `Item(NextAssyDescription)` and `VendNum(VendorName)`."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "Don't use it with a system class that carries an address, such as `Dept`: it failed with *Bad SETPROPERTIES specification in validator Dept: this cache property OfcAddr4 not in cache*."
+        },
+        {
+          "t": "h2",
+          "text": "Option B: SetPropertyFromList"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Give the code field a list that includes the description: `SLDepts( PROPERTIES(Dept, Description) )`.",
+            "Add the validator `SetPropertyFromList(DeptDescription, Description)`: copy the list's `Description` column into `DeptDescription`.",
+            "Turn on **Validate Immediately** (bit 32 of the component's `<Flags>`, e.g. `33`), or the description only fills on save."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Confirmed on eCMRs 2026-09-29 (Dept `100` → **Operations**, Work Center `BRAZE` → **Brazing**). Validate Immediately: not confirmed yet."
+        },
+        {
+          "t": "h2",
+          "text": "For both"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The description property must have **Read Only Record** cleared on the IDO, or the form locks after the pick.",
+            "The description field's component stays a bare edit box: no list source of its own (a leftover `ComboListSource` locked the form)."
+          ]
+        }
+      ],
+      "related": [
+        "dev/components",
+        "dev/events"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-fixed-list",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 6,
+      "title": "Add a fixed drop-down list",
+      "eyebrow": "How-to guide · Data",
+      "subtitle": "An Inline List on the IDO property",
+      "summary": "Put a fixed list of values (Priority, Status) on the IDO property as an Inline List, then Check In the IDO.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "For a drop-down with a fixed list of values, the list lives on the **IDO property**, not in the form."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: eCMRs Status, Priority, Initial Change, Dispositions, Reason and Cause Code. Confirmed on TRN."
+        },
+        {
+          "t": "h2",
+          "text": "Steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In **IDO Properties**, open the property. Leave **Property Class** blank.",
+            "In **Inline List**, enter `ENTRIES(High,Medium,Low)`.",
+            "**Check In** the IDO. Until you do, saving the form fails with *Missing property data type for ue_ecmrs.<Property>*.",
+            "The form's component needs no list source of its own: it picks the list up from the property."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Frequently asked questions"
+        },
+        {
+          "t": "faq",
+          "items": [
+            [
+              "Can I use an Infor list instead (a PropertyClassName like QCReasonCode)?",
+              "Only if its filters work on your IDO: QCReasonCode's list filters on QC_MRRs fields with `FP(...)`, and on eCMRs it failed with *'FP' is not a recognized built-in function name*."
+            ],
+            [
+              "Can FormSync or a CSV import set the Inline List?",
+              "The IDO Properties import can; FormSync can't. Always check it in Application Studio after an import."
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "dev/components",
+        "dev/ido-ue-ecmrs"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/guide-uet-field",
+      "type": "guide",
+      "icon": "procedure",
+      "parent": "dev",
+      "group": "How-to guides",
+      "order": 7,
+      "title": "Add a UET field to an Infor form",
+      "eyebrow": "How-to guide · Data",
+      "subtitle": "New fields on Infor's table, without changing Infor's objects",
+      "summary": "Create the UET user field, class and relationships, run Impact Schema, check the runtime property, then bind the form to <alias>Uf_ENF_<Name>.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "To add fields to one of Infor's forms (Service Orders, Incidents), extend Infor's table with **UET**. Infor's IDO picks the fields up by itself; you never edit it."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Worked example: Service Orders (`Enflite/ServiceOrders`, `docs/Implementation-Plan.md`) and Incidents."
+        },
+        {
+          "t": "h2",
+          "text": "Before you start"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Back up the form with FormSync ([Back up a form](/syteline/build/back-up-a-form)).",
+            "Name the fields `Uf_ENF_<Name>` and the class `ENF_<Area>`."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1. UET setup, in this order"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "**User Defined Types** (for fixed values, e.g. `ENF_ZeroTime`: Yes, No).",
+            "**UET User Fields**. Dates: User Data Type `Date4Type`, Data Type `datetime` (re-open the field to check; `nvarchar` shows dates as `20260909 00:00:00.000`).",
+            "**UET Classes**.",
+            "**UET Class/Field Relationships**.",
+            "**UET Table/Class Relationships**: the `_mst` table (e.g. `fs_sro_mst`), **Active** ✔, **Extend All Records** ✔."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "2. Impact Schema"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Get users out of the form.",
+            "Tick **Commit Form Changes** and **Impact Schema**, then **Process**.",
+            "When the background task finishes with no errors, run **Unload IDO Metadata**, and sign out and back in."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "3. Check the property exists"
+        },
+        {
+          "t": "p",
+          "text": "Open the current form in Design Mode, select any edit box and open its **Data Source** list (cancel without saving). The field is listed as `<alias>Uf_ENF_<Name>`: `sroUf_ENF_EvalDate` on Service Orders."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "These runtime properties don't appear in the IDOs → Properties export, so don't use that to check. Never bind to the `Der<alias>ExtBy…` helper properties."
+        },
+        {
+          "t": "h2",
+          "text": "4. Bind the form"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In the build script, bind the new component to `object.<alias>Uf_ENF_<Name>` (pass the alias as `--prefix`).",
+            "Highlight new components in purple, add a grid column, rebuild, import through FormSync at Site scope.",
+            "Fill each field, save, reopen: no *Invalid property name*, values kept."
+          ]
+        }
+      ],
+      "related": [
+        "dev/uet-fields",
+        "dev/conventions"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/events",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Events",
+      "order": 1,
+      "title": "Form events and event handlers",
+      "eyebrow": "Reference · Events",
+      "subtitle": "How a form reacts to what the user does",
+      "summary": "How SyteLine event handlers work (name, sequence, response type), the response types we use, and every event on our forms.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "A form reacts through **event handlers**. SyteLine raises an event (the user clicks **New**, asks for **Help**, a button generates one); every handler with that event name runs, in **Sequence** order. Each handler has a **Response Type** that says what its **Response** is."
+        },
+        {
+          "t": "code",
+          "title": "An event handler in the form XML",
+          "text": "<EventHandler Name=\"StdFormHelp\" Sequence=\"1\">\n   <ResponseType>39</ResponseType>\n   <Response>URL(V(EcmrsHelpUrl)) ( )</Response>\n</EventHandler>",
+          "lang": "xml"
+        },
+        {
+          "t": "h2",
+          "text": "Response types we use"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Type",
+            "What it does",
+            "Example",
+            "Used for"
+          ],
+          "rows": [
+            [
+              "0",
+              "Run a method on an IDO",
+              "`SLFormExtMsgEntities.LoadJSONVar( PARMS(...) )`",
+              "IDM widgets (eCMRs)"
+            ],
+            [
+              "22",
+              "Set property / variable values",
+              "`SETPROPVALUES(ClosedBy=USERNAME())`, `SETVARVALUES(...)`",
+              "Closed By (eCMRs)"
+            ],
+            [
+              "33",
+              "Inline script (VB.NET)",
+              "`SCRIPTTEXT( ... )`",
+              "Help, CMR Num on New, Closed"
+            ],
+            [
+              "39",
+              "Go to a URL",
+              "`URL(V(EcmrsHelpUrl)) ( )`",
+              "Open the help page"
+            ],
+            [
+              "43",
+              "Generate another event",
+              "`EVENT(ENF_NotifyUserWithCMR) PARMS(...)`",
+              "Notify email (eCMRs)"
+            ],
+            [
+              "47",
+              "Send a JSON message",
+              "`JSONMSGTYPE(inforBusinessContext) JSONPAYLOAD(V(JSONVar))`",
+              "IDM widgets (eCMRs)"
+            ],
+            [
+              "49",
+              "Load a collection into variables",
+              "`SLEmployees( FILTER(EmpNum=FP(AssignedEmpNum)) SETV(...) )`",
+              "Notify: look up the email (eCMRs)"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Standard events (raised by SyteLine)"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Event",
+            "When SyteLine raises it",
+            "Our forms",
+            "Page"
+          ],
+          "rows": [
+            [
+              "`StdFormHelp`",
+              "Right-click → **Help** (confirmed on TRN); **Help → Current Form**",
+              "eCMRs, Service Orders, Incidents",
+              "[Help events](/syteline/dev/event-help)"
+            ],
+            [
+              "`StdFormComponentHelp`",
+              "**F1**, **Help → Current Field**, **What's This?** on a component",
+              "eCMRs, Service Orders, Incidents",
+              "[Help events](/syteline/dev/event-help)"
+            ],
+            [
+              "`StdObjectNewCompleted`",
+              "After **New** has created the empty record",
+              "eCMRs (CMR Num)",
+              "[Fill in a value on New](/syteline/dev/guide-value-on-new)"
+            ],
+            [
+              "`StdFormPredisplay`",
+              "Once, before the form is first shown",
+              "eCMRs (IDM widgets)",
+              "[IDM events](/syteline/dev/event-idm)"
+            ],
+            [
+              "`StdObjectSelectCurrentCompleted`",
+              "Each time the current record changes",
+              "eCMRs (IDM widgets)",
+              "[IDM events](/syteline/dev/event-idm)"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Our own events (raised by the form)"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Event",
+            "Raised by",
+            "What it does",
+            "Page"
+          ],
+          "rows": [
+            [
+              "`SetCloseInfo`",
+              "The **Closed** check box (`EventToGenerate`)",
+              "Clears or sets Close Date; raises `SetClosedBy`",
+              "[Closed events](/syteline/dev/event-closed)"
+            ],
+            [
+              "`SetClosedBy`",
+              "`SetCloseInfo`",
+              "`SETPROPVALUES(ClosedBy=USERNAME())`",
+              "[Closed events](/syteline/dev/event-closed)"
+            ],
+            [
+              "`ENF_NotifyUser`",
+              "The **Notify** button",
+              "Looks up the Assigned employee's email, raises `ENF_NotifyUserWithCMR`",
+              "[Notify event](/syteline/dev/event-notify)"
+            ],
+            [
+              "`ENF_FindHelpField`",
+              "(none any more)",
+              "Left in the eCMRs XML from an earlier try; not raised",
+              "[Help events](/syteline/dev/event-help)"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "What we learned"
+        },
+        {
+          "t": "list",
+          "items": [
+            "`EventToGenerate` fires custom events from **buttons** and **check boxes**. On a drop-down it fired, did nothing and gave no error.",
+            "`SelectionEvent` on a drop-down locks the whole form after one use. Don't use it.",
+            "FormSync keeps a handler's setting that is missing from the file. To remove a setting, give the event or component a new name so FormSync creates it fresh.",
+            "A handler that raises another event from inside `StdFormComponentHelp` stopped the right-click menu opening (eCMRs#17)."
+          ]
+        }
+      ],
+      "related": [
+        "dev/scripting",
+        "dev/components"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/event-help",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Events",
+      "order": 2,
+      "title": "Help events: StdFormHelp and StdFormComponentHelp",
+      "eyebrow": "Reference · Events",
+      "subtitle": "What raises them, what they know, and our handlers",
+      "summary": "Which Help event SyteLine raises for right-click, F1 and the Help menu, what a handler can find out, and the handlers on our forms.",
+      "blocks": [
+        {
+          "t": "endpoint",
+          "method": "EVENT",
+          "path": "StdFormHelp",
+          "text": "Right-click a field → **Help** (confirmed on TRN 2026-09-30, `ev=form`); **Help → Current Form**; **What's This?** then clicking outside a component."
+        },
+        {
+          "t": "endpoint",
+          "method": "EVENT",
+          "path": "StdFormComponentHelp",
+          "text": "**F1**; **Help → Current Field**; **What's This?** then clicking a component. Not the right-click menu."
+        },
+        {
+          "t": "h2",
+          "text": "Handlers on our forms"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Event",
+            "Seq",
+            "Type",
+            "Response"
+          ],
+          "rows": [
+            [
+              "`StdFormHelp`",
+              "0",
+              "33",
+              "Script: find the focused field, write the `/go` link into the help variable (`ev=form`)"
+            ],
+            [
+              "`StdFormHelp`",
+              "1",
+              "39",
+              "`URL(V(<help variable>)) ( )`"
+            ],
+            [
+              "`StdFormComponentHelp`",
+              "0",
+              "33",
+              "The same script (`ev=field`). On eCMRs since eCMRs#22: not confirmed on TRN yet"
+            ],
+            [
+              "`StdFormComponentHelp`",
+              "1",
+              "39",
+              "`URL(V(<help variable>)) ( )`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "code",
+          "title": "StdFormHelp, sequence 0 (eCMRs, confirmed)",
+          "text": "SCRIPTTEXT(Option Explicit On\nOption Strict Off\nImports System\nImports Mongoose.Scripting\nNamespace SyteLine.GlobalScripts\nPublic Class EvHandler_StdFormHelp_0\nInherits GlobalScript\nSub Main()\nDim c As String = \"\", v As String = \"focusempty\", e As String = \"\"\nTry\nc = ThisForm.GetCurrentComponentName()\nIf c <> \"\" Then v = \"focus\"\nCatch x As Exception\nv = \"focuserr\"\ne = x.Message\nEnd Try\nThisForm.Variables(\"EcmrsHelpUrl\").Value = \"https://help-seven-xi.vercel.app/go/syteline/ecmrs\" & If(c = \"\", \"\", \"/\" & c) & \"?via=\" & v & \"&ev=form&e=\" & Uri.EscapeDataString(If(e.Length > 200, e.Substring(0, 200), e))\nReturnValue = \"0\"\nEnd Sub\nEnd Class\nEnd Namespace\n)",
+          "lang": "vb"
+        },
+        {
+          "t": "h2",
+          "text": "What a handler can find out"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Call",
+            "Result on TRN"
+          ],
+          "rows": [
+            [
+              "`ThisForm.GetCurrentComponentName()`",
+              "Works: the component that has focus, not necessarily the one right-clicked"
+            ],
+            [
+              "`ThisForm.Variables(\"...\").Value = ...`",
+              "Works"
+            ],
+            [
+              "The event's parameters (`CountParameter`, `ParameterCount`, `GetParameter`)",
+              "Didn't compile in the web client. Help events carry no parameter naming the field anyway"
+            ],
+            [
+              "Late-bound calls (`Dim f As Object = ThisForm`, then `f.Variables(...)`)",
+              "Refused: *Attempt by method ...InvokeMethod... to access method ...ScriptForm.Variables failed*"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "History"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Try",
+            "Result"
+          ],
+          "rows": [
+            [
+              "`HelpFileName` on each field",
+              "SyteLine puts Infor's address in front: only Infor pages can open"
+            ],
+            [
+              "Help button, ResponseType 39 to a `file:` link",
+              "Browser blocks `file:` from a web page; SyteLine shows its `GetFile.aspx` page"
+            ],
+            [
+              "Scripts with VB comments",
+              "*SCRIPTTEXT keyword required* (the apostrophe)"
+            ],
+            [
+              "`StdFormComponentHelp` raising `ENF_FindHelpField` (#17)",
+              "Right-click menu stopped opening"
+            ],
+            [
+              "Direct calls, no parameters (#21)",
+              "**Works**: the field's page opens"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "p",
+          "text": "Infor's descriptions: [StdFormHelp](https://docs.infor.com/csi/9.01.x/en-us/csbiolh/lsm1454148062494.html), [StdFormComponentHelp](https://docs.infor.com/csi/9.01.x/en-us/csbiolh/lsm1454148059452.html), [GetCurrentComponentName](https://docs.infor.com/csi/9.01.x/en-us/csbiolh/lsm1454148086019.html). Full history: [eCMRs troubleshooting](https://github.com/Enflite/eCMRs/blob/main/docs/troubleshooting.md)."
+        }
+      ],
+      "related": [
+        "dev/guide-right-click-help",
+        "dev/help-links",
+        "dev/scripting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/event-notify",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Events",
+      "order": 3,
+      "title": "Notify event: ENF_NotifyUser",
+      "eyebrow": "Reference · Events",
+      "subtitle": "Email the Assigned employee from a button",
+      "summary": "The eCMRs Notify button: load the employee's email into a variable, then raise the Enflite email event.",
+      "blocks": [
+        {
+          "t": "endpoint",
+          "method": "EVENT",
+          "path": "ENF_NotifyUser",
+          "text": "Raised by the **Notify** button on eCMRs."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Seq",
+            "Type",
+            "Response"
+          ],
+          "rows": [
+            [
+              "0",
+              "49",
+              "`SLEmployees( FILTER(EmpNum=FP(AssignedEmpNum)) SETV(EcmrsNotifyEmail=Username) )`"
+            ],
+            [
+              "1",
+              "43",
+              "`EVENT(ENF_NotifyUserWithCMR) PARMS(V(ehp1_ENF_NotifyUser0))  ERRORMESSAGE(FAIL TO SEND EMAIL! CHECK THE ASSIGNED EMPLOYEE, OR USER DOES NOT HAVE ACCESS TO THIS ACTION.) SUCCESSMESSAGE(EMAIL SENT!)`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Step 0 loads `SLEmployees` for the Assigned employee and copies `Username` (the email address here) into the variable `EcmrsNotifyEmail`.",
+            "Step 1 raises the Enflite email event `ENF_NotifyUserWithCMR` (the same one QC CMRs uses) and shows the success or failure message.",
+            "ResponseType 49 is fine here, as a step of a button's event. It is only as a drop-down's `SelectionEvent` that it locks the form."
+          ]
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Not confirmed: that the email arrives (eCMRs production smoke test, step 20b)."
+        }
+      ],
+      "related": [
+        "dev/events"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/event-closed",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Events",
+      "order": 4,
+      "title": "Closed events: SetCloseInfo and SetClosedBy",
+      "eyebrow": "Reference · Events",
+      "subtitle": "A check box that fills in the date and the user",
+      "summary": "Ticking Closed on eCMRs sets Close Date and Closed By; unticking clears them. A check box event, a script and a set-values step.",
+      "blocks": [
+        {
+          "t": "endpoint",
+          "method": "EVENT",
+          "path": "SetCloseInfo",
+          "text": "`EventToGenerate` of the **Closed** check box."
+        },
+        {
+          "t": "code",
+          "title": "SetCloseInfo, sequence 0 (ResponseType 33)",
+          "text": "SCRIPTTEXT(Option Explicit On\nOption Strict On\n\nImports System\nImports Microsoft.VisualBasic\nImports Mongoose.IDO.Protocol\nImports Mongoose.Scripting\n\nNamespace SyteLine.GlobalScripts\nPublic Class EvHandler_SetCloseInfo_0\nInherits GlobalScript\n\n        Sub Main()\n            If ThisForm.Components(\"c_closed\").Text <> \"1\" Then\n                ThisForm.Components(\"c_closed_by\").Text = \"\"\n                ThisForm.Components(\"c_close_date\").Text = \"\"\n            Else\n                ThisForm.GenerateEvent(\"SetClosedBy\")\n                ThisForm.Components(\"c_close_date\").Text = CStr(Today)\n            End If\n            ReturnValue = \"0\"\n        End Sub\nEnd Class\nEnd Namespace\n)",
+          "lang": "vb"
+        },
+        {
+          "t": "endpoint",
+          "method": "EVENT",
+          "path": "SetClosedBy",
+          "text": "ResponseType 22: `SETPROPVALUES(ClosedBy=USERNAME())`"
+        },
+        {
+          "t": "list",
+          "items": [
+            "`ThisForm.UserName` doesn't exist in the web client's scripting: the first version didn't compile (*Error compiling script EvHandler_SetCloseInfo_0*). The user name comes from `USERNAME()` in a set-values step instead.",
+            "`ClosedBy` and `CloseDate` must have **Read Only Record** cleared on the IDO."
+          ]
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Confirmed on TRN 2026-09-29."
+        }
+      ],
+      "related": [
+        "dev/events",
+        "dev/scripting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/event-idm",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Events",
+      "order": 5,
+      "title": "IDM events: the documents widget",
+      "eyebrow": "Reference · Events",
+      "subtitle": "StdFormPredisplay and StdObjectSelectCurrentCompleted",
+      "summary": "How eCMRs sends its current record to the side-panel widgets (IDM documents), copied from Infor's forms.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Infor's forms tell the side-panel widgets (such as IDM documents) which record is showing. eCMRs does the same with the handlers Infor's forms use:"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Event",
+            "Seq",
+            "Type",
+            "Response"
+          ],
+          "rows": [
+            [
+              "`StdFormPredisplay`",
+              "0",
+              "0",
+              "`SLFormExtMsgEntities.LoadJSONVar( PARMS(VAR eCMRs, RVAR V(JSONVarNotInterpretWithLIT)) )`"
+            ],
+            [
+              "`StdFormPredisplay`",
+              "1",
+              "22",
+              "`SETVARVALUES(JSONVarNotInterpret=V(JSONVarNotInterpretWithLIT))`"
+            ],
+            [
+              "`StdObjectSelectCurrentCompleted`",
+              "0",
+              "0",
+              "`SLFormExtMsgEntities.FormatJSONVar( ... )`"
+            ],
+            [
+              "`StdObjectSelectCurrentCompleted`",
+              "1",
+              "22",
+              "`SETVARVALUES(JSONVar=V(JSONVarWithLIT))`"
+            ],
+            [
+              "`StdObjectSelectCurrentCompleted`",
+              "2",
+              "47",
+              "`JSONMSGTYPE(inforBusinessContext) JSONPAYLOAD(V(JSONVar)) JSONMSGTOCHLD()  COLID(object)`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "p",
+          "text": "The form also needs an AddIDM set-up for its form name (eCMRs: `eCMRs`) in each environment."
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Not confirmed: which documents the widget shows for a CMR (the Item's) and how attaching works."
+        }
+      ],
+      "related": [
+        "dev/events"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/scripting",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Scripting and components",
+      "order": 1,
+      "title": "Inline scripts (ResponseType 33)",
+      "eyebrow": "Reference · Scripting",
+      "subtitle": "The rules the web client enforces",
+      "summary": "How inline VB scripts are stored and what SyteLine's web client accepts: SCRIPTTEXT, no apostrophes, 500/1500 characters, no late binding, ThisForm calls that work.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "An inline script is VB.NET inside `SCRIPTTEXT( ... )`, compiled by SyteLine when the event first runs. Copy the class wrapper from a working script and change only `Sub Main()`."
+        },
+        {
+          "t": "code",
+          "title": "Skeleton",
+          "text": "SCRIPTTEXT(Option Explicit On\nOption Strict Off\nImports System\nImports Mongoose.Scripting\nNamespace SyteLine.GlobalScripts\nPublic Class EvHandler_<Event>_<Sequence>\nInherits GlobalScript\nSub Main()\n  ...\n  ReturnValue = \"0\"\nEnd Sub\nEnd Class\nEnd Namespace\n)",
+          "lang": "vb"
+        },
+        {
+          "t": "h2",
+          "text": "Rules"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Rule",
+            "Otherwise"
+          ],
+          "rows": [
+            [
+              "No apostrophes, including VB comments (`' ...`) and words like `server's`",
+              "*SCRIPTTEXT keyword required for InlineScript event handlers*"
+            ],
+            [
+              "Store over 500 characters as `<Response>` (500) + `<Response2>`, as Infor's exports do",
+              "The script is cut"
+            ],
+            [
+              "Keep the whole script under 1,500 characters",
+              "Infor's limit for inline scripts"
+            ],
+            [
+              "Call `ThisForm.…` directly, never through `Dim f As Object = ThisForm`",
+              "*Attempt by method ...InvokeMethod... to access method ...ScriptForm.Variables failed*"
+            ],
+            [
+              "Escape `&`, `<`, `>` as `&amp;`, `&lt;`, `&gt;` in the XML",
+              "The XML doesn't import"
+            ],
+            [
+              "End with `ReturnValue = \"0\"` in event scripts",
+              "Later handler steps may not run"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Calls we know work in the web client"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Call",
+            "Seen in"
+          ],
+          "rows": [
+            [
+              "`ThisForm.GetCurrentComponentName()`",
+              "Help scripts"
+            ],
+            [
+              "`ThisForm.Variables(\"X\").Value = ...`",
+              "Help scripts"
+            ],
+            [
+              "`ThisForm.Components(\"c_x\").Text`",
+              "SetCloseInfo"
+            ],
+            [
+              "`ThisForm.GenerateEvent(\"X\")`",
+              "SetCloseInfo (not inside a Help event)"
+            ],
+            [
+              "`ThisForm.PrimaryIDOCollection.CurrentItem.Properties.Item(\"P\").GetValueOfString(\"\")`",
+              "StdObjectNewCompleted"
+            ],
+            [
+              "`ThisForm.PrimaryIDOCollection.SetCurrentObjectPropertyPlusModifyRefresh(\"P\", value)`",
+              "StdObjectNewCompleted"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Calls that don't"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Call",
+            "Result"
+          ],
+          "rows": [
+            [
+              "`ThisForm.UserName`",
+              "Doesn't compile. Use `USERNAME()` in a ResponseType 22 step"
+            ],
+            [
+              "`CountParameter` / `GetParameter` / `ParameterCount` in a Help event",
+              "*Error compiling script*"
+            ],
+            [
+              "`Me.IDOClient.LoadCollection` from a drop-down's `EventToGenerate`",
+              "Runs, does nothing, no error"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "p",
+          "text": "When a script fails silently, have it put the error text somewhere you can see (the eCMRs Help script sends it to the help site as `&e=`)."
+        }
+      ],
+      "related": [
+        "dev/events",
+        "dev/event-help"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/components",
+      "type": "reference",
+      "icon": "field",
+      "parent": "dev",
+      "group": "Scripting and components",
+      "order": 2,
+      "title": "Form components: lists, auto-fill and flags",
+      "eyebrow": "Reference · Components",
+      "subtitle": "The component settings we use in the form XML",
+      "summary": "Drop-down lists (ComboListSource, DISPLAY order), DefaultFrom, validators, Validate Immediately, Caption, Read Only Record, and why FormSync keeps old settings.",
+      "blocks": [
+        {
+          "t": "table",
+          "head": [
+            "Setting",
+            "Syntax",
+            "What we learned"
+          ],
+          "rows": [
+            [
+              "**List source**",
+              "`SLEmployees( PROPERTIES(Username,EmpNum,Name) DISPLAY(1,2,3) RECORDCAP(0))`",
+              "The drop-down stores the **first column in `DISPLAY()`**. With `DISPLAY(2,1,3)` PO Line stored the Item and saves failed (*Data length for ... is greater than effective length*)."
+            ],
+            [
+              "**Filtered list**",
+              "`FILTER(Item='P(Item)')`",
+              "`P(x)` is the current value of property x. `FP(x)` is an exact match: no wildcard, no padding."
+            ],
+            [
+              "**DefaultFrom**",
+              "`Item(ItemDescription)`",
+              "Fills another property from the picked value's class. Works for Item and VendNum; broke with Dept. See [Fill a description](/syteline/dev/guide-description-autofill)."
+            ],
+            [
+              "**Validators**",
+              "`SetPropertyFromList(DeptDescription, Description)`",
+              "Copies one list column into one property. Named system validators (`Dept`, `WcDesc`) write properties our IDO doesn't have."
+            ],
+            [
+              "**Validate Immediately**",
+              "bit 32 of `<Flags>` (e.g. `33`)",
+              "Without it, validators run only on save."
+            ],
+            [
+              "**Caption**",
+              "`C(l_status)`",
+              "Links the field to its label, so messages name the right field."
+            ],
+            [
+              "**PropertyClassName**",
+              "`QCReasonCode`",
+              "Brings the class's list and validators with it. Infor's QC classes filter on QC_MRRs fields and failed on eCMRs."
+            ],
+            [
+              "**EventToGenerate**",
+              "`SetCloseInfo`",
+              "Fires custom events from buttons and check boxes; not from drop-downs."
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Settings on the IDO, not the form"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Setting",
+            "What we learned"
+          ],
+          "rows": [
+            [
+              "**Read Only Record**",
+              "A field the form writes to (a description, a name filled from a list) must have it cleared, or the whole form locks after the first edit, silently. FormSync and CSV imports don't change it on an existing property: clear it in Application Studio."
+            ],
+            [
+              "**Inline List**",
+              "`ENTRIES(a,b,c)` on the property; then **Check In**. See [Add a fixed drop-down list](/syteline/dev/guide-fixed-list)."
+            ],
+            [
+              "**Length**",
+              "Must equal the column's length."
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "FormSync keeps settings missing from the file"
+        },
+        {
+          "t": "p",
+          "text": "Removing a line from the XML (say a `PropertyClassName`) and re-importing leaves the old setting in place. To drop it, give the component a new name (`c_reason_code_v2`) so FormSync creates it fresh, then remove the old one."
+        },
+        {
+          "t": "note",
+          "kind": "warning",
+          "text": "If the whole form greys out after one edit with no error, check first: the target property's **Read Only Record** on the IDO, then a `SelectionEvent`, then a leftover list source on the target component."
+        }
+      ],
+      "related": [
+        "dev/guide-description-autofill",
+        "dev/events"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/conventions",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Scripting and components",
+      "order": 3,
+      "title": "Conventions",
+      "eyebrow": "Reference · Conventions",
+      "subtitle": "Naming, files and delivery rules for every Enflite form repo",
+      "summary": "Enflite naming (ENF, Uf_ENF_, ue_), how form XML is built and delivered, and the rules every form repo follows.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The full standard is `AGENTS.md` in every form repo (master copy in `Enflite/Form-Project-Templates`)."
+        },
+        {
+          "t": "h2",
+          "text": "Naming"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Object",
+            "Pattern",
+            "Example"
+          ],
+          "rows": [
+            [
+              "UET User Field",
+              "`Uf_ENF_<Name>`",
+              "`Uf_ENF_DateOfManufacture`"
+            ],
+            [
+              "UET Class",
+              "`ENF_<Area>`",
+              "`ENF_SroTracking`"
+            ],
+            [
+              "User Defined Type",
+              "`ENF_<Name>`",
+              "`ENF_ZeroTime`"
+            ],
+            [
+              "Custom table / IDO",
+              "`ue_<name>`",
+              "`ue_ecmrs`"
+            ],
+            [
+              "Custom column / IDO property",
+              "`snake_case` / `PascalCase`",
+              "`cmr_num` → `CmrNum`"
+            ],
+            [
+              "Form component for a UET field",
+              "`Uf<Name>Static`, `Uf<Name>Edit`, `Uf<Name>GridCol`",
+              "`UfEvalDateEdit`"
+            ],
+            [
+              "Form event we add",
+              "`ENF_<Name>`",
+              "`ENF_NotifyUser`"
+            ],
+            [
+              "Form binding to a UET field",
+              "`object.<alias>Uf_ENF_<Name>`",
+              "`object.sroUf_ENF_EvalDate`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h2",
+          "text": "Delivery rules"
+        },
+        {
+          "t": "list",
+          "items": [
+            "TRN first, then production, from the same files.",
+            "Never change Infor's tables, IDOs or Vendor forms.",
+            "Every change goes in the build script, which writes the form XML. Never hand-edit the XML, never deliver from Design Mode.",
+            "Form XML keeps its UTF-8 BOM and CRLF line endings (`.gitattributes`: `*.xml -text`). Scripts edit the text in place; never re-serialize it with an XML parser.",
+            "Back up (export) the form from each environment before its first import, into `original/`.",
+            "Import through **FormSync** at **Site** scope.",
+            "New and changed components are highlighted purple until the team signs off."
+          ]
+        }
+      ],
+      "related": [
+        "dev/components",
+        "build/back-up-a-form"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/ido-ue-ecmrs",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Data",
+      "order": 1,
+      "title": "IDO: ue_ecmrs",
+      "eyebrow": "Reference · IDO",
+      "subtitle": "The eCMRs table and IDO, property by property",
+      "summary": "The ue_ecmrs IDO and table behind eCMRs: 76 properties with their columns, types, lengths and form fields.",
+      "blocks": [
+        {
+          "t": "endpoint",
+          "method": "IDO",
+          "path": "ue_ecmrs",
+          "text": "Primary table `ue_ecmrs`, alias `ec`, project `ue_ENF`. Key: `CmrNum` (`cmr_num`)."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Form",
+              "[eCMRs](/syteline/ecmrs)"
+            ],
+            [
+              "Built from",
+              "`Enflite/eCMRs` `exports/production/` (the TRN exports of 2026-09-29)"
+            ],
+            [
+              "Standard columns",
+              "`CreatedBy`, `UpdatedBy`, `CreateDate`, `RecordDate`, `RowPointer`, `NoteExistsFlag`, `InWorkflow` (added by Application Studio, not listed)"
+            ]
+          ]
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Our own text columns are `char(255)`; columns on SyteLine types keep that type's length. Every IDO length equals its column's."
+        },
+        {
+          "t": "h2",
+          "text": "Properties"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Property",
+            "Column",
+            "SQL type",
+            "IDO type",
+            "Flags",
+            "On the form"
+          ],
+          "rows": [
+            [
+              "`CmrNum`",
+              "`cmr_num`",
+              "nvarchar(999)",
+              "String (255)",
+              "Key, Required",
+              "[CMR Num](/syteline/ecmrs/fields/cmr_num)"
+            ],
+            [
+              "`Status`",
+              "`status`",
+              "char(255)",
+              "String",
+              "Inline List",
+              "[Status](/syteline/ecmrs/fields/status)"
+            ],
+            [
+              "`WorkflowStatus`",
+              "`workflow_status`",
+              "char(255)",
+              "String (40)",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`Priority`",
+              "`priority`",
+              "QCPriorityType",
+              "String (12)",
+              "Inline List",
+              "[Priority](/syteline/ecmrs/fields/priority)"
+            ],
+            [
+              "`Item`",
+              "`item`",
+              "ItemType",
+              "String (30)",
+              "",
+              "[Item](/syteline/ecmrs/fields/item)"
+            ],
+            [
+              "`ItemDescription`",
+              "`item_description`",
+              "LongDescType",
+              "String (255)",
+              "",
+              "[Item Desc](/syteline/ecmrs/fields/item_description)"
+            ],
+            [
+              "`Wc`",
+              "`wc`",
+              "WcType",
+              "String (6)",
+              "",
+              "[Work Center](/syteline/ecmrs/fields/wc)"
+            ],
+            [
+              "`WcDescription`",
+              "`wc_description`",
+              "DescriptionType",
+              "String (40)",
+              "",
+              "[WC Description](/syteline/ecmrs/fields/wc_description)"
+            ],
+            [
+              "`Dept`",
+              "`dept`",
+              "DeptType",
+              "String (6)",
+              "",
+              "[Dept](/syteline/ecmrs/fields/dept)"
+            ],
+            [
+              "`DeptDescription`",
+              "`dept_description`",
+              "DescriptionType",
+              "String (40)",
+              "",
+              "[Dept Description](/syteline/ecmrs/fields/dept_description)"
+            ],
+            [
+              "`InitialChange`",
+              "`initial_change`",
+              "char(255)",
+              "String (255)",
+              "Inline List",
+              "[Initial Change](/syteline/ecmrs/fields/initial_change)"
+            ],
+            [
+              "`AdditionalChanges`",
+              "`additional_changes`",
+              "char(1,000)",
+              "String (1,000)",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`RequestedAction`",
+              "`requested_action`",
+              "QCLongCharType",
+              "String (1,000)",
+              "",
+              "[Requested Action](/syteline/ecmrs/fields/requested_action)"
+            ],
+            [
+              "`GeneralNote`",
+              "`general_note`",
+              "QCLongCharType",
+              "String (1,000)",
+              "",
+              "[General Note](/syteline/ecmrs/fields/general_note)"
+            ],
+            [
+              "`Revision`",
+              "`revision`",
+              "RevisionType",
+              "String (8)",
+              "",
+              "[Drawing Revision](/syteline/ecmrs/fields/revision)"
+            ],
+            [
+              "`LatestRevision`",
+              "`latest_revision`",
+              "RevisionType",
+              "String (8)",
+              "",
+              "[Latest Revision](/syteline/ecmrs/fields/latest_revision)"
+            ],
+            [
+              "`NextAssyItem`",
+              "`next_assy_item`",
+              "ItemType",
+              "String (30)",
+              "",
+              "[Next Lvl Assy](/syteline/ecmrs/fields/next_assy_item)"
+            ],
+            [
+              "`NextAssyDescription`",
+              "`next_assy_description`",
+              "DescriptionType",
+              "String (40)",
+              "",
+              "[Assy Desc](/syteline/ecmrs/fields/next_assy_description)"
+            ],
+            [
+              "`Vendor`",
+              "`vendor`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[Vendor](/syteline/ecmrs/fields/vendor)"
+            ],
+            [
+              "`VendorName`",
+              "`vendor_name`",
+              "LongDescType",
+              "String (255)",
+              "",
+              "[Vendor Name](/syteline/ecmrs/fields/vendor_name)"
+            ],
+            [
+              "`Qty`",
+              "`qty`",
+              "decimal",
+              "Decimal",
+              "Required",
+              "[Qty](/syteline/ecmrs/fields/qty)"
+            ],
+            [
+              "`JobNum`",
+              "`job_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[Job Num](/syteline/ecmrs/fields/job_num)"
+            ],
+            [
+              "`PoNum`",
+              "`po_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[PO Num](/syteline/ecmrs/fields/po_num)"
+            ],
+            [
+              "`SerialNum`",
+              "`serial_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[Serial #](/syteline/ecmrs/fields/serial_num)"
+            ],
+            [
+              "`TopLevelPn`",
+              "`top_level_pn`",
+              "char(255)",
+              "String (255)",
+              "",
+              "`c_top_level_pn`"
+            ],
+            [
+              "`LotNum`",
+              "`lot_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[LOT #](/syteline/ecmrs/fields/lot_num)"
+            ],
+            [
+              "`PoLine`",
+              "`po_line`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[PO Line](/syteline/ecmrs/fields/po_line)"
+            ],
+            [
+              "`RfqNum`",
+              "`rfq_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[RFQ Num](/syteline/ecmrs/fields/rfq_num)"
+            ],
+            [
+              "`EoNum`",
+              "`eo_num`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[EO Num](/syteline/ecmrs/fields/eo_num)"
+            ],
+            [
+              "`SubAssembly`",
+              "`sub_assembly`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[Sub Assembly](/syteline/ecmrs/fields/sub_assembly)"
+            ],
+            [
+              "`Mdl`",
+              "`mdl`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[MDL](/syteline/ecmrs/fields/mdl)"
+            ],
+            [
+              "`Poc`",
+              "`poc`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[POC](/syteline/ecmrs/fields/poc)"
+            ],
+            [
+              "`ReqCosting`",
+              "`req_costing`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Req: Costing, Documentation, Tool/Machine, Process, Material](/syteline/ecmrs/fields/requirements)"
+            ],
+            [
+              "`CostReviewComplete`",
+              "`cost_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`ReqDocumentation`",
+              "`req_documentation`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Req: Costing, Documentation, Tool/Machine, Process, Material](/syteline/ecmrs/fields/requirements)"
+            ],
+            [
+              "`DocumentationReviewComplete`",
+              "`documentation_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`ReportedBy`",
+              "`reported_by`",
+              "char(255)",
+              "String (255)",
+              "",
+              "[Reported By](/syteline/ecmrs/fields/reported_by)"
+            ],
+            [
+              "`ReqToolMachine`",
+              "`req_tool_machine`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Req: Costing, Documentation, Tool/Machine, Process, Material](/syteline/ecmrs/fields/requirements)"
+            ],
+            [
+              "`MachineryReviewComplete`",
+              "`machinery_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`ReqProcess`",
+              "`req_process`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Req: Costing, Documentation, Tool/Machine, Process, Material](/syteline/ecmrs/fields/requirements)"
+            ],
+            [
+              "`ProcessReviewComplete`",
+              "`process_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`ReqMaterial`",
+              "`req_material`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Req: Costing, Documentation, Tool/Machine, Process, Material](/syteline/ecmrs/fields/requirements)"
+            ],
+            [
+              "`MaterialReviewComplete`",
+              "`material_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`GeneralReviewComplete`",
+              "`general_review_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`SoxImpacted`",
+              "`sox_impacted`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[SOX Impacted](/syteline/ecmrs/fields/sox_impacted)"
+            ],
+            [
+              "`HoldOnPo`",
+              "`hold_on_po`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Hold On PO](/syteline/ecmrs/fields/hold_on_po)"
+            ],
+            [
+              "`AuthSupplierShip`",
+              "`auth_supplier_ship`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Authorization For Supplier To Ship](/syteline/ecmrs/fields/auth_supplier_ship)"
+            ],
+            [
+              "`QcDisposition`",
+              "`qc_disposition`",
+              "char(255)",
+              "String (255)",
+              "Inline List",
+              "[QC Disposition](/syteline/ecmrs/fields/qc_disposition)"
+            ],
+            [
+              "`EngDisposition`",
+              "`eng_disposition`",
+              "char(255)",
+              "String (255)",
+              "Inline List",
+              "[Engineering Disposition](/syteline/ecmrs/fields/eng_disposition)"
+            ],
+            [
+              "`AssignedEmpNum`",
+              "`assigned_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Assigned](/syteline/ecmrs/fields/assigned)"
+            ],
+            [
+              "`AssignedUsername`",
+              "`assigned_username`",
+              "UsernameType",
+              "String (128)",
+              "",
+              "[Assigned](/syteline/ecmrs/fields/assigned)"
+            ],
+            [
+              "`AssignedBuyer`",
+              "`assigned_buyer`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Assigned Buyer](/syteline/ecmrs/fields/assigned_buyer)"
+            ],
+            [
+              "`QcReviewerEmpNum`",
+              "`qc_reviewer_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Reviewer ID / Reviewer (Quality)](/syteline/ecmrs/fields/qc_reviewer)"
+            ],
+            [
+              "`QcReviewerUsername`",
+              "`qc_reviewer_username`",
+              "UsernameType",
+              "String (128)",
+              "",
+              "[Reviewer ID / Reviewer (Quality)](/syteline/ecmrs/fields/qc_reviewer)"
+            ],
+            [
+              "`EngReviewerEmpNum`",
+              "`eng_reviewer_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Reviewer ID / Reviewer (Engineering)](/syteline/ecmrs/fields/eng_reviewer)"
+            ],
+            [
+              "`EngReviewerUsername`",
+              "`eng_reviewer_username`",
+              "UsernameType",
+              "String (128)",
+              "",
+              "[Reviewer ID / Reviewer (Engineering)](/syteline/ecmrs/fields/eng_reviewer)"
+            ],
+            [
+              "`PlanningReviewerEmpNum`",
+              "`planning_reviewer_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Planning](/syteline/ecmrs/fields/planning)"
+            ],
+            [
+              "`PlanningReviewerName`",
+              "`planning_reviewer_name`",
+              "LongDescType",
+              "String (255)",
+              "",
+              "[Planning](/syteline/ecmrs/fields/planning)"
+            ],
+            [
+              "`PlanningComplete`",
+              "`planning_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Planning](/syteline/ecmrs/fields/planning)"
+            ],
+            [
+              "`PurchasingReviewerEmpNum`",
+              "`purchasing_reviewer_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[Purchasing](/syteline/ecmrs/fields/purchasing)"
+            ],
+            [
+              "`PurchasingReviewerName`",
+              "`purchasing_reviewer_name`",
+              "LongDescType",
+              "String (255)",
+              "",
+              "[Purchasing](/syteline/ecmrs/fields/purchasing)"
+            ],
+            [
+              "`PurchasingComplete`",
+              "`purchasing_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Purchasing](/syteline/ecmrs/fields/purchasing)"
+            ],
+            [
+              "`CmReviewerEmpNum`",
+              "`cm_reviewer_empnum`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "[CM](/syteline/ecmrs/fields/cm)"
+            ],
+            [
+              "`CmReviewerName`",
+              "`cm_reviewer_name`",
+              "LongDescType",
+              "String (255)",
+              "",
+              "[CM](/syteline/ecmrs/fields/cm)"
+            ],
+            [
+              "`CmComplete`",
+              "`cm_complete`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[CM](/syteline/ecmrs/fields/cm)"
+            ],
+            [
+              "`DueDate`",
+              "`due_date`",
+              "DateType",
+              "Date",
+              "",
+              "[Due Date](/syteline/ecmrs/fields/due_date)"
+            ],
+            [
+              "`InternalReviewDate`",
+              "`internal_review_date`",
+              "DateType",
+              "Date",
+              "",
+              "[Internal Review Date](/syteline/ecmrs/fields/internal_review_date)"
+            ],
+            [
+              "`CloseDate`",
+              "`close_date`",
+              "DateType",
+              "Date",
+              "",
+              "[Close Date](/syteline/ecmrs/fields/close_date)"
+            ],
+            [
+              "`ClosedBy`",
+              "`closed_by`",
+              "UsernameType",
+              "String (128)",
+              "",
+              "[Closed By](/syteline/ecmrs/fields/closed_by)"
+            ],
+            [
+              "`GeneralCloseDate`",
+              "`general_close_date`",
+              "DateType",
+              "Date",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`GeneralClosedBy`",
+              "`general_closed_by`",
+              "EmpNumType",
+              "NumSortedString (7)",
+              "",
+              "Not on the form"
+            ],
+            [
+              "`QcRcaNotes`",
+              "`qc_rca_notes`",
+              "QCLongCharType",
+              "String (1,000)",
+              "",
+              "[QC RCA Notes](/syteline/ecmrs/fields/qc_rca_notes)"
+            ],
+            [
+              "`EngRcaNotes`",
+              "`eng_rca_notes`",
+              "QCLongCharType",
+              "String (1,000)",
+              "",
+              "[Eng RCA Notes](/syteline/ecmrs/fields/eng_rca_notes)"
+            ],
+            [
+              "`Closed`",
+              "`closed`",
+              "ListYesNoType",
+              "Byte",
+              "",
+              "[Closed](/syteline/ecmrs/fields/closed)"
+            ],
+            [
+              "`ReasonCode`",
+              "`reason_code`",
+              "char(255)",
+              "String (255)",
+              "Inline List",
+              "[Reason Code](/syteline/ecmrs/fields/reason_code)"
+            ],
+            [
+              "`CauseCode`",
+              "`cause_code`",
+              "char(255)",
+              "String (255)",
+              "Inline List",
+              "[Cause Code](/syteline/ecmrs/fields/cause_code)"
+            ]
+          ],
+          "align": "left"
+        }
+      ],
+      "related": [
+        "dev/guide-fixed-list",
+        "build/custom-table-and-ido",
+        "ecmrs"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/uet-fields",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Data",
+      "order": 2,
+      "title": "UET fields: Service Orders and Incidents",
+      "eyebrow": "Reference · UET",
+      "subtitle": "Our fields on Infor's tables, and how the forms reach them",
+      "summary": "The UET classes, user fields and runtime property names on Service Orders (fs_sro_mst) and Incidents (fs_incident_mst).",
+      "blocks": [
+        {
+          "t": "endpoint",
+          "method": "UET",
+          "path": "fs_sro_mst · ENF_SroTracking, ENF_SroLorc",
+          "text": "Service Orders: IDO `FSP.FSSROs`, table `fs_sro` (alias `sro`)."
+        },
+        {
+          "t": "table",
+          "head": [
+            "User field",
+            "Type",
+            "Form binding",
+            "Help"
+          ],
+          "rows": [
+            [
+              "`Uf_ENF_EvalDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_EvalDate`",
+              "[Eval Date](/syteline/service-orders/fields/eval_date)"
+            ],
+            [
+              "`Uf_ENF_QuoteSentDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_QuoteSentDate`",
+              ""
+            ],
+            [
+              "`Uf_ENF_QuoteApprovedDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_QuoteApprovedDate`",
+              ""
+            ],
+            [
+              "`Uf_ENF_LastPartsDueDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_LastPartsDueDate`",
+              ""
+            ],
+            [
+              "`Uf_ENF_PartsReceivedDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_PartsReceivedDate`",
+              ""
+            ],
+            [
+              "`Uf_ENF_ShipDate`",
+              "`Date4Type` / datetime",
+              "`object.sroUf_ENF_ShipDate`",
+              ""
+            ],
+            [
+              "`Uf_ENF_ZeroTime`",
+              "nvarchar(3), `ENF_ZeroTime` (Yes, No)",
+              "`object.sroUf_ENF_ZeroTime`",
+              ""
+            ],
+            [
+              "`Uf_ENF_OemOrAs`",
+              "nvarchar(3), `ENF_OemOrAs` (OEM, AS)",
+              "`object.sroUf_ENF_OemOrAs`",
+              ""
+            ],
+            [
+              "`Uf_ENF_COL_LORC1`, `_LORC2`, `_LORC_NOTES`",
+              "Existing, from Customer Order Lines",
+              "`object.sroUf_ENF_COL_…`",
+              ""
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "endpoint",
+          "method": "UET",
+          "path": "fs_incident_mst · ENF_IncidentUnit",
+          "text": "Incidents: IDO `FSIncidents`, table `fs_incident`."
+        },
+        {
+          "t": "table",
+          "head": [
+            "User field",
+            "Type",
+            "Form binding",
+            "Help"
+          ],
+          "rows": [
+            [
+              "`Uf_ENF_DateOfManufacture`",
+              "`Date4Type` / datetime",
+              "`object.incUf_ENF_DateOfManufacture`",
+              "[Date Of Manufacture](/syteline/incidents/fields/date_of_manufacture)"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "note",
+          "kind": "note",
+          "text": "Not confirmed: the Incidents alias `inc` is assumed until Staging check A on TRN lists `incUf_ENF_DateOfManufacture`."
+        },
+        {
+          "t": "h2",
+          "text": "How the form reaches a UET field"
+        },
+        {
+          "t": "list",
+          "items": [
+            "After Impact Schema and **Unload IDO Metadata**, the IDO has a runtime property `<alias>Uf_ENF_<Name>` for each field. Nothing is added to the IDO by hand.",
+            "The runtime properties don't appear in the IDO Properties export. Check in Design Mode's Data Source list or a throw-away Dataview.",
+            "CyberQuery reads the same `sroUf_ENF_…` properties from `FSSROs`."
+          ]
+        }
+      ],
+      "related": [
+        "dev/guide-uet-field",
+        "dev/conventions"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "dev/help-links",
+      "type": "reference",
+      "icon": "form",
+      "parent": "dev",
+      "group": "Help site",
+      "order": 1,
+      "title": "Help link API: /go",
+      "eyebrow": "Reference · Help site API",
+      "subtitle": "The link the forms open, and where it lands",
+      "summary": "GET /go and /api/go on the Enflite help site: the parameters a form sends, how the target page is chosen, the log line, and examples.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Base URL: `https://help-seven-xi.vercel.app`. No sign-in."
+        },
+        {
+          "t": "endpoint",
+          "method": "GET",
+          "path": "/go/{space}/{form}/{component}",
+          "text": "Redirects (302) to the help page for the component. The path parts can also be sent as a query."
+        },
+        {
+          "t": "h3",
+          "text": "Parameters"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Name",
+            "In",
+            "Required",
+            "Example",
+            "Description"
+          ],
+          "rows": [
+            [
+              "`space`",
+              "path or query",
+              "yes",
+              "`syteline`",
+              "The help space"
+            ],
+            [
+              "`form`",
+              "path or query",
+              "yes",
+              "`ecmrs`",
+              "The form's page path"
+            ],
+            [
+              "`component` (or `field`)",
+              "path or query",
+              "no",
+              "`c_item`",
+              "The component; any letter case; a trailing `.html` is ignored"
+            ],
+            [
+              "`via`",
+              "query",
+              "no",
+              "`focus`",
+              "How the form found the component (for the log)"
+            ],
+            [
+              "`ev`",
+              "query",
+              "no",
+              "`form`",
+              "Which event sent it: `form` (StdFormHelp) or `field` (StdFormComponentHelp)"
+            ],
+            [
+              "`e`",
+              "query",
+              "no",
+              "",
+              "Error text from the form's script, if any"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "h3",
+          "text": "Where it goes"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Case",
+            "Location"
+          ],
+          "rows": [
+            [
+              "A page lists the component in `aliases`",
+              "That page, e.g. `/syteline/ecmrs/fields/item`"
+            ],
+            [
+              "No page; form page has `infor`",
+              "Infor's field topic from `infor.components`, else `infor.url`"
+            ],
+            [
+              "No page; our own form",
+              "`/<space>/<form>?from=<component>&via=<via>` (the page shows a note)"
+            ],
+            [
+              "Unknown form",
+              "`/<space>`"
+            ]
+          ],
+          "align": "left"
+        },
+        {
+          "t": "code",
+          "title": "Example",
+          "text": "GET /go/syteline/ecmrs/c_item?via=focus&ev=form\n\n302 Found\nLocation: /syteline/ecmrs/fields/item"
+        },
+        {
+          "t": "endpoint",
+          "method": "GET",
+          "path": "/api/go/{space}/{form}/{component}",
+          "text": "The same, answered as JSON for the help site's own pages."
+        },
+        {
+          "t": "code",
+          "title": "200 OK",
+          "text": "{ \"path\": \"/syteline/ecmrs/fields/item\" }",
+          "lang": "json"
+        },
+        {
+          "t": "h3",
+          "text": "Log"
+        },
+        {
+          "t": "p",
+          "text": "Every call writes one line to the server log (Vercel → Logs):"
+        },
+        {
+          "t": "code",
+          "title": "Log line",
+          "text": "help link syteline/ecmrs component=c_item via=focus ev=form -> /syteline/ecmrs/fields/item"
+        }
+      ],
+      "related": [
+        "dev/guide-right-click-help",
+        "dev/guide-infor-help",
+        "dev/event-help"
+      ],
+      "aliases": []
+    }
+  ]
+}
