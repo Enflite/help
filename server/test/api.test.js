@@ -84,6 +84,26 @@ t("right-click help also takes a query, any letter case, and answers the client 
   assert.equal((await get("/api/nope")).status, 404);
 });
 
+t("on Infor forms we customize, components without an Enflite page open Infor's help", async () => {
+  const where = async (p) => (await get(p)).headers.get("location");
+  const infor = "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=";
+  // our fields: the Enflite page
+  assert.equal(await where("/go/syteline/service-orders/UfEvalDateEdit?via=focus&ev=form"), "/syteline/service-orders/fields/eval_date");
+  assert.equal(await where("/go/syteline/service-orders/CloseDateEdit"), "/syteline/service-orders/fields/commit_date");
+  // an Infor field with its own Infor topic
+  assert.equal(await where("/go/syteline/service-orders/DerSlsmanNameEdit"), infor + "sales_crm_user_cl_sl/mergedprojects/sl_custvend/fields/s/salesperson_name_salesperson_master.html");
+  assert.equal(await where("/go/syteline/service-orders/fobedit"), infor + "customer_svc_user_cl_sl/mergedprojects/sl_custvend/fields/f/foc_customers.html");
+  // any other Infor field, or no field: Infor's form topic
+  const soForm = infor + "service_user_cl_sl/mergedprojects/fsp/forms/fstopics/service_orders.html";
+  assert.equal(await where("/go/syteline/service-orders/SroNumEdit"), soForm);
+  assert.equal(await where("/go/syteline/service-orders?via=focusempty"), soForm);
+  assert.equal(await where("/go/syteline/incidents/UfDateOfManufactureEdit"), "/syteline/incidents/fields/date_of_manufacture");
+  assert.equal(await where("/go/syteline/incidents/IncNumEdit"), infor + "service_user_cl_sl/mergedprojects/fsp/forms/fstopics/incidents.html");
+  // our own form keeps the note on its page
+  assert.equal(await where("/go/syteline/ecmrs/hdr_QUALITY?via=focus"), "/syteline/ecmrs?from=hdr_QUALITY&via=focus");
+  assert.deepEqual(await (await get("/api/go/syteline/incidents/IncNumEdit")).json(), { path: infor + "service_user_cl_sl/mergedprojects/fsp/forms/fstopics/incidents.html" });
+});
+
 t("search finds by word and by part of a title", async () => {
   const hits = await (await get("/api/search?q=notify&space=syteline")).json();
   assert.equal(hits[0].path, "ecmrs/fields/notify");

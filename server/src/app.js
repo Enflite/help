@@ -91,11 +91,19 @@ export function createApp({ contentDir, clientDist, clientUrl, aiConfig } = {}) 
     }
     let to = target ? `/${space}/${target.path}` : null;
     if (!to && space && form) {
-      // No page for that component: the form's page, told what SyteLine sent (it shows a note), so
-      // "why didn't it open the field?" can be answered from the screen.
-      const formPage = await Topic.findOne({ space, path: form }, "path").lean();
-      const from = new URLSearchParams({ from: component, via: one(q.via) || "none" });
-      if (formPage) to = `/${space}/${formPage.path}?${from}`;
+      const formPage = await Topic.findOne({ space, path: form }, "path infor").lean();
+      if (formPage?.infor?.url) {
+        // An Infor form we customize (Service Orders, Incidents): a component with no Enflite page
+        // is one of Infor's, so open Infor's own help: its field topic if it has one, else the form's.
+        const byName = formPage.infor.components || {};
+        const key = Object.keys(byName).find((k) => k.toLowerCase() === component.toLowerCase());
+        to = key ? byName[key] : formPage.infor.url;
+      } else if (formPage) {
+        // Our own form (eCMRs): the form's page, told what SyteLine sent (it shows a note), so
+        // "why didn't it open the field?" can be answered from the screen.
+        const from = new URLSearchParams({ from: component, via: one(q.via) || "none" });
+        to = `/${space}/${formPage.path}?${from}`;
+      }
     }
     if (!to) to = space ? `/${space}` : "/";
     // One line per right-click -> Help: which component SyteLine sent, how its script found it

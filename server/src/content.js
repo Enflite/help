@@ -94,6 +94,11 @@ export function validate(spaces, topics, dir) {
         }
       }
     }
+    if (t.infor) {
+      const urls = [t.infor.url, ...Object.values(t.infor.components || {})];
+      if (!t.infor.url) errors.push(`${where}: infor needs a "url"`);
+      for (const u of urls) if (u && !/^https:\/\//.test(u)) errors.push(`${where}: infor URL must be https: ${u}`);
+    }
     // One component opens one page: aliases are unique within the form they belong to.
     const form = (t.path || "").split("/")[0];
     for (const a of t.aliases || []) {

@@ -23,6 +23,10 @@ const topicSchema = new mongoose.Schema(
     blocks: { type: [mongoose.Schema.Types.Mixed], default: [] },
     related: { type: [String], default: [] },
     aliases: { type: [String], default: [] },
+    // On a form page for an Infor form we customize (UET fields on Service Orders, Incidents): Infor's
+    // own help, opened for components that have no Enflite page. { url: form topic,
+    // components: { <component>: field topic } }.
+    infor: { type: mongoose.Schema.Types.Mixed, default: null },
     searchText: { type: String, default: "" },
   },
   { timestamps: true },

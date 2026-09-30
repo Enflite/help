@@ -12,7 +12,11 @@ export default function GoPage() {
   useEffect(() => {
     let live = true;
     getJson(`/api${pathname}${search}`)
-      .then(({ path }) => live && navigate(path, { replace: true }))
+      .then(({ path }) => {
+        if (!live) return;
+        if (/^https?:\/\//.test(path)) window.location.replace(path); // Infor's help
+        else navigate(path, { replace: true });
+      })
       .catch(() => live && navigate("/", { replace: true }));
     return () => {
       live = false;
