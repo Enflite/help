@@ -65,18 +65,54 @@
       "title": "Status",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The stage the CMR is at in the change process.",
+      "summary": "The stage the CMR is at. Change it as the CMR moves from one team to the next.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 1,
       "blocks": [
         {
           "t": "p",
-          "text": "The stage the CMR is at in the change process."
+          "text": "The stage the CMR is at. Change it as the CMR moves from one team to the next."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "Data Input, QC Approval, Eng Review, Planning, Purchasing, CM, Complete"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "Yes, column **Status**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick the stage the CMR is moving to.",
+            "Save the form."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -88,6 +124,33 @@
             "Purchasing",
             "CM",
             "Complete"
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.7** Engineering sets **QC Approval** when their review is done and reassigns the CMR to Quality.",
+            "**5.5.9.4** After each Implementation step the CMR goes back to Quality with **QC Approval**.",
+            "**5.5.10** When all reviews are done and **Closed** is ticked, set **Complete**."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list in eCMRs is its own list of 7 stages; it isn't the status list of the old QC CMRs form.",
+            "Changing the status doesn't notify anyone. Use **Notify** to email the person in **Assigned**."
           ]
         }
       ],
@@ -105,22 +168,77 @@
       "title": "Assigned",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The employee the CMR is assigned to. The first box is the employee number; the second box shows the employee's name.",
+      "summary": "The employee who has the CMR now. Reassign it whenever the CMR moves to another team.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 2,
       "blocks": [
         {
           "t": "p",
-          "text": "The employee the CMR is assigned to. The first box is the employee number; the second box shows the employee's name."
+          "text": "The employee who has the CMR now. Reassign it whenever the CMR moves to another team."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list (employee number) and a name box"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By you; the name fills in"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Select the employee number from the list (it shows the number, name and user name).",
+            "The name box next to it fills in by itself. You can type over it.",
+            "Save the form, then click **Notify** to email that person."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.5** Quality assigns the CMR to Manufacturing Engineering for review and remarks.",
+            "**5.5.7** Engineering reassigns it to Quality when done.",
+            "**5.5.9.4** After each Implementation step it goes back to the Quality team member named in the Quality section."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The old QC CMRs form filled in the logged-in user by default; eCMRs leaves it empty until you pick someone."
+          ]
         }
       ],
       "related": [],
@@ -137,14 +255,72 @@
       "title": "Notify",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Emails the person in **Assigned** that the CMR needs their attention, with the **CMR Num** and **Priority**. The email goes to the **Assigned** employee's SyteLine user (their email address). Save the CMR first, and make sure **Assigned** is filled in.",
+      "summary": "A button that emails the person in **Assigned** that the CMR needs their attention. The email includes the **CMR Num** and **Priority**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 3,
       "blocks": [
         {
           "t": "p",
-          "text": "Emails the person in **Assigned** that the CMR needs their attention, with the **CMR Num** and **Priority**. The email goes to the **Assigned** employee's SyteLine user (their email address). Save the CMR first, and make sure **Assigned** is filled in."
+          "text": "A button that emails the person in **Assigned** that the CMR needs their attention. The email includes the **CMR Num** and **Priority**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Button"
+            ],
+            [
+              "Sends to",
+              "The **Assigned** employee's SyteLine user (their email address)"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Fill in **Assigned** and save the CMR.",
+            "Click **Notify**.",
+            "A message says whether the email was sent."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.9.4** Once the CMR is reassigned, click **Notify** to email the Assigned person."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "If you see *FAIL TO SEND EMAIL*, check that **Assigned** is filled in and that the employee has a SyteLine user with an email address.",
+            "It uses the same Enflite email event as the old QC CMRs form."
+          ]
         }
       ],
       "related": [
@@ -161,22 +337,80 @@
       "title": "CMR Num",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The CMR's unique number, in the form CMR-YYMMDD-HHMMSS: the date and time **New** was clicked (for example CMR-260929-111742). It can't be changed.",
+      "summary": "The CMR's unique number, in the form **CMR-YYMMDD-HHMMSS**: the date and time **New** was clicked (for example CMR-260929-111742).",
       "parent": "ecmrs",
       "group": "Header",
       "order": 4,
       "blocks": [
         {
           "t": "p",
-          "text": "The CMR's unique number, in the form CMR-YYMMDD-HHMMSS: the date and time **New** was clicked (for example CMR-260929-111742). It can't be changed."
+          "text": "The CMR's unique number, in the form **CMR-YYMMDD-HHMMSS**: the date and time **New** was clicked (for example CMR-260929-111742)."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Read-only"
+            ],
+            [
+              "Filled in",
+              "Automatically, when you click **New**"
+            ],
+            [
+              "Can be changed",
+              "No"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "Yes, column **CMR Num**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Click **New**. The number appears straight away.",
+            "Save the form, and write the number down if you need it elsewhere."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Set by the form when you click **New**."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.1** The CMR number is assigned automatically when you click New.",
+            "**5.5.3** Save the form and record the CMR number.",
+            "**5.5.6** Enter the CMR number in the Notes section of the Build Record, for traceability."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Before 29 Sep 2026 numbers were counted up (1, 2, 3...); that repeated numbers, so the date-and-time format replaced it."
+          ]
         }
       ],
       "related": [],
@@ -203,12 +437,37 @@
           "text": "The date the CMR was created."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Date, read-only"
+            ],
+            [
+              "Filled in",
+              "Automatically, when the CMR is saved"
+            ],
+            [
+              "Can be changed",
+              "No"
+            ],
+            [
+              "List view",
+              "Yes, column **Create Date**"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Set by the system when the CMR is saved."
+          "text": "Nothing to do: it's set when the CMR is first saved."
         }
       ],
       "related": [],
@@ -225,22 +484,57 @@
       "title": "Created By",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The user who created the CMR.",
+      "summary": "The SyteLine user who created the CMR.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 6,
       "blocks": [
         {
           "t": "p",
-          "text": "The user who created the CMR."
+          "text": "The SyteLine user who created the CMR."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Read-only"
+            ],
+            [
+              "Filled in",
+              "Automatically, when the CMR is saved"
+            ],
+            [
+              "Can be changed",
+              "No"
+            ],
+            [
+              "List view",
+              "Yes, column **Created By**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Set by the system when the CMR is saved."
+          "text": "Nothing to do: it's set when the CMR is first saved."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "This is who entered the CMR. Who asked for the change goes in **Reported By**."
+          ]
         }
       ],
       "related": [],
@@ -257,14 +551,64 @@
       "title": "PO Num",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The purchase order the change relates to, if any. The list shows every purchase order line (PO, item and line); type to narrow it down.",
+      "summary": "The purchase order the change relates to, if there is one.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 7,
       "blocks": [
         {
           "t": "p",
-          "text": "The purchase order the change relates to, if any. The list shows every purchase order line (PO, item and line); type to narrow it down."
+          "text": "The purchase order the change relates to, if there is one."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Purchase order lines: PO, item and line"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Type part of the PO number to narrow the list, then pick the PO.",
+            "Then pick the line in **PO Line**."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list shows all PO lines, not just this item's. The old form filtered it, but that filter missed POs with leading zeros or prefixes (like RD00000021), so it was left out on purpose."
+          ]
         }
       ],
       "related": [
@@ -283,14 +627,54 @@
       "title": "PO Line",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The line on the selected PO. The list shows only the lines of the PO in **PO Num**, with their item.",
+      "summary": "The line on the purchase order in **PO Num**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 8,
       "blocks": [
         {
           "t": "p",
-          "text": "The line on the selected PO. The list shows only the lines of the PO in **PO Num**, with their item."
+          "text": "The line on the purchase order in **PO Num**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "The lines of the PO in **PO Num**, with their item"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick **PO Num** first.",
+            "Pick the line from the list."
+          ]
         }
       ],
       "related": [
@@ -308,14 +692,61 @@
       "title": "Assigned Buyer",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The buyer responsible for the purchasing side of the change. Select an employee from the list; the employee number is stored.",
+      "summary": "The buyer responsible for the purchasing side of the change.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 9,
       "blocks": [
         {
           "t": "p",
-          "text": "The buyer responsible for the purchasing side of the change. Select an employee from the list; the employee number is stored."
+          "text": "The buyer responsible for the purchasing side of the change."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Stored",
+              "The employee number"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick the buyer from the list."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The old QC CMRs form stored the buyer's user name; eCMRs stores the employee number."
+          ]
         }
       ],
       "related": [],
@@ -339,6 +770,35 @@
         {
           "t": "p",
           "text": "The quantity affected by the change."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Number"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the quantity."
         }
       ],
       "related": [],
@@ -362,6 +822,49 @@
         {
           "t": "p",
           "text": "The point of contact for this CMR."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the name of the person to contact about this CMR."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Free text: it isn't linked to an employee, so any name works. It's separate from **Created By** and **Reported By**."
+          ]
         }
       ],
       "related": [],
@@ -377,14 +880,47 @@
       "title": "RFQ Num",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The request for quote number, if the change involves a quote.",
+      "summary": "The request for quotation (RFQ) number related to the change, if any.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 12,
       "blocks": [
         {
           "t": "p",
-          "text": "The request for quote number, if the change involves a quote."
+          "text": "The request for quotation (RFQ) number related to the change, if any."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the RFQ number."
         }
       ],
       "related": [],
@@ -400,14 +936,61 @@
       "title": "Job Num",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The job the change relates to, if any. The list shows job numbers from material transactions; type to narrow it down.",
+      "summary": "The job the change relates to, if any.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 13,
       "blocks": [
         {
           "t": "p",
-          "text": "The job the change relates to, if any. The list shows job numbers from material transactions; type to narrow it down."
+          "text": "The job the change relates to, if any."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Reference numbers (jobs) from material transactions"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type part of the job number to narrow the list, then pick it."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list isn't filtered by item, for the same leading-zero reason as **PO Num**."
+          ]
         }
       ],
       "related": [],
@@ -423,14 +1006,47 @@
       "title": "Drawing Revision",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The drawing revision the request is based on.",
+      "summary": "The drawing revision the change is about.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 14,
       "blocks": [
         {
           "t": "p",
-          "text": "The drawing revision the request is based on."
+          "text": "The drawing revision the change is about."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 8 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the drawing revision, as shown on the drawing."
         }
       ],
       "related": [
@@ -448,14 +1064,57 @@
       "title": "Latest Revision",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The latest drawing revision, when it differs from the **Drawing Revision**.",
+      "summary": "The latest revision of the drawing, to compare with **Drawing Revision**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 15,
       "blocks": [
         {
           "t": "p",
-          "text": "The latest drawing revision, when it differs from the **Drawing Revision**."
+          "text": "The latest revision of the drawing, to compare with **Drawing Revision**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 8 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the latest drawing revision."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "New on eCMRs: the old QC CMRs form had this field, but hidden."
+          ]
         }
       ],
       "related": [
@@ -473,14 +1132,74 @@
       "title": "Requested Action",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "What is being asked for: describe the problem and the change requested. Always state what the part should be versus what it is, with sheet number and zone if applicable.",
+      "summary": "A full description of the issue or the change being asked for. This is the main text of the request.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 16,
       "blocks": [
         {
           "t": "p",
-          "text": "What is being asked for: describe the problem and the change requested. Always state what the part should be versus what it is, with sheet number and zone if applicable."
+          "text": "A full description of the issue or the change being asked for. This is the main text of the request."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text box (several lines)"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 1000 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Describe the issue or request in full: what is wrong, where, and what change is wanted.",
+            "Save the form."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.2** Provide a full description of the issue or request in Requested Action."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Other notes that come up later go in **General Note**."
+          ]
         }
       ],
       "related": [],
@@ -496,22 +1215,78 @@
       "title": "Item",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The item (part number) the change is for. Selecting an item also filters the **Next Lvl Assy**, **Serial #** and **LOT #** lists.",
+      "summary": "The item (part number) the change is for.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 17,
       "blocks": [
         {
           "t": "p",
-          "text": "The item (part number) the change is for. Selecting an item also filters the **Next Lvl Assy**, **Serial #** and **LOT #** lists."
+          "text": "The item (part number) the change is for."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Items, with their description"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 30 characters"
+            ],
+            [
+              "List view",
+              "Yes, column **Item**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick the item, or type it.",
+            "**Item Desc** fills in by itself."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "**Item Desc** is filled in from the item."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.2** Select the item number, if applicable."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The item also sets what's in the **Next Lvl Assy**, **Serial #** and **LOT #** lists."
+          ]
         }
       ],
       "related": [
@@ -532,22 +1307,51 @@
       "title": "Item Desc",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The description of the selected item.",
+      "summary": "The description of the item in **Item**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 18,
       "blocks": [
         {
           "t": "p",
-          "text": "The description of the selected item."
+          "text": "The description of the item in **Item**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "Automatically, when an **Item** is picked"
+            ],
+            [
+              "Can be changed",
+              "Yes, you can type over it"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Filled in when an **Item** is selected. You can type over it."
+          "text": "Pick an **Item**; the description fills in."
         }
       ],
       "related": [
@@ -565,22 +1369,64 @@
       "title": "Next Lvl Assy",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The next-level assembly that uses the item. The list shows the job items that use the selected **Item**.",
+      "summary": "The next-level assembly the item goes into.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 19,
       "blocks": [
         {
           "t": "p",
-          "text": "The next-level assembly that uses the item. The list shows the job items that use the selected **Item**."
+          "text": "The next-level assembly the item goes into."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Assemblies whose jobs use the selected **Item**"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 30 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
-          "t": "p",
-          "text": "**Assy Desc** is filled in from the assembly."
+          "t": "steps",
+          "items": [
+            "Pick **Item** first.",
+            "Pick the assembly from the list. **Assy Desc** fills in by itself."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list is empty until an **Item** is picked, and for items no job uses."
+          ]
         }
       ],
       "related": [
@@ -599,22 +1445,61 @@
       "title": "Assy Desc",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The description of the next-level assembly.",
+      "summary": "The description of the assembly in **Next Lvl Assy**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 20,
       "blocks": [
         {
           "t": "p",
-          "text": "The description of the next-level assembly."
+          "text": "The description of the assembly in **Next Lvl Assy**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "Automatically, when a **Next Lvl Assy** is picked"
+            ],
+            [
+              "Can be changed",
+              "Yes, you can type over it"
+            ],
+            [
+              "Length",
+              "Up to 40 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Filled in when a **Next Lvl Assy** is selected. You can type over it."
+          "text": "Pick a **Next Lvl Assy**; the description fills in."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The label was *Next Assy Desc* until 29 Sep 2026; it was shortened because it didn't fit."
+          ]
         }
       ],
       "related": [
@@ -642,12 +1527,41 @@
           "text": "The vendor involved in the change, if any."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Vendors, with their name"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "**Vendor Name** is filled in from the vendor."
+          "text": "Pick the vendor. **Vendor Name** fills in by itself."
         }
       ],
       "related": [
@@ -665,22 +1579,51 @@
       "title": "Vendor Name",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The name of the selected vendor.",
+      "summary": "The name of the vendor in **Vendor**.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 22,
       "blocks": [
         {
           "t": "p",
-          "text": "The name of the selected vendor."
+          "text": "The name of the vendor in **Vendor**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "Automatically, when a **Vendor** is picked"
+            ],
+            [
+              "Can be changed",
+              "Yes, you can type over it"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Filled in when a **Vendor** is selected. You can type over it."
+          "text": "Pick a **Vendor**; the name fills in."
         }
       ],
       "related": [
@@ -698,25 +1641,95 @@
       "title": "Priority",
       "eyebrow": "Header",
       "subtitle": "Field on the eCMRs form",
-      "summary": "How urgent the change is.",
+      "summary": "How urgent the change is, based on when it's needed.",
       "parent": "ecmrs",
       "group": "Header",
       "order": 23,
       "blocks": [
         {
           "t": "p",
-          "text": "How urgent the change is."
+          "text": "How urgent the change is, based on when it's needed."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Header"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "High, Medium, Low"
+            ],
+            [
+              "Filled in",
+              "By you (no default)"
+            ],
+            [
+              "List view",
+              "Yes, column **Priority**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick the priority using the table below."
+        },
+        {
+          "t": "h3",
+          "text": "Values"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Priority",
+            "When to use it"
+          ],
+          "rows": [
+            [
+              "High",
+              "Ships or is needed that day."
+            ],
+            [
+              "Medium",
+              "Ships or is needed within 24 hours."
+            ],
+            [
+              "Low",
+              "All others. Expected processing time within the week."
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
         },
         {
           "t": "list",
           "items": [
-            "High",
-            "Medium",
-            "Low"
+            "**5.5.4.1** Set the Priority to High, Medium or Low, based on the need-by date."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "There's no default, so always set it. The **Notify** email includes it."
           ]
         }
       ],
@@ -744,12 +1757,41 @@
           "text": "The department where the change is needed."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Departments, with their description"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 6 characters"
+            ],
+            [
+              "List view",
+              "Yes, column **Dept**"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "**Dept Description** is filled in from the department."
+          "text": "Pick the department. **Dept Description** fills in straight away."
         }
       ],
       "related": [
@@ -768,22 +1810,51 @@
       "title": "Dept Description",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The name of the selected department.",
+      "summary": "The name of the department in **Dept**.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 25,
       "blocks": [
         {
           "t": "p",
-          "text": "The name of the selected department."
+          "text": "The name of the department in **Dept**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "Automatically, as soon as a **Dept** is picked"
+            ],
+            [
+              "Can be changed",
+              "Yes"
+            ],
+            [
+              "Length",
+              "Up to 40 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Filled in as soon as a **Dept** is selected."
+          "text": "Pick a **Dept**; the name fills in before you save."
         }
       ],
       "related": [
@@ -811,12 +1882,41 @@
           "text": "The work center where the change is needed."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "List",
+              "Work centers, with their description"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 6 characters"
+            ],
+            [
+              "List view",
+              "Yes, column **WC**"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "**WC Description** is filled in from the work center."
+          "text": "Pick the work center. **WC Description** fills in straight away."
         }
       ],
       "related": [
@@ -835,22 +1935,51 @@
       "title": "WC Description",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The name of the selected work center.",
+      "summary": "The name of the work center in **Work Center**.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 27,
       "blocks": [
         {
           "t": "p",
-          "text": "The name of the selected work center."
+          "text": "The name of the work center in **Work Center**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "Automatically, as soon as a **Work Center** is picked"
+            ],
+            [
+              "Can be changed",
+              "Yes"
+            ],
+            [
+              "Length",
+              "Up to 40 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Filled in as soon as a **Work Center** is selected."
+          "text": "Pick a **Work Center**; the name fills in before you save."
         }
       ],
       "related": [
@@ -868,14 +1997,71 @@
       "title": "Reported By",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Who reported or requested the change (free text).",
+      "summary": "Who reported or asked for the change.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 28,
       "blocks": [
         {
           "t": "p",
-          "text": "Who reported or requested the change (free text)."
+          "text": "Who reported or asked for the change."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the name of the person who reported the issue or requested the change."
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.2** Enter Reported By."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "This can differ from **Created By**, which is whoever entered the CMR in SyteLine."
+          ]
         }
       ],
       "related": [],
@@ -891,14 +2077,43 @@
       "title": "Due Date",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The date the change should be completed by.",
+      "summary": "The date the change should be done by.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 29,
       "blocks": [
         {
           "t": "p",
-          "text": "The date the change should be completed by."
+          "text": "The date the change should be done by."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Date"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "Yes, column **Due Date**"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick the date from the calendar, or type it."
         }
       ],
       "related": [],
@@ -915,18 +2130,54 @@
       "title": "Initial Change",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The type of change requested. Selecting it ticks the **Requirement checkboxes** that apply (see the table); you can then change the checkboxes by hand.",
+      "summary": "The type of change being asked for. Picking it ticks the **Requirement** checkboxes that apply.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 30,
       "blocks": [
         {
           "t": "p",
-          "text": "The type of change requested. Selecting it ticks the **Requirement checkboxes** that apply (see the table); you can then change the checkboxes by hand."
+          "text": "The type of change being asked for. Picking it ticks the **Requirement** checkboxes that apply."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "Documentation, Machine, Material, Other, Process, Specification, Tooling, Variance(waiver)"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick the type of change.",
+            "Check the **Req:** checkboxes it ticked (see the table), and change them if needed."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -1017,6 +2268,20 @@
               ""
             ]
           ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
+        },
+        {
+          "t": "p",
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.2** Select the Initial Change. The Requirement check boxes are set from it."
+          ]
         }
       ],
       "related": [
@@ -1034,22 +2299,75 @@
       "title": "Req: Costing, Documentation, Tool/Machine, Process, Material",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material. Select each one that applies.",
+      "summary": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 31,
       "blocks": [
         {
           "t": "p",
-          "text": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material. Select each one that applies."
+          "text": "Which reviews the change needs: Costing, Documentation, Tool/Machine, Process and Material."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Five checkboxes"
+            ],
+            [
+              "Filled in",
+              "Automatically from **Initial Change**"
+            ],
+            [
+              "Can be changed",
+              "Yes"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick **Initial Change**; the boxes that apply are ticked.",
+            "Tick or clear boxes if this change needs something different."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Ticked for you when **Initial Change** is selected. You can change them."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.2** The Requirement check boxes are set from the Initial Change."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Which boxes each Initial Change ticks is shown on the **Initial Change** page.",
+            "They don't stop the CMR being closed; they show which reviews are needed."
+          ]
         }
       ],
       "related": [
@@ -1070,14 +2388,57 @@
       "title": "General Note",
       "eyebrow": "Change Request Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Any other information about the request.",
+      "summary": "Any other notes about the request that don't belong in **Requested Action**.",
       "parent": "ecmrs",
       "group": "Change Request Fields",
       "order": 32,
       "blocks": [
         {
           "t": "p",
-          "text": "Any other information about the request."
+          "text": "Any other notes about the request that don't belong in **Requested Action**."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Change Request Fields"
+            ],
+            [
+              "Entry",
+              "Text box (several lines)"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 1000 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the note. Add to it as the CMR goes on."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The old QC CMRs form had this as a separate note too; it's not a copy of **Requested Action**."
+          ]
         }
       ],
       "related": [],
@@ -1093,14 +2454,65 @@
       "title": "Serial #",
       "eyebrow": "Additional Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The serial number of the affected unit. The list shows the serial numbers of the selected **Item**; it is empty for items that aren't serial-tracked. You can also type a value.",
+      "summary": "The serial number of the affected unit.",
       "parent": "ecmrs",
       "group": "Additional Fields",
       "order": 33,
       "blocks": [
         {
           "t": "p",
-          "text": "The serial number of the affected unit. The list shows the serial numbers of the selected **Item**; it is empty for items that aren't serial-tracked. You can also type a value."
+          "text": "The serial number of the affected unit."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Additional Fields"
+            ],
+            [
+              "Entry",
+              "Drop-down list, or type a value"
+            ],
+            [
+              "List",
+              "Serial numbers of the selected **Item**"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick **Item** first.",
+            "Pick the serial number, or type it."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list is empty for items that aren't serial-tracked (for example lot-tracked items). That's expected; you can still type a value.",
+            "New on eCMRs: this used to be written into the notes."
+          ]
         }
       ],
       "related": [
@@ -1119,14 +2531,65 @@
       "title": "LOT #",
       "eyebrow": "Additional Fields",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The lot of the affected material. The list shows the lots of the selected **Item**; it is empty for items that aren't lot-tracked. You can also type a value.",
+      "summary": "The lot of the affected material.",
       "parent": "ecmrs",
       "group": "Additional Fields",
       "order": 34,
       "blocks": [
         {
           "t": "p",
-          "text": "The lot of the affected material. The list shows the lots of the selected **Item**; it is empty for items that aren't lot-tracked. You can also type a value."
+          "text": "The lot of the affected material."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Additional Fields"
+            ],
+            [
+              "Entry",
+              "Drop-down list, or type a value"
+            ],
+            [
+              "List",
+              "Lots of the selected **Item**"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick **Item** first.",
+            "Pick the lot, or type it."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "The list is empty for items that aren't lot-tracked. You can still type a value.",
+            "New on eCMRs: this used to be written into the notes."
+          ]
         }
       ],
       "related": [
@@ -1153,6 +2616,49 @@
         {
           "t": "p",
           "text": "The sub-assembly the affected part belongs to."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Additional Fields"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the sub-assembly."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "New on eCMRs. It's a separate field from **Next Lvl Assy**."
+          ]
         }
       ],
       "related": [],
@@ -1168,14 +2674,43 @@
       "title": "SOX Impacted",
       "eyebrow": "Quality",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Select if the change affects Sarbanes-Oxley (SOX) controls.",
+      "summary": "Tick if the change affects Sarbanes-Oxley (SOX) controls.",
       "parent": "ecmrs",
       "group": "Quality",
       "order": 36,
       "blocks": [
         {
           "t": "p",
-          "text": "Select if the change affects Sarbanes-Oxley (SOX) controls."
+          "text": "Tick if the change affects Sarbanes-Oxley (SOX) controls."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Checkbox"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Tick the box if SOX controls are affected; leave it clear if not."
         }
       ],
       "related": [],
@@ -1190,14 +2725,43 @@
       "title": "Hold On PO",
       "eyebrow": "Quality",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Select if the purchase order is on hold because of this CMR.",
+      "summary": "Tick if the purchase order is on hold because of this CMR.",
       "parent": "ecmrs",
       "group": "Quality",
       "order": 37,
       "blocks": [
         {
           "t": "p",
-          "text": "Select if the purchase order is on hold because of this CMR."
+          "text": "Tick if the purchase order is on hold because of this CMR."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Checkbox"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Tick the box while the PO is on hold; clear it when the hold is lifted."
         }
       ],
       "related": [],
@@ -1212,14 +2776,43 @@
       "title": "Authorization For Supplier To Ship",
       "eyebrow": "Quality",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Select when the supplier is authorized to ship.",
+      "summary": "Tick when the supplier is authorized to ship.",
       "parent": "ecmrs",
       "group": "Quality",
       "order": 38,
       "blocks": [
         {
           "t": "p",
-          "text": "Select when the supplier is authorized to ship."
+          "text": "Tick when the supplier is authorized to ship."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Checkbox"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Tick the box once the supplier is authorized to ship."
         }
       ],
       "related": [],
@@ -1244,8 +2837,41 @@
           "text": "Why the CMR was raised. The codes are the same as on **QC MRRs**."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "13 codes, listed below"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick the code that best describes the reason."
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -1291,8 +2917,41 @@
           "text": "The cause found for the problem. The codes are the same as on **QC MRRs**."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "13 codes, listed below"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Once the cause is known, pick the code that matches it."
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -1338,8 +2997,41 @@
           "text": "Quality's decision on the affected material or parts."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "Accept, Hold, NFF, NRS, Other, Reject, Rework, Scrap"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick Quality's decision."
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -1352,6 +3044,16 @@
             "Reject",
             "Rework",
             "Scrap"
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Engineering Disposition** has a shorter list (no Accept, Hold or Reject)."
           ]
         }
       ],
@@ -1368,22 +3070,65 @@
       "title": "Reviewer ID / Reviewer (Quality)",
       "eyebrow": "Quality",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The Quality reviewer for this CMR.",
+      "summary": "The Quality team member who works the CMR through to completion, with Engineering's help.",
       "parent": "ecmrs",
       "group": "Quality",
       "order": 42,
       "blocks": [
         {
           "t": "p",
-          "text": "The Quality reviewer for this CMR."
+          "text": "The Quality team member who works the CMR through to completion, with Engineering's help."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Drop-down list (Reviewer ID) and a name box (Reviewer)"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By you; the name fills in"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Select the employee number from the list (it shows the number, name and user name).",
+            "The name box next to it fills in by itself. You can type over it."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.5** Set the Quality Reviewer ID to the Quality team member who will work the CMR to completion.",
+            "**5.5.9.4** After each Implementation step, the CMR is assigned back to this person."
+          ]
         }
       ],
       "related": [],
@@ -1401,14 +3146,57 @@
       "title": "QC RCA Notes",
       "eyebrow": "Quality",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Quality's root cause analysis notes.",
+      "summary": "Quality's root cause analysis (RCA) notes.",
       "parent": "ecmrs",
       "group": "Quality",
       "order": 43,
       "blocks": [
         {
           "t": "p",
-          "text": "Quality's root cause analysis notes."
+          "text": "Quality's root cause analysis (RCA) notes."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Quality"
+            ],
+            [
+              "Entry",
+              "Text box (several lines)"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 1000 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Write what Quality found about the root cause."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Engineering's RCA goes in **Eng RCA Notes**."
+          ]
         }
       ],
       "related": [],
@@ -1424,14 +3212,47 @@
       "title": "EO Num",
       "eyebrow": "Engineering",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The engineering order number for the change.",
+      "summary": "The engineering order (EO) number for the change.",
       "parent": "ecmrs",
       "group": "Engineering",
       "order": 44,
       "blocks": [
         {
           "t": "p",
-          "text": "The engineering order number for the change."
+          "text": "The engineering order (EO) number for the change."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the EO number."
         }
       ],
       "related": [],
@@ -1447,14 +3268,47 @@
       "title": "MDL",
       "eyebrow": "Engineering",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The **MDL** reference for the change.",
+      "summary": "The MDL reference for the change.",
       "parent": "ecmrs",
       "group": "Engineering",
       "order": 45,
       "blocks": [
         {
           "t": "p",
-          "text": "The **MDL** reference for the change."
+          "text": "The MDL reference for the change."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Text"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 255 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Type the MDL reference."
         }
       ],
       "related": [],
@@ -1480,8 +3334,41 @@
           "text": "Engineering's decision on the affected material or parts."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Drop-down list"
+            ],
+            [
+              "Values",
+              "NFF, NRS, Other, Rework, Scrap"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "Valid values"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick Engineering's decision."
+        },
+        {
+          "t": "h3",
+          "text": "Values"
         },
         {
           "t": "list",
@@ -1517,12 +3404,40 @@
           "text": "The Engineering reviewer for this CMR."
         },
         {
-          "t": "h3",
-          "text": "How it's filled"
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Drop-down list (Reviewer ID) and a name box (Reviewer)"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By you; the name fills in"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
-          "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Select the employee number from the list (it shows the number, name and user name).",
+            "The name box next to it fills in by itself. You can type over it."
+          ]
         }
       ],
       "related": [],
@@ -1548,6 +3463,35 @@
         {
           "t": "p",
           "text": "The date of Engineering's internal review."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Date"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Pick the date from the calendar, or type it."
         }
       ],
       "related": [],
@@ -1563,14 +3507,57 @@
       "title": "Eng RCA Notes",
       "eyebrow": "Engineering",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Engineering's root cause analysis notes.",
+      "summary": "Engineering's root cause analysis (RCA) notes.",
       "parent": "ecmrs",
       "group": "Engineering",
       "order": 49,
       "blocks": [
         {
           "t": "p",
-          "text": "Engineering's root cause analysis notes."
+          "text": "Engineering's root cause analysis (RCA) notes."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Engineering"
+            ],
+            [
+              "Entry",
+              "Text box (several lines)"
+            ],
+            [
+              "Filled in",
+              "By you"
+            ],
+            [
+              "Length",
+              "Up to 1000 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "How to fill it in"
+        },
+        {
+          "t": "p",
+          "text": "Write what Engineering found about the root cause and the solution."
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Quality's RCA goes in **QC RCA Notes**."
+          ]
         }
       ],
       "related": [],
@@ -1586,22 +3573,67 @@
       "title": "Planning",
       "eyebrow": "Implementation",
       "subtitle": "Field on the eCMRs form",
-      "summary": "**Planning**'s part of the change. Select the checkbox when **Planning** is done, and pick the **Planning** reviewer in **Reviewer ID**.",
+      "summary": "Planning's part of the change: communicating it to the floor.",
       "parent": "ecmrs",
       "group": "Implementation",
       "order": 50,
       "blocks": [
         {
           "t": "p",
-          "text": "**Planning**'s part of the change. Select the checkbox when **Planning** is done, and pick the **Planning** reviewer in **Reviewer ID**."
+          "text": "Planning's part of the change: communicating it to the floor."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Checkbox, Reviewer ID (drop-down) and a name box"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By Planning"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Distribute the documentation or information to the floor.",
+            "Tick the checkbox, and pick yourself in **Reviewer ID**; the name fills in.",
+            "Set **Status** to QC Approval and **Assigned** to the Quality reviewer, save, then click **Notify**."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.9.1** Planning, if communication is required to the floor.",
+            "**5.5.9.4** After completion, select the check box and yourself as Reviewer ID, reassign to Quality and click Notify.",
+            "**5.5.9.5** If Planning isn't required, tick the check box anyway to show it's complete."
+          ]
         }
       ],
       "related": [],
@@ -1620,22 +3652,67 @@
       "title": "Purchasing",
       "eyebrow": "Implementation",
       "subtitle": "Field on the eCMRs form",
-      "summary": "**Purchasing**'s part of the change. Select the checkbox when **Purchasing** is done, and pick the **Purchasing** reviewer in **Reviewer ID**.",
+      "summary": "Purchasing's part of the change: for a Supplier Deviation Request, giving the supplier copies of the documentation.",
       "parent": "ecmrs",
       "group": "Implementation",
       "order": 51,
       "blocks": [
         {
           "t": "p",
-          "text": "**Purchasing**'s part of the change. Select the checkbox when **Purchasing** is done, and pick the **Purchasing** reviewer in **Reviewer ID**."
+          "text": "Purchasing's part of the change: for a Supplier Deviation Request, giving the supplier copies of the documentation."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Checkbox, Reviewer ID (drop-down) and a name box"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By Purchasing"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Send the supplier copies of the documentation.",
+            "Tick the checkbox, and pick yourself in **Reviewer ID**; the name fills in.",
+            "Set **Status** to QC Approval and **Assigned** to the Quality reviewer, save, then click **Notify**."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.9.2** Purchasing, if the deviation is a Supplier Deviation Request.",
+            "**5.5.9.4** After completion, select the check box and yourself as Reviewer ID, reassign to Quality and click Notify.",
+            "**5.5.9.5** If Purchasing isn't required, tick the check box anyway to show it's complete."
+          ]
         }
       ],
       "related": [],
@@ -1654,22 +3731,67 @@
       "title": "CM",
       "eyebrow": "Implementation",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Configuration Management's part of the change. Select the checkbox when **CM** is done, and pick the **CM** reviewer in **Reviewer ID**.",
+      "summary": "Configuration Management's part of the change: releasing an NEI or ECO into the Drawing Books.",
       "parent": "ecmrs",
       "group": "Implementation",
       "order": 52,
       "blocks": [
         {
           "t": "p",
-          "text": "Configuration Management's part of the change. Select the checkbox when **CM** is done, and pick the **CM** reviewer in **Reviewer ID**."
+          "text": "Configuration Management's part of the change: releasing an NEI or ECO into the Drawing Books."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Checkbox, Reviewer ID (drop-down) and a name box"
+            ],
+            [
+              "List",
+              "Employees: number, name and user name"
+            ],
+            [
+              "Filled in",
+              "By CM"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Release the NEI or ECO into the Drawing Books.",
+            "Tick the checkbox, and pick yourself in **Reviewer ID**; the name fills in.",
+            "Set **Status** to QC Approval and **Assigned** to the Quality reviewer, save, then click **Notify**."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Select an employee number from the list (employee number, name and user name are shown). The name is filled in for you."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.9.3** CM, if an NEI or ECO was generated: the CMR is reassigned to Configuration Management and released into Drawing Books.",
+            "**5.5.9.4** After completion, select the check box and yourself as Reviewer ID, reassign to Quality and click Notify.",
+            "**5.5.9.5** If CM isn't required, tick the check box anyway to show it's complete."
+          ]
         }
       ],
       "related": [],
@@ -1688,22 +3810,73 @@
       "title": "Closed",
       "eyebrow": "Implementation",
       "subtitle": "Field on the eCMRs form",
-      "summary": "Select to close the CMR. Clear it to reopen the CMR.",
+      "summary": "Closes the CMR. Clear it to reopen the CMR.",
       "parent": "ecmrs",
       "group": "Implementation",
       "order": 53,
       "blocks": [
         {
           "t": "p",
-          "text": "Select to close the CMR. Clear it to reopen the CMR."
+          "text": "Closes the CMR. Clear it to reopen the CMR."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Checkbox"
+            ],
+            [
+              "Filled in",
+              "By you, when all reviews are done"
+            ],
+            [
+              "List view",
+              "Yes, column **Closed**"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Tick **Closed**. **Close Date** (today) and **Closed By** (you) fill in.",
+            "Set **Status** to Complete.",
+            "Save the form."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "In the procedure"
         },
         {
           "t": "p",
-          "text": "Selecting it fills in **Close Date** (today) and **Closed By** (you); clearing it empties both."
+          "text": "From [QA-300-037](/syteline/procedures/qa-300-037) (Change Management, Rev B draft), section 5.5:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**5.5.10** After all reviews are complete, check Closed and change status to Complete. This completes the CMR process."
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "Good to know"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Closed CMRs sort after open ones in the list.",
+            "Clearing **Closed** empties **Close Date** and **Closed By**.",
+            "It doesn't check the Requirement or Implementation boxes first; make sure every review is done."
+          ]
         }
       ],
       "related": [
@@ -1732,12 +3905,37 @@
           "text": "The date the CMR was closed."
         },
         {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Date, read-only"
+            ],
+            [
+              "Filled in",
+              "Automatically, when **Closed** is ticked"
+            ],
+            [
+              "Can be changed",
+              "No"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
+        },
+        {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Set when **Closed** is selected."
+          "text": "Nothing to do: tick **Closed** and today's date fills in. Clearing **Closed** empties it."
         }
       ],
       "related": [
@@ -1755,22 +3953,51 @@
       "title": "Closed By",
       "eyebrow": "Implementation",
       "subtitle": "Field on the eCMRs form",
-      "summary": "The user who closed the CMR.",
+      "summary": "The SyteLine user who closed the CMR.",
       "parent": "ecmrs",
       "group": "Implementation",
       "order": 55,
       "blocks": [
         {
           "t": "p",
-          "text": "The user who closed the CMR."
+          "text": "The SyteLine user who closed the CMR."
+        },
+        {
+          "t": "meta",
+          "items": [
+            [
+              "Section",
+              "Implementation"
+            ],
+            [
+              "Entry",
+              "Read-only"
+            ],
+            [
+              "Filled in",
+              "Automatically, when **Closed** is ticked"
+            ],
+            [
+              "Can be changed",
+              "No"
+            ],
+            [
+              "Length",
+              "Up to 128 characters"
+            ],
+            [
+              "List view",
+              "No"
+            ]
+          ]
         },
         {
           "t": "h3",
-          "text": "How it's filled"
+          "text": "How to fill it in"
         },
         {
           "t": "p",
-          "text": "Set when **Closed** is selected."
+          "text": "Nothing to do: tick **Closed** and your user name fills in. Clearing **Closed** empties it."
         }
       ],
       "related": [
