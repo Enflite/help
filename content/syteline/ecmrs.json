@@ -1446,6 +1446,10 @@
               "By you"
             ],
             [
+              "Required",
+              "Yes: a CMR can't be saved without an Item"
+            ],
+            [
               "Length",
               "Up to 30 characters"
             ],
@@ -1462,7 +1466,7 @@
         {
           "t": "steps",
           "items": [
-            "Pick the item, or type it.",
+            "Pick the item, or type it. Every CMR needs one.",
             "**Item Desc** fills in by itself."
           ]
         },
@@ -1477,7 +1481,7 @@
         {
           "t": "list",
           "items": [
-            "**5.5.2** Select the item number, if applicable."
+            "**5.5.2** Select the item number."
           ]
         },
         {
@@ -1487,7 +1491,8 @@
         {
           "t": "list",
           "items": [
-            "The item also sets what's in the **Next Lvl Assy**, **Serial #** and **LOT #** lists."
+            "The item also sets what's in the **Next Lvl Assy**, **Serial #** and **LOT #** lists.",
+            "The **IDM Related Info** panel shows the documents attached from eCMRs for this item, on every CMR with the same item."
           ]
         }
       ],
