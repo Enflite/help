@@ -12,5 +12,12 @@
     "description": "How Enflite builds and changes SyteLine forms: project standards, personalization layers, and FormSync.",
     "home": "index",
     "order": 2
+  },
+  {
+    "key": "planning",
+    "name": "Planning",
+    "description": "APS planning and procurement at Enflite: the planner's and buyer's daily routines, and the forms that explain the plan.",
+    "home": "index",
+    "order": 3
   }
 ]
