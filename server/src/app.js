@@ -70,28 +70,37 @@ export function createApp({ contentDir, clientDist, aiConfig } = {}) {
     res.json(hits);
   }));
 
-  api.use((req, res) => res.status(404).json({ error: "Not found" }));
-  app.use("/api", api);
-
-  // Right-click -> Help from a form: /go/<space>/<form>/<component> opens the page for that
-  // component (its topic's aliases), else the form's page. ".html" is accepted and ignored.
-  app.get(["/go/:space/:form", "/go/:space/:form/:component"], wrap(async (req, res) => {
-    const { space, form } = req.params;
-    const component = (req.params.component || "").replace(/\.html$/i, "");
+  // Right-click -> Help from a form. SyteLine sends the space, the form and the right-clicked
+  // component, as a path (/go/syteline/ecmrs/c_item) or as a query
+  // (/go?space=syteline&form=ecmrs&component=c_item); the two can be mixed. /go redirects to the
+  // page whose aliases hold the component, else the form's page. /api/go answers the same with
+  // { path } for the client, which handles /go links that reach it instead of the API.
+  const helpTarget = async (req) => {
+    const q = req.query;
+    const one = (v) => String([].concat(v ?? "")[0]).trim();
+    const space = one(req.params.space || q.space);
+    const form = one(req.params.form || q.form);
+    const component = one(req.params.component || q.component || q.field).replace(/\.html$/i, "");
     let target = null;
-    if (component) {
-      target = await Topic.findOne(
-        { space, aliases: component, $or: [{ path: form }, { path: new RegExp(`^${escapeRegex(form)}/`) }] },
-        "path",
-      ).lean();
+    if (space && form && component) {
+      target = await Topic.findOne({
+        space,
+        aliases: new RegExp(`^${escapeRegex(component)}$`, "i"),
+        $or: [{ path: form }, { path: new RegExp(`^${escapeRegex(form)}/`) }],
+      }, "path").lean();
     }
-    if (!target) target = await Topic.findOne({ space, path: form }, "path").lean();
-    const to = target ? `/${space}/${target.path}` : `/${space}`;
+    if (!target && space && form) target = await Topic.findOne({ space, path: form }, "path").lean();
+    const to = target ? `/${space}/${target.path}` : space ? `/${space}` : "/";
     // One line per right-click -> Help: which component SyteLine sent, how its script found it
     // (?via=parm|focus|none) and where it went. Shows whether field-level help is working.
-    console.log(`help link ${space}/${form} component=${component || "-"} via=${req.query.via || "-"} -> ${to}`);
-    res.redirect(302, to);
-  }));
+    console.log(`help link ${space || "-"}/${form || "-"} component=${component || "-"} via=${one(q.via) || "-"} -> ${to}`);
+    return to;
+  };
+  const goPaths = ["/go", "/go/:space", "/go/:space/:form", "/go/:space/:form/:component"];
+  api.get(goPaths, wrap(async (req, res) => res.json({ path: await helpTarget(req) })));
+  api.use((req, res) => res.status(404).json({ error: "Not found" }));
+  app.use("/api", api);
+  app.get(goPaths, wrap(async (req, res) => res.redirect(302, await helpTarget(req))));
 
   if (contentDir) {
     app.use("/files", express.static(path.join(contentDir, "files"), { fallthrough: false, index: false }));

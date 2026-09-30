@@ -69,6 +69,19 @@ t("right-click help redirects a component to its page", async () => {
   assert.equal(await where("/go/syteline/nope/c_item"), "/syteline");
 });
 
+t("right-click help also takes a query, any letter case, and answers the client as JSON", async () => {
+  const where = async (p) => (await get(p)).headers.get("location");
+  assert.equal(await where("/go?space=syteline&form=ecmrs&component=c_item&via=parm"), "/syteline/ecmrs/fields/item");
+  assert.equal(await where("/go/syteline/ecmrs?component=l_item"), "/syteline/ecmrs/fields/item");
+  assert.equal(await where("/go/syteline/ecmrs/C_ITEM"), "/syteline/ecmrs/fields/item");
+  assert.equal(await where("/go/syteline/service-orders/UfEvalDateEdit"), "/syteline/service-orders/fields/eval_date");
+  assert.equal(await where("/go/syteline/incidents/UfDateOfManufactureGridCol"), "/syteline/incidents/fields/date_of_manufacture");
+  assert.equal(await where("/go"), "/");
+  const json = await (await get("/api/go/syteline/ecmrs/c_item?via=focus")).json();
+  assert.deepEqual(json, { path: "/syteline/ecmrs/fields/item" });
+  assert.equal((await get("/api/nope")).status, 404);
+});
+
 t("search finds by word and by part of a title", async () => {
   const hits = await (await get("/api/search?q=notify&space=syteline")).json();
   assert.equal(hits[0].path, "ecmrs/fields/notify");
