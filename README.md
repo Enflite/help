@@ -84,6 +84,30 @@ npm run build       # client builds
 Edit the JSON in `content/` (format: [`content/README.md`](content/README.md)), run
 `npm run check`, commit, and seed (or redeploy the Docker image).
 
+## Vercel
+
+`vercel.json` deploys two services as one project:
+
+| Service | Folder | Public paths |
+|---|---|---|
+| `client` | `client/` (Vite) | everything else, including `/files/...` (the build copies `content/files/` in) |
+| `server` | `server/` (Express, `src/index.js`) | `/api/...`, `/go/...` |
+
+The browser calls `/api` on the same address, so the services don't call each other and there are
+no bindings. Set `MONGODB_URI` in the Vercel project, and allow Vercel in Atlas **Network Access**.
+Vercel doesn't seed: run `npm run seed` against the same database after content changes.
+`vercel dev` runs both services locally.
+
+**Keep it private** (rule 4 in `AGENTS.md`): a Vercel address is on the public internet and the
+app has no login. Before sharing a Vercel link, turn on **Settings → Deployment Protection**
+(Vercel Authentication, or a password) for all deployments. Use Vercel for review and testing; the
+address SyteLine's right-click Help points at stays the internal HTTPS server below, since
+SyteLine users can't get past Vercel's protection.
+
+First deploy, check: a page opened directly (e.g. `/syteline/ecmrs/fields/item`) loads rather
+than 404; `/api/health` shows `"db": true`; `/go/syteline/ecmrs/c_item` redirects to the Item page;
+a procedure PDF under `/files/` opens.
+
 ## Hosting and SyteLine
 
 SyteLine runs in the browser over `https`, and browsers won't open `file:` links from it (SyteLine
@@ -107,6 +131,7 @@ When it has an address, the SyteLine forms point their right-click Help at
 | `server/test/` | `node --test` tests |
 | `content/` | Help content (JSON) and `files/` (PDFs) - see its README |
 | `Dockerfile`, `docker-compose.yml` | Build and run with MongoDB |
+| `vercel.json` | Vercel project: `client` and `server` services and their public paths |
 | `AGENTS.md` / `CLAUDE.md` | Rules for working in this repo |
 
 ## API
