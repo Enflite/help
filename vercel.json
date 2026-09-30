@@ -8,13 +8,20 @@
     "server": {
       "root": "server",
       "framework": "express",
-      "entrypoint": "src/index.js"
+      "entrypoint": "src/index.js",
+      "bindings": [
+        { "type": "service", "service": "client", "format": "url", "env": "CLIENT_URL" }
+      ]
     }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": { "service": "server" } },
     { "source": "/go", "destination": { "service": "server" } },
     { "source": "/go/(.*)", "destination": { "service": "server" } },
-    { "source": "/(.*)", "destination": { "service": "client" } }
+    { "source": "/assets/(.*)", "destination": { "service": "client" } },
+    { "source": "/icons/(.*)", "destination": { "service": "client" } },
+    { "source": "/files/(.*)", "destination": { "service": "client" } },
+    { "source": "/enflite-logo.png", "destination": { "service": "client" } },
+    { "source": "/(.*)", "destination": { "service": "server" } }
   ]
 }

@@ -14,7 +14,7 @@ const LIST_FIELDS = "path title type icon summary group order number eyebrow";
 const wrap = (fn) => (req, res, next) => fn(req, res, next).catch(next);
 const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-export function createApp({ contentDir, clientDist, aiConfig } = {}) {
+export function createApp({ contentDir, clientDist, clientUrl, aiConfig } = {}) {
   const app = express();
   app.disable("x-powered-by");
   app.set("trust proxy", true);
@@ -108,7 +108,20 @@ export function createApp({ contentDir, clientDist, aiConfig } = {}) {
 
   if (clientDist && fs.existsSync(path.join(clientDist, "index.html"))) {
     app.use(express.static(clientDist, { index: false, redirect: false })); // page folders: SPA below
-    app.get("/*splat", (req, res) => res.sendFile(path.join(clientDist, "index.html")));
+    app.get(["/", "/*splat"], (req, res) => res.sendFile(path.join(clientDist, "index.html")));
+  } else if (clientUrl) {
+    // On Vercel the client is its own service and page addresses (/syteline/ecmrs/fields/item)
+    // come here (vercel.json): answer them with the client's index.html, fetched from the client
+    // service's internal address and kept for a minute.
+    let shell = { html: "", at: 0 };
+    app.get(["/", "/*splat"], wrap(async (req, res) => {
+      if (!shell.html || Date.now() - shell.at > 60_000) {
+        const r = await fetch(new URL("index.html", clientUrl.replace(/\/?$/, "/")));
+        if (!r.ok) throw new Error(`client index.html: ${r.status}`);
+        shell = { html: await r.text(), at: Date.now() };
+      }
+      res.type("html").set("Cache-Control", "no-cache").send(shell.html);
+    }));
   }
 
   app.use((err, req, res, next) => {

@@ -13,6 +13,8 @@ export const config = {
   mongoUri: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/enflite-help",
   contentDir: process.env.CONTENT_DIR || path.join(root, "content"),
   clientDist: process.env.CLIENT_DIST || path.join(root, "client", "dist"),
+  // On Vercel: the client service's internal address (a binding in vercel.json).
+  clientUrl: process.env.CLIENT_URL || "",
   ai: {
     apiUrl: (process.env.AI_API_URL || "").replace(/\/$/, ""),
     email: process.env.AI_SERVICE_EMAIL || "",
