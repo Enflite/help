@@ -383,6 +383,79 @@
         "lifecycle"
       ],
       "aliases": []
+    },
+    {
+      "path": "adding-idm-to-a-form",
+      "type": "guide",
+      "title": "Adding IDM to a form",
+      "parent": "index",
+      "group": "Standards",
+      "order": 6,
+      "summary": "Connect a SyteLine form to Infor Document Management: the record's documents in the IDM Related Info panel.",
+      "blocks": [
+        {
+          "t": "p",
+          "text": "When a SyteLine form is connected to Infor Document Management, the form's **IDM Related Info** side panel lists the documents that belong to the record you are on, and a file dropped into the panel is saved in IDM with the record's values on it. Worked example: [eCMRs](https://github.com/Enflite/IDM/blob/main/docs/ecmrs/Implementation-Plan.md), which looks up a CMR's documents by Item."
+        },
+        {
+          "t": "h2",
+          "text": "How the pieces fit"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Document type** (IDM): the kind of document and the attributes stored on each file. Enflite types are `ENF_<Area>Docs` with `AccountingEntity`, `EntityType`, `Description` plus the key attributes.",
+            "**Document type filter** (IDM): the `IDM-User` filter makes the type available. Users who cannot see the type will not see its files.",
+            "**Business Context Model** (IDM): links an *entity* name to the document type; its **XQuery** decides which files match the record.",
+            "**Form External Message Entities** (SyteLine): for one form, the entity it sends and which form property fills each attribute.",
+            "The form's **event handlers** (SyteLine): five handlers that send the record's values to the side panel each time a record is selected."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "On every record, the form builds a JSON message from the entity row and posts it. IDM finds the Business Context Model for the message's entity, runs its XQuery with the message's values, and shows the matching files. Uploading a file does the reverse: the message's values become the file's attributes."
+        },
+        {
+          "t": "h2",
+          "text": "The steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "**Document type** (IDM): only if no existing type fits. Name `ENF_<Area>Docs`; add the key attributes (all `String`, single-value); add an ACL and **Set as Default ACL**.",
+            "**Document type filter**: add the type to the `IDM-User` filter.",
+            "**Business Context Model**: the entity name the form will send; the document type; the XQuery (file attributes start with `@`, form values go in `{}`); an auto **Description** for uploads.",
+            "**Form External Message Entities**: the form name, the entity, and one row per XQuery value \u2014 attribute names exactly as in the XQuery's `{}`, values `P(<form property>)`.",
+            "**Event handlers**: the five handlers go into the form XML through the project's build script, imported through **FormSync** at Site scope \u2014 never typed in Design Mode. Template: [templates/event-handlers.xml](https://github.com/Enflite/IDM/blob/main/templates/event-handlers.xml).",
+            "**Test on TRN**: open the form, check the message in **Context Viewer** \u2192 `InforBusinessContext` \u2192 JSON, upload a file, move records and confirm the panel follows.",
+            "**Production**: repeat steps 1-5 from the TRN setup, import the same form XML, smoke test, and record it in the project's README Release."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Gotchas"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Names are case sensitive everywhere** \u2014 attribute names in the document type, the XQuery's `{}`, and the entity row must match exactly.",
+            "Decide the **key** first: values unique to the record, or deliberately shared if documents should show on several records. A blank key value matches every file whose key is blank \u2014 make the key field required or add a second XQuery condition.",
+            "The fastest check for any \"no files\" problem is the browser's developer tools \u2192 **Network** \u2192 the panel's request to `idm.inforcloudsuite.com/ca/api/bc/search`: its body is the form's message, its response shows the exact **searchXQuery** IDM ran.",
+            "The Form Designer sometimes does not save a new event handler, and pasting a whole `SLFormExtMsgEntities...` response into a Method Call box fails \u2014 another reason handlers go in through the build script."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Full procedure: [how-to-add-idm-to-a-form.md](https://github.com/Enflite/IDM/blob/main/docs/how-to-add-idm-to-a-form.md). Troubleshooting: [troubleshooting.md](https://github.com/Enflite/IDM/blob/main/docs/troubleshooting.md). Every form connected to IDM: [forms.md](https://github.com/Enflite/IDM/blob/main/docs/forms.md)."
+        }
+      ],
+      "related": [
+        "standards",
+        "naming",
+        "lifecycle",
+        "formsync"
+      ],
+      "aliases": []
     }
   ]
 }
