@@ -12,6 +12,18 @@ systems are added as new *spaces*.
 - **Right-click → Help** from a SyteLine form: `/go/<space>/<form>/<component>` opens that field's
   page (e.g. `/go/syteline/ecmrs/c_item` → `/syteline/ecmrs/fields/item`).
 
+## Add right-click Help to a SyteLine form
+
+Step-by-step, for any form: **[docs/syteline-right-click-help.md](docs/syteline-right-click-help.md)**.
+It explains the events (`StdFormHelp`, `StdFormComponentHelp`), the handlers and their script, how to
+add them with [`tools/syteline/form_help.py`](tools/syteline/form_help.py), how to write the help
+pages, and how to test on TRN.
+
+```sh
+python3 tools/syteline/form_help.py add original/MyForm.trn.original.xml --form my-form --out MyForm.xml
+python3 tools/syteline/form_help.py components MyForm.xml --form my-form --only Uf --json   # page stubs
+```
+
 ## Run it
 
 Needs Node.js 20.12+ and a MongoDB (local, Docker, or a server such as Atlas: set `MONGODB_URI`).
@@ -77,6 +89,7 @@ npm run check       # content/ is valid (no database needed)
 npm test            # content checks + API tests (API tests use MONGODB_URI_TEST, default
                     # mongodb://127.0.0.1:27017/enflite-help-test; skipped if no MongoDB)
 npm run build       # client builds
+npm run test:tools  # tools/syteline (Python 3)
 ```
 
 ## Add or change help

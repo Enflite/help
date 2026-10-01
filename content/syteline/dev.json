@@ -79,6 +79,11 @@
           "text": "Worked example: eCMRs (`tools/apply_form_changes.py`, `focus_help`). Confirmed on TRN 2026-09-30 (right-click → Help). Service Orders and Incidents use the same script."
         },
         {
+          "t": "note",
+          "kind": "note",
+          "text": "Full instructions, with the events explained step by step: [docs/syteline-right-click-help.md](https://github.com/Enflite/help/blob/main/docs/syteline-right-click-help.md) in the Enflite/help repo. Its script `tools/syteline/form_help.py` adds the handlers below to any form export (`add`) and prints help-page stubs with the aliases filled in (`components`)."
+        },
+        {
           "t": "h2",
           "text": "Before you start"
         },
@@ -101,6 +106,11 @@
         {
           "t": "h2",
           "text": "2. Handle both Help events"
+        },
+        {
+          "t": "code",
+          "title": "Or let the script add them",
+          "text": "python3 tools/syteline/form_help.py add original/MyForm.trn.original.xml --form my-form --out MyForm.xml"
         },
         {
           "t": "p",

@@ -12,7 +12,8 @@
     "start": "npm start -w server",
     "seed": "npm run seed -w server",
     "check": "npm run check -w server",
-    "test": "npm test -w server"
+    "test": "npm test -w server",
+    "test:tools": "python3 -m unittest discover -s tools/syteline"
   },
   "engines": {
     "node": ">=20.12"
