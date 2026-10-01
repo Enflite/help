@@ -79,6 +79,11 @@ changes built in [Enflite/ServiceOrders](https://github.com/Enflite/ServiceOrder
 from those repos' plans and form exports (component names from `ServiceOrders.xml` /
 `Incidents.xml`). For Infor's own fields the form page links to Infor's help.
 
+`syteline/etrrs.json` (2026-10-01) documents the eTRRs form built in
+[Enflite/TRR](https://github.com/Enflite/TRR): one page per Enflite field, generated there by
+`scripts/help_pages.py` from its field list and form export (`exports/eTRRs_v1.XML`), which checks
+that every purple component has a page. Change it in Enflite/TRR, re-run, and copy the file here.
+
 `syteline/build.json` (2026-09-30) is for the people who build the forms: backing up a form, creating
 a `ue_` table and IDO, report layouts, choosing column data types, troubleshooting and a builder
 glossary. It comes from two recorded walkthroughs (creating a new table, up to the start of the
