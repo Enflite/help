@@ -1,0 +1,721 @@
+{
+  "space": "syteline",
+  "topics": [
+    {
+      "path": "etrrs",
+      "type": "form",
+      "icon": "form",
+      "title": "eTRRs",
+      "eyebrow": "Quality · eTRRs",
+      "subtitle": "Enflite's standalone TRR form.",
+      "summary": "eTRRs: TRRs created on their own, without a Quality Control Topic, in the same layout as Infor's TRRs form.",
+      "group": "Forms",
+      "order": 4,
+      "groups": [
+        "Header",
+        "Description tab",
+        "Correction/Containment tab",
+        "User Defined tab"
+      ],
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "**Being tested on TRN.** eTRRs is not live in production yet. The vendor **TRRs** form stays in use until go-live."
+        },
+        {
+          "t": "p",
+          "text": "**eTRRs** is Enflite's TRR form. It looks like Infor's **TRRs** form, but a TRR no longer needs a Quality Control Topic: click **New**, fill it in, save. **Priority**, **Dept** and **Addt'l Topics** are the TRR's own and can be typed. The existing TRRs are copied in from the TRRs form."
+        },
+        {
+          "t": "p",
+          "text": "Fields Enflite added or changed are shaded purple on the form, and each has a page here. For the fields that work as on Infor's form (Description, the Cause text, Correction/Containment, Corrective Action, Follow Up Date, the User Defined fields), see [Infor's TRRs help](https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=qcs_user_cl_sl/mergedprojects/sl_qcs/forms/nonmaterial/qctrrs.html)."
+        },
+        {
+          "t": "p",
+          "text": "Right-click a field → **Help** (or press **F1**) to open its page."
+        },
+        {
+          "t": "children"
+        },
+        {
+          "t": "p",
+          "text": "Built in [Enflite/TRR](https://github.com/Enflite/TRR) (SOW 00002 TRR Development)."
+        }
+      ],
+      "related": [],
+      "aliases": [],
+      "infor": {
+        "url": "https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=qcs_user_cl_sl/mergedprojects/sl_qcs/forms/nonmaterial/qctrrs.html"
+      }
+    },
+    {
+      "path": "etrrs/fields/trr_num",
+      "type": "field",
+      "icon": "field",
+      "title": "TRR Num",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The TRR's number on eTRRs. It is given automatically when a new TRR is saved: 1, 2, 3 and so on.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The TRR's number on eTRRs. It is given automatically when a new TRR is saved: 1, 2, 3 and so on."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Nothing to type. Click **New**, fill in the TRR and save: the number appears. TRRs copied from the TRRs form get a new number too; their old number is in **Legacy TRR**."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "TrrNumEdit",
+        "TrrNumStatic",
+        "TrrNumGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/topic_num",
+      "type": "field",
+      "icon": "field",
+      "title": "Topic Num",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The Quality Control Topic this TRR belongs to, if any. A TRR no longer needs a topic.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The Quality Control Topic this TRR belongs to, if any. A TRR no longer needs a topic."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the topic number, or leave it blank. TRRs copied from the TRRs form keep their topic number."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "TrcvrNumEdit",
+        "TrcvrNumStatic",
+        "TrcvrNumGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/legacy_trr",
+      "type": "field",
+      "icon": "field",
+      "title": "Legacy TRR",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The TRR's number on Infor's TRRs form, for TRRs copied from it. Blank on TRRs created on eTRRs.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 3,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The TRR's number on Infor's TRRs form, for TRRs copied from it. Blank on TRRs created on eTRRs."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled by **Copy TRRs from vendor form**; it can't be typed. To find an old TRR by its old number, filter on **Legacy TRR** in the grid view."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "LegacyTrrNumEdit",
+        "LegacyTrrNumStatic",
+        "LegacyTrrNumGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/priority",
+      "type": "field",
+      "icon": "field",
+      "title": "Priority",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The TRR's priority code and its description (for example 3, Low). On the TRRs form this came from the topic and couldn't be changed; on eTRRs it is the TRR's own.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 4,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The TRR's priority code and its description (for example 3, Low). On the TRRs form this came from the topic and couldn't be changed; on eTRRs it is the TRR's own."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the priority code and its description. A drop-down list of the codes is added once the codes are confirmed."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "enhancedCombo1",
+        "edit3",
+        "static2",
+        "Enhanced1GridCol",
+        "Edit3GridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/dept",
+      "type": "field",
+      "icon": "field",
+      "title": "Dept",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The department the TRR is for, and its description. On the TRRs form this came from the topic; on eTRRs it is the TRR's own.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 5,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The department the TRR is for, and its description. On the TRRs form this came from the topic; on eTRRs it is the TRR's own."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick the department from the list. Its description fills in by itself."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "enhancedCombo2",
+        "edit4",
+        "static3",
+        "Enhanced2GridCol",
+        "Edit4GridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/status",
+      "type": "field",
+      "icon": "field",
+      "title": "Status",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Where the TRR stands, for example Closed.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 6,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Where the TRR stands, for example Closed."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the status. A drop-down list is added once the list of statuses is confirmed."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "enhancedCombo3",
+        "static7",
+        "Enhanced3GridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/addtl_topics",
+      "type": "field",
+      "icon": "field",
+      "title": "Addt'l Topics",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Other topics this TRR covers. On the TRRs form this came from the topic; on eTRRs it is the TRR's own text.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 7,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Other topics this TRR covers. On the TRRs form this came from the topic; on eTRRs it is the TRR's own text."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the topics."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "topicAllEdit",
+        "static8",
+        "TopicAllGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/initial_note",
+      "type": "field",
+      "icon": "field",
+      "title": "Initial Note",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The note the TRR started with. On the TRRs form this was the topic's note; on eTRRs it is the TRR's own.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 8,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The note the TRR started with. On the TRRs form this was the topic's note; on eTRRs it is the TRR's own."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Type the note."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "multiLineEdit1",
+        "static5",
+        "MultiLineGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/create_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Create Date",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The date the TRR was created.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 9,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The date the TRR was created."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled with today's date on a new TRR. TRRs copied from the TRRs form keep their original date."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "TrrCreateDateEdit",
+        "TrrCreateDateStatic",
+        "TrrCreateDateGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/created_by",
+      "type": "field",
+      "icon": "field",
+      "title": "Created By",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Who created the TRR.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 10,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Who created the TRR."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Filled with your user name on a new TRR. TRRs copied from the TRRs form keep the original user."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "CreatedByEdit",
+        "CreatedByStatic",
+        "CreateByGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/due_date",
+      "type": "field",
+      "icon": "field",
+      "title": "Due Date",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "When the TRR is due. On the TRRs form this was the topic's due date and couldn't be changed; on eTRRs it is the TRR's own.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 11,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "When the TRR is due. On the TRRs form this was the topic's due date and couldn't be changed; on eTRRs it is the TRR's own."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a date from the calendar or type it."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "SchedDateEdit",
+        "DueDateStatic",
+        "SchedDateGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/close_trr",
+      "type": "field",
+      "icon": "field",
+      "title": "Close TRR",
+      "eyebrow": "Header",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Closes the TRR and records when and by whom.",
+      "parent": "etrrs",
+      "group": "Header",
+      "order": 12,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Closes the TRR and records when and by whom."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Tick **Close TRR**: **Close Date** becomes today and **Closed By** your user name, and the TRR saves. Untick it to reopen the TRR: both clear."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "checkBox1",
+        "CheckBox1GridCol",
+        "CloseDateEdit",
+        "CloseDateStatic",
+        "CloseDateGridCol",
+        "ClosedByEdit",
+        "ClosedByStatic",
+        "ClosedByGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/reason",
+      "type": "field",
+      "icon": "field",
+      "title": "Reason",
+      "eyebrow": "Description tab",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Why the TRR was raised, as a code, with its description beside it.",
+      "parent": "etrrs",
+      "group": "Description tab",
+      "order": 20,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Why the TRR was raised, as a code, with its description beside it."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a code from the list. Its description fills in by itself."
+        },
+        {
+          "t": "h3",
+          "text": "Codes"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Code",
+            "Description"
+          ],
+          "rows": [
+            [
+              "ANNUAL",
+              "Annual Review"
+            ],
+            [
+              "DOCUMENT",
+              "Incorrect or Inaccurate documentation"
+            ],
+            [
+              "MISSING",
+              "Missing Information"
+            ],
+            [
+              "NONEXIST",
+              "Non-Existing Information"
+            ],
+            [
+              "OTHER",
+              "Other Reason"
+            ],
+            [
+              "OUTDATED",
+              "Outdated Information"
+            ],
+            [
+              "PPE",
+              "PPE not used by employee"
+            ],
+            [
+              "PRD INSP",
+              "Production Inspection finding."
+            ],
+            [
+              "PRD RPRT",
+              "Operator reported production problem"
+            ],
+            [
+              "QTR",
+              "Quarterly Review"
+            ],
+            [
+              "STRMLINE",
+              "Streamline production incident report"
+            ],
+            [
+              "WRONG",
+              "Wrong Information"
+            ]
+          ],
+          "align": "left"
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "ReasonEdit",
+        "ReasonDesc",
+        "ReasonStatic",
+        "ReasonGridCol",
+        "ReasonDescGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/cause",
+      "type": "field",
+      "icon": "field",
+      "title": "Cause",
+      "eyebrow": "Description tab",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The cause found, as a code, with its description beside it. The large **Cause** box below it is the written explanation.",
+      "parent": "etrrs",
+      "group": "Description tab",
+      "order": 21,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The cause found, as a code, with its description beside it. The large **Cause** box below it is the written explanation."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick a code from the list. Its description fills in by itself."
+        },
+        {
+          "t": "h3",
+          "text": "Codes"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Code",
+            "Description"
+          ],
+          "rows": [
+            [
+              "ENG",
+              "Engineering Error"
+            ],
+            [
+              "FUNC",
+              "Functional Issue"
+            ],
+            [
+              "HANDLE",
+              "Internal handling error"
+            ],
+            [
+              "OPE",
+              "Operator Error"
+            ],
+            [
+              "PROC",
+              "Procedure Error"
+            ],
+            [
+              "SHORTAGE",
+              "Parts Shortage"
+            ],
+            [
+              "SUP",
+              "Supplier Error"
+            ],
+            [
+              "UNKNOWN",
+              "Cause Unknown"
+            ],
+            [
+              "VOID",
+              "VOID"
+            ]
+          ],
+          "align": "left"
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "CauseEdit",
+        "CauseDesc",
+        "CauseStatic",
+        "CauseGridCol",
+        "CauseDescGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/assigned_to",
+      "type": "field",
+      "icon": "field",
+      "title": "Assigned To",
+      "eyebrow": "Description tab",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The employee working the TRR, and their name.",
+      "parent": "etrrs",
+      "group": "Description tab",
+      "order": 22,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The employee working the TRR, and their name."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick the employee from the list. Their name fills in by itself."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "AssignedToEdit",
+        "edit1",
+        "AssignedToStatic",
+        "AssignedToGridCol",
+        "Edit1GridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/authorized_by",
+      "type": "field",
+      "icon": "field",
+      "title": "Authorized By",
+      "eyebrow": "Correction/Containment tab",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The employee who authorized the correction or containment.",
+      "parent": "etrrs",
+      "group": "Correction/Containment tab",
+      "order": 30,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The employee who authorized the correction or containment."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Pick the employee from the list."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "AuthorizedByEdit",
+        "AuthorizedByStatic",
+        "AuthorizedByGridCol"
+      ]
+    },
+    {
+      "path": "etrrs/fields/copy_trrs",
+      "type": "field",
+      "icon": "field",
+      "title": "Copy TRRs from vendor form",
+      "eyebrow": "User Defined tab · button",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "Copies every TRR from Infor's **TRRs** form into eTRRs, with all its fields. Each copied TRR gets a new **TRR Num**; its old number goes in **Legacy TRR**.",
+      "parent": "etrrs",
+      "group": "User Defined tab",
+      "order": 40,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Copies every TRR from Infor's **TRRs** form into eTRRs, with all its fields. Each copied TRR gets a new **TRR Num**; its old number goes in **Legacy TRR**."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "Click the button on the **User Defined** tab and wait for the message: it says how many TRRs were copied and how many were already here. It is safe to click again: TRRs already copied are skipped. Costs are not copied."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "CopyLegacyTrrsButton"
+      ]
+    }
+  ]
+}
