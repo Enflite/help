@@ -51,6 +51,8 @@ Text may use `**bold**`, `` `code` `` (field and property names) and links `[lab
 | `legend` | `text` | Explains the red rule on changed steps |
 | `pstep` | `num`, `text`, `kind` (`""`, `changed`, `removed`, `added`), `was`, `why` | A numbered procedure step or definition; changed ones show the released wording and why |
 | `flowchart` | `name` | A drawn flowchart (`client/src/components/Flowchart.jsx`) |
+| `code` | `code`, `label` (optional), `language` (optional, for future highlighting) | A code sample in a flat pre block; use for curl and JSON on developer pages |
+| `columns` | `items` (array of blocks, not nested `columns`) | Two blocks side by side on wide screens, stacked on narrow |
 
 ## Right-click → Help from a form
 

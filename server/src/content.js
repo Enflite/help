@@ -5,7 +5,7 @@ import path from "node:path";
 
 export const BLOCK_TYPES = new Set([
   "p", "h2", "h3", "list", "steps", "table", "children", "links", "meta", "notice", "legend",
-  "pstep", "flowchart",
+  "pstep", "flowchart", "code", "columns",
 ]);
 const TOPIC_KEYS = ["path", "type", "title"];
 
@@ -15,9 +15,10 @@ export function plain(text = "") {
 }
 
 export function blockText(b) {
-  const parts = [b.text, b.num, b.was, b.why, b.title];
+  const parts = [b.text, b.num, b.was, b.why, b.title, b.label, b.code];
   for (const k of ["items", "head"]) if (Array.isArray(b[k])) parts.push(...b[k].map(String));
   if (Array.isArray(b.rows)) for (const r of b.rows) parts.push(...r.map(String));
+  if (b.t === "columns" && Array.isArray(b.items)) for (const x of b.items) parts.push(blockText(x));
   return parts.filter(Boolean).map(plain).join(" ");
 }
 
@@ -84,6 +85,12 @@ export function validate(spaces, topics, dir) {
     for (const b of t.blocks || []) {
       if (!BLOCK_TYPES.has(b.t)) errors.push(`${where}: unknown block type "${b.t}"`);
       if (b.t === "links") for (const p of b.items || []) if (!has(p)) errors.push(`${where}: link "${p}" not found`);
+      if (b.t === "columns") {
+        if (!Array.isArray(b.items) || !b.items.length) errors.push(`${where}: columns needs a non-empty "items" array`);
+        for (const x of b.items || []) {
+          if (!BLOCK_TYPES.has(x.t) || x.t === "columns") errors.push(`${where}: columns item has bad block type "${x.t}"`);
+        }
+      }
       for (const target of linkTargets(JSON.stringify(b))) {
         if (target.startsWith("/files/")) {
           if (!fs.existsSync(path.join(dir, target))) errors.push(`${where}: file ${target} not found`);

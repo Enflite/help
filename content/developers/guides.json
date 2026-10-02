@@ -543,7 +543,7 @@
         },
         {
           "t": "notice",
-          "text": "Status (TBD): this API is documented from the accepted design (ADR-021 in the backend repo). The route implementation is still in flight — confirm the endpoints are live on your backend before building against them."
+          "text": "Status: the API is implemented on the backend-ai branch `muse/form-customization-api` (review pending — not yet merged to main). The examples on this page follow that implementation; confirm the endpoints are live on your backend before building against them."
         },
         {
           "t": "h2",
@@ -607,6 +607,174 @@
         },
         {
           "t": "h2",
+          "text": "Try it: a worked example"
+        },
+        {
+          "t": "p",
+          "text": "This example customizes the **Purchase Order Detail Report Viewer**: change the primary collection to the UE_FL-SL purchase order report collection (with its custom load method) and add a Terms & Conditions group footer. All five inputs are present. Read it as: the files on disk → the multipart request → the `202` response → polling → the completion report."
+        },
+        {
+          "t": "h3",
+          "text": "1. The five inputs, on disk"
+        },
+        {
+          "t": "table",
+          "head": [
+            "File",
+            "Input",
+            "Holds"
+          ],
+          "rows": [
+            [
+              "`PurchaseOrderDetailReportViewer.trn.original.xml`",
+              "1 — current form XML",
+              "The TRN export of the form — the baseline the agent builds from. The `<Form Name=\"...\">` inside must match `formName`."
+            ],
+            [
+              "`PODetail_IDO_properties.csv`",
+              "2 — IDO properties",
+              "Property names, types, and labels from the report's IDO — including the `Uf_ENF_*` custom properties the T&C work adds."
+            ],
+            [
+              "`PODetail_SQL_columns.csv`",
+              "3 — SQL Table columns",
+              "Column names, data types, and nullability from the backing SQL Tables."
+            ],
+            [
+              "`PurchaseOrderDetailReportViewer.production.original.xml`",
+              "5 — attachment",
+              "The production FormSync export — the rollback copy. Required before the agent builds anything."
+            ],
+            [
+              "`terms-and-conditions.txt`",
+              "5 — attachment",
+              "The T&C copy that gets pasted into the static captions."
+            ]
+          ]
+        },
+        {
+          "t": "code",
+          "label": "Form XML excerpt — PurchaseOrderDetailReportViewer.trn.original.xml",
+          "language": "xml",
+          "code": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Form Name=\"PurchaseOrderDetailReportViewer\" Caption=\"Purchase Order Detail Report Viewer\">\n  <Component Name=\"collection_po_detail\" Type=\"Collection\"\n             IDOCollection=\"po-report-detail\" CustomLoadMethod=\"LoadPODetailReport\" />\n  <!-- report layout, flex regions, components ... -->\n</Form>"
+        },
+        {
+          "t": "columns",
+          "items": [
+            {
+              "t": "code",
+              "label": "PODetail_IDO_properties.csv",
+              "language": "text",
+              "code": "Property,Type,Label\nPoNum,string,PO Number\nVendNum,string,Vendor Number\nVendName,string,Vendor Name\nOrderDate,datetime,Order Date\nDueDate,datetime,Due Date\nPoCost,decimal,PO Cost\nCurrCode,string,Currency\nTermsCode,string,Terms Code\nBuyer,string,Buyer\nWhse,string,Warehouse\nPoLine,integer,PO Line\nItem,string,Item\nQtyOrdered,decimal,Qty Ordered\nUnitCost,decimal,Unit Cost\nUf_ENF_PoTermsText,string,PO Terms and Conditions"
+            },
+            {
+              "t": "code",
+              "label": "PODetail_SQL_columns.csv",
+              "language": "text",
+              "code": "Column,DataType,Nullable,Table\npo_num,varchar(20),NO,po_mst\nvend_num,varchar(12),NO,po_mst\norder_date,datetime,YES,po_mst\ndue_date,datetime,YES,po_mst\npo_cost,decimal(18,4),YES,po_mst\ncurr_code,varchar(4),YES,po_mst\nterms_code,varchar(8),YES,po_mst\nbuyer,varchar(30),YES,po_mst\nwhse,varchar(8),YES,po_mst\npo_line,smallint,NO,poitem_mst\nitem,varchar(40),YES,poitem_mst\nqty_ordered,decimal(18,4),YES,poitem_mst\nunit_cost,decimal(18,4),YES,poitem_mst\nUf_ENF_PoTermsText,varchar(max),YES,ue_po_mst"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "text": "The instruction list (input 4) is the requirements, in the requester's own words:"
+        },
+        {
+          "t": "list",
+          "items": [
+            "\"Change the primary collection to the UE_FL-SL purchase order report collection and set the custom load method to match the simple report.\"",
+            "\"Save and regenerate the form after the collection change.\"",
+            "\"Add a Terms & Conditions group footer: a new region at the bottom of the main flex layout, group property PO, page break before, about 92 wide by 30 long.\"",
+            "\"Inside the footer, nest a flex layout with 3 proportional columns (1-3-1) and a vertical flex with 5 static captions, left-aligned, no colon on any static.\"",
+            "\"Paste the T&C copy into the static captions only — keep component names short; never paste long text into a component name.\""
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "2. The request and the `202` response"
+        },
+        {
+          "t": "columns",
+          "items": [
+            {
+              "t": "code",
+              "label": "Request — multipart curl",
+              "language": "bash",
+              "code": "curl -X POST https://api.example.com/api/v1/form-customizations \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -F \"formName=PurchaseOrderDetailReportViewer\" \\\n  -F \"title=Primary collection + Terms and Conditions group footer\" \\\n  -F \"requestedBy=Jake / Purchasing\" \\\n  -F 'instructions=[\"Change the primary collection to the UE_FL-SL purchase order report collection and set the custom load method to match the simple report\",\"Save and regenerate the form after the collection change\",\"Add a Terms and Conditions group footer: a new region at the bottom of the main flex layout, group property PO, page break before, about 92 wide by 30 long\",\"Inside the footer, nest a flex layout with 3 proportional columns (1-3-1) and a vertical flex with 5 static captions, left-aligned, no colon on any static\",\"Paste the T&C copy into the static captions only \\u2014 keep component names short; never paste long text into a component name\"]' \\\n  -F \"formXml=@PurchaseOrderDetailReportViewer.trn.original.xml\" \\\n  -F \"idoPropertiesCsv=@PODetail_IDO_properties.csv\" \\\n  -F \"sqlColumnsCsv=@PODetail_SQL_columns.csv\" \\\n  -F \"attachments[]=@PurchaseOrderDetailReportViewer.production.original.xml\" \\\n  -F \"attachments[]=@terms-and-conditions.txt\""
+            },
+            {
+              "t": "code",
+              "label": "Response — 202 Accepted",
+              "language": "json",
+              "code": "{\n  \"id\": \"9f2c4a1e-3b5d-4c6e-8f90-1a2b3c4d5e6f\",\n  \"status\": \"requested\",\n  \"formName\": \"PurchaseOrderDetailReportViewer\",\n  \"createdAt\": \"2026-10-02T18:42:00.000Z\",\n  \"product\": { \"name\": \"SyteLine Form AI Agent\", \"version\": \"1.0.0\" }\n}"
+            }
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Prefer JSON? Send the same contract as `application/json` — `formXml`, `idoPropertiesCsv`, `sqlColumnsCsv` as inline strings; `instructions` as a string array; `attachments` as `[{ filename, content }]` (raw text) or `[{ filename, contentBase64 }]`. The response is identical."
+        },
+        {
+          "t": "h3",
+          "text": "3. Poll for progress"
+        },
+        {
+          "t": "p",
+          "text": "`GET /api/v1/form-customizations/:id` returns the full record. While the agent works, `steps` shows each pipeline step with its status (`pending`, `running`, `done`, `failed`), evidence refs, and timestamps:"
+        },
+        {
+          "t": "code",
+          "label": "Poll — GET /api/v1/form-customizations/:id (200, running)",
+          "language": "json",
+          "code": "{\n  \"id\": \"9f2c4a1e-3b5d-4c6e-8f90-1a2b3c4d5e6f\",\n  \"status\": \"in_progress\",\n  \"formName\": \"PurchaseOrderDetailReportViewer\",\n  \"title\": \"Primary collection + Terms and Conditions group footer\",\n  \"requestedBy\": \"Jake / Purchasing\",\n  \"product\": { \"name\": \"SyteLine Form AI Agent\", \"version\": \"1.0.0\" },\n  \"flow\": { \"name\": \"syteline-form-customization\", \"version\": \"1.0.0\" },\n  \"steps\": [\n    { \"name\": \"intake\",            \"status\": \"done\",    \"detail\": \"5 inputs staged\",\n      \"startedAt\": \"2026-10-02T18:42:01.120Z\", \"completedAt\": \"2026-10-02T18:42:03.410Z\" },\n    { \"name\": \"validate-inputs\",   \"status\": \"done\",    \"detail\": \"xml + csv shapes ok\",\n      \"startedAt\": \"2026-10-02T18:42:03.420Z\", \"completedAt\": \"2026-10-02T18:42:05.900Z\" },\n    { \"name\": \"backup-originals\", \"status\": \"done\",    \"detail\": \"trn + production originals recorded\",\n      \"startedAt\": \"2026-10-02T18:42:05.910Z\", \"completedAt\": \"2026-10-02T18:42:09.300Z\" },\n    { \"name\": \"compare-trn-prd\",   \"status\": \"done\",    \"detail\": \"sha=a3f9c1e2b4d61234\",\n      \"startedAt\": \"2026-10-02T18:42:09.310Z\", \"completedAt\": \"2026-10-02T18:42:09.320Z\" },\n    { \"name\": \"plan-changes\",      \"status\": \"running\", \"detail\": \"planning 2 changes\",\n      \"startedAt\": \"2026-10-02T18:42:09.330Z\" },\n    { \"name\": \"apply-changes-trn\", \"status\": \"pending\" },\n    { \"name\": \"verify\",            \"status\": \"pending\" },\n    { \"name\": \"open-pr\",           \"status\": \"pending\" }\n  ],\n  \"createdAt\": \"2026-10-02T18:42:00.000Z\",\n  \"updatedAt\": \"2026-10-02T18:44:12.000Z\"\n}"
+        },
+        {
+          "t": "list",
+          "items": [
+            "`intake` — validates the five inputs and stages them",
+            "`validate-inputs` — malware scan, XML and CSV shape checks",
+            "`backup-originals` — FormSync backup: scaffolds the project, records the TRN and production originals",
+            "`compare-trn-prd` — compares the TRN and production originals (drift blocks the request)",
+            "`plan-changes` — the agent plans the customization",
+            "`apply-changes-trn` — builds the new form XML from the TRN original",
+            "`verify` — deterministic rebuild check, docs, and the review deck",
+            "`open-pr` — opens the review PR (the agent never merges)"
+          ]
+        },
+        {
+          "t": "h3",
+          "text": "4. The completion report"
+        },
+        {
+          "t": "p",
+          "text": "When the agent finishes, the record reads `awaiting_review` — its terminal state — with the review PR link and the completion evidence:"
+        },
+        {
+          "t": "code",
+          "label": "Completion — GET /api/v1/form-customizations/:id (200, awaiting_review)",
+          "language": "json",
+          "code": "{\n  \"id\": \"9f2c4a1e-3b5d-4c6e-8f90-1a2b3c4d5e6f\",\n  \"status\": \"awaiting_review\",\n  \"formName\": \"PurchaseOrderDetailReportViewer\",\n  \"title\": \"Primary collection + Terms and Conditions group footer\",\n  \"flow\": { \"name\": \"syteline-form-customization\", \"version\": \"1.0.0\" },\n  \"steps\": [ { \"name\": \"intake\", \"status\": \"done\", \"...\" : \"...\" },\n             \"... all eight steps done ...\" ],\n  \"resultSummary\": \"Primary collection changed to the UE_FL-SL purchase order report collection with its custom load method; Terms & Conditions group footer added (PO group, page break before, 92x30 region, 1-3-1 columns, five statics). Review PR opened for human review.\",\n  \"prUrl\": \"https://github.com/Enflite/PurchaseOrderDetailReportViewer/pull/1\",\n  \"repoUrl\": \"https://github.com/Enflite/PurchaseOrderDetailReportViewer\",\n  \"evidence\": {\n    \"formXml\": \"output/PurchaseOrderDetailReportViewer.xml\",\n    \"deck\": \"output/PurchaseOrderDetailReportViewer.deck.md\",\n    \"inputs\": {\n      \"formXml\": \"input/PurchaseOrderDetailReportViewer.trn.original.xml\",\n      \"idoPropertiesCsv\": \"input/PODetail_IDO_properties.csv\",\n      \"sqlColumnsCsv\": \"input/PODetail_SQL_columns.csv\"\n    },\n    \"originals\": {\n      \"trn\": \"original/PurchaseOrderDetailReportViewer.trn.original.xml\",\n      \"prd\": \"original/PurchaseOrderDetailReportViewer.production.original.xml\",\n      \"sha256Prefix\": \"a3f9c1e2b4d61234\"\n    },\n    \"openItems\": [\n      \"Confirm the real IDO alias prefix for the UET properties in Staging check A\"\n    ],\n    \"assumptions\": [\n      \"Table alias and UET design are assumptions until confirmed in Staging check A\"\n    ]\n  },\n  \"createdAt\": \"2026-10-02T18:42:00.000Z\",\n  \"completedAt\": \"2026-10-02T18:47:55.000Z\"\n}"
+        },
+        {
+          "t": "p",
+          "text": "PRs are never auto-merged. A human merges the PR, then records it with `POST /api/v1/form-customizations/:id/mark-merged`, which moves the request to `completed`."
+        },
+        {
+          "t": "h3",
+          "text": "When the request is rejected"
+        },
+        {
+          "t": "p",
+          "text": "A bad request fails before any work starts — `details` names the failing part:"
+        },
+        {
+          "t": "code",
+          "label": "Error — 400 VALIDATION_ERROR",
+          "language": "json",
+          "code": "{\n  \"error\": {\n    \"code\": \"VALIDATION_ERROR\",\n    \"message\": \"Part \\\"idoPropertiesCsv\\\" must be a .csv file\",\n    \"requestId\": \"req_7d2c91ab\",\n    \"details\": { \"part\": \"idoPropertiesCsv\" }\n  }\n}"
+        },
+        {
+          "t": "h2",
           "text": "Endpoints"
         },
         {
@@ -622,7 +790,7 @@
               "**POST**",
               "`/form-customizations`",
               "Create a request from the five inputs",
-              "`202` — `{ id, status: \"requested\", formName, createdAt }`"
+              "`202` — `{ id, status: \"requested\", formName, createdAt, product }`"
             ],
             [
               "**GET**",
@@ -633,14 +801,20 @@
             [
               "**GET**",
               "`/form-customizations`",
-              "List requests — `status` filter, `limit` (≤ 100, default 20), `cursor`. Admins see the tenant's requests; others see their own. This is the kanban-board query for form work.",
-              "`200` — `{ items, nextCursor? }`"
+              "List requests — `status` filter, `limit` (≤ 100, default 20). Admins see the tenant's requests; others see their own. This is the kanban-board query for form work.",
+              "`200` — `{ items }`"
             ],
             [
               "**POST**",
               "`/form-customizations/:id/cancel`",
               "Cancel a request (ends work in flight); requester or admin only",
               "`200` — `{ id, status: \"cancelled\" }`"
+            ],
+            [
+              "**POST**",
+              "`/form-customizations/:id/mark-merged`",
+              "A human records the review-PR merge (the agent never merges); requester or admin only",
+              "`200` — `{ id, status: \"completed\" }`"
             ]
           ]
         },
