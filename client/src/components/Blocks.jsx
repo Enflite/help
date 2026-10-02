@@ -56,6 +56,19 @@ function Block({ b, topic, space }) {
       return <Step b={b} />;
     case "flowchart":
       return <Flowchart name={b.name} />;
+    case "code":
+      return (
+        <figure className="codeblock">
+          {b.label && <figcaption>{b.label}</figcaption>}
+          <pre><code>{b.code}</code></pre>
+        </figure>
+      );
+    case "columns":
+      return (
+        <div className="columns">
+          {(b.items || []).map((x, i) => <div className="col" key={i}><Block b={x} topic={topic} space={space} /></div>)}
+        </div>
+      );
     default:
       return null;
   }
