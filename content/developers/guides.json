@@ -6,7 +6,7 @@
       "blocks": [
         {
           "t": "p",
-          "text": "How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand. The project SOP and shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates)."
+          "text": "How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand. The project SOP and shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates). The [SyteLine Form AI Agent](/developers/form-ai-agent) turns the same SOP into an API: POST a form-customization request and the AI runs the template workflow for you."
         },
         {
           "t": "notice",
@@ -16,10 +16,11 @@
           "t": "children"
         }
       ],
-      "eyebrow": "Enflite \u00b7 Developer",
+      "eyebrow": "Enflite · Developer",
       "groups": [
         "Standards",
-        "Platform"
+        "Platform",
+        "Form AI Agent"
       ],
       "order": 1,
       "path": "index",
@@ -41,7 +42,7 @@
           "items": [
             "**TRN first, then production.** Everything is built and proven on **TRN**. Production repeats the same steps, in the same order, from the same files.",
             "**Never change Infor-owned objects.** No edits to standard IDOs, tables, or Vendor forms. New fields go on user-extended tables (`Uf_ENF_*`); bigger features get a new table and a new IDO.",
-            "**Forms go in through FormSync at Site scope** \u2014 never over the Vendor definition, never by hand in Design Mode as the delivery method.",
+            "**Forms go in through FormSync at Site scope** — never over the Vendor definition, never by hand in Design Mode as the delivery method.",
             "**Back up before every import.** Export the unchanged form from each environment into `original/` before the first import there.",
             "**Never hand-edit a generated file.** Change the build script, re-run it, commit both.",
             "**Preserve the file bytes.** Form XML stays UTF-8 with BOM and **CRLF** line endings, byte for byte.",
@@ -66,7 +67,8 @@
         "layers",
         "formsync",
         "naming",
-        "lifecycle"
+        "lifecycle",
+        "form-ai-agent"
       ],
       "summary": "The rules every SyteLine form change follows: TRN first, UET-only fields, byte preservation.",
       "title": "Form project standards",
@@ -208,7 +210,7 @@
             [
               "Table column / IDO property",
               "snake_case column, PascalCase property",
-              "`cmr_num` \u2192 `CmrNum`"
+              "`cmr_num` → `CmrNum`"
             ],
             [
               "Form component for a UET field",
@@ -219,7 +221,7 @@
         },
         {
           "t": "p",
-          "text": "Dates use User Data Type `Date4Type` with Data Type `datetime` \u2014 re-open the field after saving to check. `nvarchar` shows dates as `20260909 00:00:00.000`."
+          "text": "Dates use User Data Type `Date4Type` with Data Type `datetime` — re-open the field after saving to check. `nvarchar` shows dates as `20260909 00:00:00.000`."
         }
       ],
       "related": [
@@ -292,7 +294,7 @@
         },
         {
           "t": "p",
-          "text": "The detailed procedures \u2014 UET setup, FormSync backup and import, launch, rollback, new table + IDO \u2014 are in the [templates repo](https://github.com/Enflite/Form-Project-Templates/tree/main/procedures)."
+          "text": "The detailed procedures — UET setup, FormSync backup and import, launch, rollback, new table + IDO — are in the [templates repo](https://github.com/Enflite/Form-Project-Templates/tree/main/procedures)."
         }
       ],
       "related": [
@@ -314,7 +316,7 @@
       "blocks": [
         {
           "t": "p",
-          "text": "When a feature needs its own record and UET on an Infor table does not fit \u2014 Infor's key makes **New** impossible, or most fields would be read-only joins \u2014 build a custom table and IDO. The worked example is [Enflite/eCMRs](https://github.com/Enflite/eCMRs)."
+          "text": "When a feature needs its own record and UET on an Infor table does not fit — Infor's key makes **New** impossible, or most fields would be read-only joins — build a custom table and IDO. The worked example is [Enflite/eCMRs](https://github.com/Enflite/eCMRs)."
         },
         {
           "t": "h2",
@@ -342,9 +344,9 @@
         {
           "t": "steps",
           "items": [
-            "Create the table and columns (**Application Studio** \u2192 **Tables**). The key column gets `AUTONUMBER(STEP(1))` so **New** works. `CreatedBy`, `CreateDate`, `UpdatedBy`, `RecordDate`, and `RowPointer` are generated automatically \u2014 do not add them.",
+            "Create the table and columns (**Application Studio** → **Tables**). The key column gets `AUTONUMBER(STEP(1))` so **New** works. `CreatedBy`, `CreateDate`, `UpdatedBy`, `RecordDate`, and `RowPointer` are generated automatically — do not add them.",
             "Create the IDO on the table and add one property per column (or import the CSVs).",
-            "**Check In** the IDO (**IDOs** tab \u2192 the IDO \u2192 **Check In**). Property edits do not take effect until check-in.",
+            "**Check In** the IDO (**IDOs** tab → the IDO → **Check In**). Property edits do not take effect until check-in.",
             "Work through `docs/deploy-checklist.md` for the steps import cannot do.",
             "Import the form through **FormSync**."
           ]
@@ -357,7 +359,7 @@
           "t": "list",
           "items": [
             "Match a fresh live export exactly: header names (including leading `*`), column count, and quoting. A mismatch fails silently.",
-            "SQL column **Data Type** must be a real type (`nvarchar`, `datetime`, `decimal`, `ItemType`) \u2014 never `String`.",
+            "SQL column **Data Type** must be a real type (`nvarchar`, `datetime`, `decimal`, `ItemType`) — never `String`.",
             "Leave IDO **Property Class** and **Column Data Type** blank for custom properties."
           ]
         },
@@ -425,9 +427,9 @@
             "**Document type** (IDM): only if no existing type fits. Name `ENF_<Area>Docs`; add the key attributes (all `String`, single-value); add an ACL and **Set as Default ACL**.",
             "**Document type filter**: add the type to the `IDM-User` filter.",
             "**Business Context Model**: the entity name the form will send; the document type; the XQuery (file attributes start with `@`, form values go in `{}`); an auto **Description** for uploads.",
-            "**Form External Message Entities**: the form name, the entity, and one row per XQuery value \u2014 attribute names exactly as in the XQuery's `{}`, values `P(<form property>)`.",
-            "**Event handlers**: the five handlers go into the form XML through the project's build script, imported through **FormSync** at Site scope \u2014 never typed in Design Mode. Template: [templates/event-handlers.xml](https://github.com/Enflite/IDM/blob/main/templates/event-handlers.xml).",
-            "**Test on TRN**: open the form, check the message in **Context Viewer** \u2192 `InforBusinessContext` \u2192 JSON, upload a file, move records and confirm the panel follows.",
+            "**Form External Message Entities**: the form name, the entity, and one row per XQuery value — attribute names exactly as in the XQuery's `{}`, values `P(<form property>)`.",
+            "**Event handlers**: the five handlers go into the form XML through the project's build script, imported through **FormSync** at Site scope — never typed in Design Mode. Template: [templates/event-handlers.xml](https://github.com/Enflite/IDM/blob/main/templates/event-handlers.xml).",
+            "**Test on TRN**: open the form, check the message in **Context Viewer** → `InforBusinessContext` → JSON, upload a file, move records and confirm the panel follows.",
             "**Production**: repeat steps 1-5 from the TRN setup, import the same form XML, smoke test, and record it in the project's README Release."
           ]
         },
@@ -438,10 +440,10 @@
         {
           "t": "list",
           "items": [
-            "**Names are case sensitive everywhere** \u2014 attribute names in the document type, the XQuery's `{}`, and the entity row must match exactly.",
-            "Decide the **key** first: values unique to the record, or deliberately shared if documents should show on several records. A blank key value matches every file whose key is blank \u2014 make the key field required or add a second XQuery condition.",
-            "The fastest check for any \"no files\" problem is the browser's developer tools \u2192 **Network** \u2192 the panel's request to `idm.inforcloudsuite.com/ca/api/bc/search`: its body is the form's message, its response shows the exact **searchXQuery** IDM ran.",
-            "The Form Designer sometimes does not save a new event handler, and pasting a whole `SLFormExtMsgEntities...` response into a Method Call box fails \u2014 another reason handlers go in through the build script."
+            "**Names are case sensitive everywhere** — attribute names in the document type, the XQuery's `{}`, and the entity row must match exactly.",
+            "Decide the **key** first: values unique to the record, or deliberately shared if documents should show on several records. A blank key value matches every file whose key is blank — make the key field required or add a second XQuery condition.",
+            "The fastest check for any \"no files\" problem is the browser's developer tools → **Network** → the panel's request to `idm.inforcloudsuite.com/ca/api/bc/search`: its body is the form's message, its response shows the exact **searchXQuery** IDM ran.",
+            "The Form Designer sometimes does not save a new event handler, and pasting a whole `SLFormExtMsgEntities...` response into a Method Call box fails — another reason handlers go in through the build script."
           ]
         },
         {
@@ -454,6 +456,602 @@
         "naming",
         "lifecycle",
         "formsync"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "form-ai-agent",
+      "type": "guide",
+      "title": "The SyteLine Form AI Agent",
+      "parent": "index",
+      "group": "Form AI Agent",
+      "order": 1,
+      "summary": "What the SyteLine Form AI Agent is, what it automates, and what it will never do.",
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "The **SyteLine Form AI Agent** is how you ask the AI to customize a SyteLine form through an API instead of a chat session. You POST a form-customization request — the current form export, the IDO and SQL Table exports, and a list of instructions — and the backend AI runs the full [Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates) workflow for you: backup first, TRN-first, UET-only field naming, byte-preserved form XML, and a review pull request at the end. The SOP knowledge lives in the agent; you never re-explain it."
+        },
+        {
+          "t": "notice",
+          "text": "Status (TBD): this API is documented from the accepted design (ADR-021 in the backend repo). The route implementation is still in flight — confirm the endpoints are live on your backend before building against them."
+        },
+        {
+          "t": "h2",
+          "text": "What it does"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Scaffolds the form project repo from the template (`Enflite/<FormName>`).",
+            "Records the TRN and production **FormSync** exports in `original/` before anything is built — the rollback copies — and compares them byte for byte. If TRN and production have drifted, it stops and asks instead of guessing.",
+            "Builds `<Form>.xml` from the TRN original with the build script — never by hand — so every change stays traceable. New custom fields use UET-only `Uf_ENF_*` names, and every change is highlighted purple.",
+            "Writes the README, the implementation plan (with the UET design tables), the troubleshooting log, and the implementation-plan deck.",
+            "Opens a review pull request — then stops. `awaiting_review` is the agent's terminal state."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "What it doesn't do"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Never merges a pull request.** Form-project pull requests are never auto-merged. A human reviews and merges; the merge is recorded under the human's name, and only then does the request become `completed`.",
+            "**Never touches SyteLine.** The TRN UET setup, staging checks, the FormSync import, TRN testing, the launch to production, and rollback stay numbered human steps in the generated implementation plan.",
+            "**Never starts without both rollback copies.** The TRN export comes with the request; the production export arrives as an attachment. If it is missing, the request waits as `blocked` — the agent never builds on a guess.",
+            "**Never invents requirements.** Vague instructions block with `invalid-requirements` instead of getting a creative interpretation.",
+            "**Never runs when the feature is off.** Both kill switches default off, so the whole family fails closed."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "When to use it"
+        },
+        {
+          "t": "p",
+          "text": "Use it for changes that follow the standard form-project SOP — new fields, relabels, layout changes. The API drives the build; humans do the go-live. For anything outside the SOP, talk to the team first."
+        }
+      ],
+      "related": [
+        "form-ai-api",
+        "form-ai-example",
+        "standards"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "form-ai-api",
+      "type": "guide",
+      "title": "Form AI Agent API reference",
+      "parent": "index",
+      "group": "Form AI Agent",
+      "order": 2,
+      "summary": "Endpoints, the five-input request contract, lifecycle, permissions, and the audit trail.",
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "Versioned REST under `/api/v1/form-customizations`. Every endpoint requires authentication and the `syteline:forms` permission (Admin and AI Admin only — never the User role). Error shape everywhere: `{\"error\": {\"code\", \"message\", \"requestId\", \"details?\"}}`. The base host is TBD — the backend docs use a placeholder, so confirm the production API host before integrating."
+        },
+        {
+          "t": "notice",
+          "text": "Status (TBD): this API is documented from the accepted design (ADR-021 in the backend repo). The route implementation is still in flight — confirm the endpoints are live on your backend before building against them."
+        },
+        {
+          "t": "h2",
+          "text": "The five inputs"
+        },
+        {
+          "t": "p",
+          "text": "The requester supplies exactly these five inputs — nothing else. The SOP knowledge lives in the agent, not the request."
+        },
+        {
+          "t": "table",
+          "head": [
+            "#",
+            "Input",
+            "Part name",
+            "Rules"
+          ],
+          "rows": [
+            [
+              "1",
+              "Current form `.xml`",
+              "`formXml`",
+              "Exactly one (required); `.xml`; ≤ 10 MB; must parse as XML; the form name in the XML must match `formName`. This is the TRN export — the baseline the agent builds from."
+            ],
+            [
+              "2",
+              "IDO properties CSV",
+              "`idoPropertiesCsv`",
+              "Exactly one (required); `.csv`; ≤ 5 MB; UTF-8; header row with a property-name-like first column."
+            ],
+            [
+              "3",
+              "SQL columns CSV",
+              "`sqlColumnsCsv`",
+              "Exactly one (required); `.csv`; ≤ 5 MB; UTF-8; header row with a column-name-like first column."
+            ],
+            [
+              "4",
+              "Instruction list",
+              "`instructions`",
+              "Required; 1–100 items, each 1–500 chars. Be specific: field type, label, tab, position."
+            ],
+            [
+              "5",
+              "Attachments",
+              "`attachments[]`",
+              "Optional; 0–20 files; ≤ 200 KB each (images, spreadsheets, PDFs, notes). A `*.production.original.xml` attachment is treated as the production FormSync original."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Submission shapes"
+        },
+        {
+          "t": "list",
+          "items": [
+            "**Multipart** (`multipart/form-data`) — preferred for large inputs. File parts (`formXml`, `idoPropertiesCsv`, `sqlColumnsCsv`, `attachments[]`) plus text fields: `formName`, `title`, `instructions` (a JSON array or newline-delimited text), optional `requestedBy`.",
+            "**JSON** (`application/json`) — the same contract inline: `formXml`, `idoPropertiesCsv`, `sqlColumnsCsv` as strings; `instructions` as a string array; `attachments` as `[{ filename, content }]` or `[{ filename, contentBase64 }]`; plus `formName`, `title`, optional `requestedBy`."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Endpoints"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Method",
+            "Path",
+            "Does",
+            "Success"
+          ],
+          "rows": [
+            [
+              "**POST**",
+              "`/form-customizations`",
+              "Create a request from the five inputs",
+              "`202` — `{ id, status: \"requested\", formName, createdAt }`"
+            ],
+            [
+              "**GET**",
+              "`/form-customizations/:id`",
+              "Full request record: status, step log, `resultSummary` or `blockedReason` + `blockedDetail`, and the `evidence` completion report on `awaiting_review`",
+              "`200`"
+            ],
+            [
+              "**GET**",
+              "`/form-customizations`",
+              "List requests — `status` filter, `limit` (≤ 100, default 20), `cursor`. Admins see the tenant's requests; others see their own. This is the kanban-board query for form work.",
+              "`200` — `{ items, nextCursor? }`"
+            ],
+            [
+              "**POST**",
+              "`/form-customizations/:id/cancel`",
+              "Cancel a request (ends work in flight); requester or admin only",
+              "`200` — `{ id, status: \"cancelled\" }`"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Lifecycle"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Status",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "`requested`",
+              "Created, waiting for the runner"
+            ],
+            [
+              "`in_progress`",
+              "Agent executing the template workflow"
+            ],
+            [
+              "`awaiting_review`",
+              "Work finished; review PR open. This is the agent's terminal state — the completion report and PR link live here"
+            ],
+            [
+              "`completed`",
+              "A human merged the review PR (never the agent)"
+            ],
+            [
+              "`blocked`",
+              "Stopped — see `blockedReason` on the record"
+            ],
+            [
+              "`cancelled`",
+              "Cancelled by the requester or an admin"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Permissions and identity"
+        },
+        {
+          "t": "list",
+          "items": [
+            "`syteline:forms` — Admin and AI Admin only, never the User role. Requests are owned by the requester; identity comes from the auth context, never from request arguments.",
+            "Tenant-scoped: non-admins see only their own requests.",
+            "Privacy routing treats the family as `syteline.*`."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Audit trail"
+        },
+        {
+          "t": "p",
+          "text": "Every state change is audited — query with `GET /api/v1/audit?action=…` (needs `audit:read`): request created, runner started, each template step, blocked (with reason), awaiting review (repo + PR URLs), merged (human actor recorded), cancelled."
+        }
+      ],
+      "related": [
+        "form-ai-agent",
+        "form-ai-errors",
+        "form-ai-limits"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "form-ai-example",
+      "type": "guide",
+      "title": "Worked example: PO Detail Report Viewer",
+      "parent": "index",
+      "group": "Form AI Agent",
+      "order": 3,
+      "summary": "One full request: the PO Detail Report Viewer changes, what the agent does with them, and the completion report.",
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "This page turns the recorded walkthrough of the **Purchase Order Detail Report Viewer** changes into one API request. The walkthrough's shape: back up first via FormSync, re-point the primary collection to the customized UE_FL-SL purchase order report collection with its custom load method, then add the Terms & Conditions group footer. The form name below is illustrative — use the exact name from your FormSync export."
+        },
+        {
+          "t": "h2",
+          "text": "The request"
+        },
+        {
+          "t": "list",
+          "items": [
+            "`formName` — the exact SyteLine form name from the FormSync export (letters, digits, underscores; must match the name inside the XML).",
+            "`title` — e.g. “PO Detail Report Viewer — collection re-point and Terms & Conditions footer”.",
+            "`formXml` — the TRN FormSync export: the baseline the agent builds from.",
+            "`idoPropertiesCsv` / `sqlColumnsCsv` — the IDO's properties and the backing SQL Table's columns.",
+            "`instructions` — (1) Change the primary collection to the customized collection from the simple report (UE_FL-SL purchase order report) and set the custom load method to match. (2) Add a Terms & Conditions group footer on the main flex layout: group property PO, page break before; region about 92 wide by 30 long; a nested flex layout with three proportional columns (1-3-1); a vertical flex with five static labels carrying the T&C captions; justification left; “no colon” on each static.",
+            "`attachments` — the production FormSync export (`*.production.original.xml`): the second rollback copy."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "What the agent does"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Backup first. Records both FormSync originals in `original/`, byte-preserved, and SHA-256 compares them. Identical → one `<Form>.xml` serves both environments; different → drift stops the build. The plan also records the walkthrough's scope decision: work in default scope directly, since the detail viewer is not in use yet — and marks changes to the live Purchase Order Report form as explicitly out of scope (those go live in a meeting, because they affect Purchasing immediately).",
+            "Re-points the primary collection to the customized UE_FL-SL purchase order report collection and sets the matching custom load method, then saves and regenerates — mirroring the walkthrough.",
+            "Adds the Terms & Conditions group footer: a new group-footer region on the main flex layout (group property PO, page break before), about 92 wide by 30 long; a nested flex layout with three proportional columns (1-3-1); a vertical flex with five static labels carrying the T&C captions, justification left, “no colon” on each. Every change is highlighted purple in the built `<Form>.xml`.",
+            "Writes the docs: README, implementation plan with the numbered human runbook steps, the troubleshooting log — including the walkthrough's gotcha (keep component names short; put long text only in the caption, or the save fails with a string-truncation error) — and builds the implementation-plan deck.",
+            "Opens the review pull request and stops. Status becomes `awaiting_review` — the completion report and PR link are attached."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "The completion report"
+        },
+        {
+          "t": "p",
+          "text": "The `awaiting_review` record carries `resultSummary` (plain language: what was built), plus `evidence`: the form-project repo URL, the review PR URL, the `<Form>.xml` and deck artifacts, the recorded originals with their SHA-256 prefix, `openItems` (what the agent was unsure about — e.g. confirm the collection name against the simple report in the staging check), and `assumptions`."
+        },
+        {
+          "t": "h2",
+          "text": "What stays human"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Import `<Form>.xml` into TRN through FormSync at Site scope, run the staging checks, test.",
+            "Merge the PR when it looks right — the request flips to `completed`.",
+            "Launch to production through the launch procedure; the recorded originals are the rollback path."
+          ]
+        }
+      ],
+      "related": [
+        "form-ai-agent",
+        "form-ai-api",
+        "standards"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "form-ai-errors",
+      "type": "guide",
+      "title": "Form AI Agent errors and blocks",
+      "parent": "index",
+      "group": "Form AI Agent",
+      "order": 4,
+      "summary": "Every error code and blocked reason, and the fix for each.",
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "Two families: **HTTP errors** (the request was rejected — fix and resend) and **blocked reasons** (the request was accepted, but the agent needs a human — the record itself is the report)."
+        },
+        {
+          "t": "h2",
+          "text": "HTTP errors"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Code",
+            "Meaning",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "`400` `VALIDATION_ERROR`",
+              "A part failed validation",
+              "Read `details` for the failing part and fix it."
+            ],
+            [
+              "`400` `INVALID_FORM_NAME`",
+              "`formName` failed the pattern",
+              "Use the exact SyteLine form name: letters, digits, underscores."
+            ],
+            [
+              "`400` `MULTIPART_LIMIT_EXCEEDED`",
+              "Too many parts",
+              "Reduce the attachment count."
+            ],
+            [
+              "`401` `UNAUTHENTICATED`",
+              "Missing or invalid credentials",
+              "Authenticate and retry."
+            ],
+            [
+              "`403` `FORBIDDEN`",
+              "Missing `syteline:forms` (User role)",
+              "Form customization is Admin/AI-Admin only — grant the role or have an admin submit."
+            ],
+            [
+              "`403` `FEATURE_DISABLED`",
+              "`FORM_CUSTOMIZATION_API_ENABLED` is off",
+              "Set it `true` and restart (see limits and flags)."
+            ],
+            [
+              "`413` `PART_TOO_LARGE`",
+              "A part exceeded its size limit",
+              "`details` names the part — shrink it."
+            ],
+            [
+              "`429` `RATE_LIMITED`",
+              "Over 10 requests/minute",
+              "Slow down and retry."
+            ],
+            [
+              "`404` `NOT_FOUND`",
+              "Request id unknown",
+              "Check the id."
+            ],
+            [
+              "`409` `REQUEST_ALREADY_TERMINAL`",
+              "Cancel on a finished request",
+              "Read the completion report or blocked reason instead."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Blocked reasons"
+        },
+        {
+          "t": "p",
+          "text": "The record carries `blockedReason` plus human-readable `blockedDetail`. Nothing is half-built — the agent never imports anything anywhere."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Reason",
+            "What happened",
+            "What to do"
+          ],
+          "rows": [
+            [
+              "`missing-current-form-xml`",
+              "The current form `.xml` was not supplied or failed validation",
+              "Supply the TRN FormSync export as `formXml`."
+            ],
+            [
+              "`missing-production-original`",
+              "No production FormSync export — the agent cannot complete the backup-first check",
+              "Export the same form from production FormSync and attach it (`*.production.original.xml`)."
+            ],
+            [
+              "`trn-prd-drift`",
+              "TRN and production originals differ — production has local changes",
+              "Decide which side is authoritative (template procedure 3), then create a follow-up request."
+            ],
+            [
+              "`missing-github-token`",
+              "No GitHub token configured — the agent cannot create the repo or open the PR",
+              "Set `GITHUB_TOKEN`; the request can be retried."
+            ],
+            [
+              "`invalid-requirements`",
+              "The instructions could not be turned into a plan",
+              "Restate with field type, label, tab, position; verify `formName` against SyteLine."
+            ],
+            [
+              "`attachment-quarantined`",
+              "An uploaded part tripped the malware boundary",
+              "Remove or replace the flagged attachment and create a new request."
+            ],
+            [
+              "`build-check-failed`",
+              "The deterministic-rebuild check failed",
+              "Tooling issue, not a request issue — file it with the backend team, including the step log."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Reporting a problem"
+        },
+        {
+          "t": "p",
+          "text": "Include the request id and the relevant audit events. Never paste form XML containing customer data into a ticket."
+        }
+      ],
+      "related": [
+        "form-ai-api",
+        "form-ai-limits"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "form-ai-limits",
+      "type": "guide",
+      "title": "Form AI Agent limits and flags",
+      "parent": "index",
+      "group": "Form AI Agent",
+      "order": 5,
+      "summary": "Kill switches, rate and size limits, and the rules that never bend.",
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Draft: the team has not confirmed this page yet."
+        },
+        {
+          "t": "p",
+          "text": "The Form AI Agent is fail-closed: everything that can turn it off defaults to off, and the rules below are enforced by the backend, not by convention."
+        },
+        {
+          "t": "h2",
+          "text": "Kill switches (both default off)"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Variable",
+            "Default",
+            "Effect"
+          ],
+          "rows": [
+            [
+              "`FORM_CUSTOMIZATION_API_ENABLED`",
+              "`false`",
+              "Master switch for the endpoints — off means every call fails fast with `403 FEATURE_DISABLED`."
+            ],
+            [
+              "`FORM_CUSTOMIZATION_RUNNER_ENABLED`",
+              "`false`",
+              "Master switch for the agent runner — off means requests sit in `requested` and nothing runs."
+            ],
+            [
+              "`GITHUB_TOKEN`",
+              "(unset)",
+              "Required to run: token with repo + PR access in the GitHub org. Missing → requests block with `missing-github-token`."
+            ],
+            [
+              "`FORM_CUSTOMIZATION_GITHUB_ORG`",
+              "`Enflite`",
+              "GitHub org for new form-project repos and PRs."
+            ],
+            [
+              "`FORM_CUSTOMIZATION_RUNNER_INTERVAL_MS`",
+              "`15000`",
+              "How often the runner picks up `requested` work."
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Pull requests are never auto-merged"
+        },
+        {
+          "t": "notice",
+          "text": "Hard rule, enforced by design: the agent has no merge capability. The review PR waits for a human; the merge carries a human's name, and only the human merge flips the request to `completed`."
+        },
+        {
+          "t": "h2",
+          "text": "Rate and size limits"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Limit",
+            "Value"
+          ],
+          "rows": [
+            [
+              "Rate",
+              "10 requests/minute (`429 RATE_LIMITED` over it)"
+            ],
+            [
+              "Current form `.xml`",
+              "≤ 10 MB"
+            ],
+            [
+              "IDO properties / SQL columns CSVs",
+              "≤ 5 MB each"
+            ],
+            [
+              "Instructions",
+              "1–100 items, each 1–500 chars"
+            ],
+            [
+              "Attachments",
+              "0–20 files, ≤ 200 KB each"
+            ],
+            [
+              "List page size",
+              "≤ 100, default 20"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Other guardrails"
+        },
+        {
+          "t": "list",
+          "items": [
+            "Permission-gated: `syteline:forms`, Admin/AI Admin only — never the User role. Tenant-scoped records.",
+            "Malware boundary: uploaded parts pass the same scanning as document uploads; a quarantine blocks the request (`attachment-quarantined`).",
+            "Backup-first is not optional: without both FormSync originals recorded, the agent does not build.",
+            "TRN/PRD drift stops the build — production's local changes are never silently overwritten.",
+            "Privacy routing treats the family as `syteline.*`."
+          ]
+        }
+      ],
+      "related": [
+        "form-ai-agent",
+        "form-ai-api",
+        "form-ai-errors"
       ],
       "aliases": []
     }
