@@ -6,7 +6,7 @@
       "blocks": [
         {
           "t": "p",
-          "text": "How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand. The project SOP and shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates). The [SyteLine Form AI Agent](/developers/form-ai-agent) turns the same SOP into an API: POST a form-customization request and the AI runs the template workflow for you."
+          "text": "How Enflite builds and changes its **SyteLine** forms: the project standards every change follows, and the platform behavior (personalization layers, **FormSync**) every developer should understand. The project SOP and shared step-by-step procedures live in [Enflite/Form-Project-Templates](https://github.com/Enflite/Form-Project-Templates). The [SyteLine Form AI Agent](/developers/form-ai-agent) turns the same SOP into an API: POST a form-customization request and the AI runs the template workflow for you. The [SyteLine API connection](/developers/syteline-api) guide connects Enflite automations to SyteLine through ION API, for any IDO."
         },
         {
           "t": "notice",
@@ -20,7 +20,8 @@
       "groups": [
         "Standards",
         "Platform",
-        "Form AI Agent"
+        "Form AI Agent",
+        "SyteLine API"
       ],
       "order": 1,
       "path": "index",

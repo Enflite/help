@@ -1,0 +1,893 @@
+{
+  "space": "developers",
+  "topics": [
+    {
+      "path": "syteline-api",
+      "type": "guide",
+      "title": "SyteLine API connection",
+      "icon": "procedure",
+      "summary": "Connect Enflite automations to Infor CloudSuite SyteLine through ION API: what you need, the steps, and how it works.",
+      "parent": "index",
+      "group": "SyteLine API",
+      "order": 1,
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Status (2026-10-05, TRN): ION sign-in, the IDO service, and the Mongoose configuration are confirmed on **TRN**. Reading and writing SyteLine data is **not yet confirmed**: it needs credentials with a service account (see [Step 1](/developers/syteline-api-credentials)). This page will be updated once that is tested."
+        },
+        {
+          "t": "p",
+          "text": "Enflite automations (the **Automation Studio** in the Enflite AI app) read and change **SyteLine** data through Infor's **ION API**. The requests go to SyteLine's own **IDO REST API**, so any IDO a form uses can also be used by an automation. This guide sets up that connection once per environment (**TRN** first, then production)."
+        },
+        {
+          "t": "h2",
+          "text": "What you need"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Item",
+            "Who provides it",
+            "Where it is used"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "Infor OS admin with the **IONAPI-Administrator** role",
+              "Enflite Infor OS admin",
+              "Creating the authorized app (Step 1)"
+            ],
+            [
+              "A SyteLine user for automations (e.g. `svc_enflite_automation`)",
+              "SyteLine admin",
+              "The service account runs every request as this user (Step 1)"
+            ],
+            [
+              "A `.ionapi` credentials file **with a service account** (`saak` / `sask`)",
+              "Downloaded in Step 1",
+              "Backend `backend/secrets/syteline.ionapi`, Postman environment"
+            ],
+            [
+              "The Mongoose configuration name, e.g. `Y9NSZBDJK6SCKTXH_TRN_Default`",
+              "Found in Step 2",
+              "`SYTELINE_MONGOOSE_CONFIG`, Postman `mongoose_config`"
+            ],
+            [
+              "The Enflite AI backend (`Enflite/backend-ai`)",
+              "Developers",
+              "Runs the automations (Step 3)"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "The steps"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "[Create the credentials with a service account](/developers/syteline-api-credentials) in ION API.",
+            "[Find the Mongoose configuration](/developers/syteline-api-configuration) for the environment.",
+            "[Connect the Enflite backend and test it](/developers/syteline-api-connect) (script, Postman, Studio).",
+            "Build automations on [any IDO](/developers/syteline-api-ido), for example [lot tracking at zero on hand](/developers/syteline-api-lot-tracking).",
+            "If something fails, see [Troubleshooting](/developers/syteline-api-troubleshooting)."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "How a request flows"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "The backend signs in to ION with the `.ionapi` file and gets an OAuth token. With `saak`/`sask` in the file the token carries the service-account user.",
+            "It calls SyteLine at `{iu}/{ti}/CSI/IDORequestService/ido/...` with that token and the header `X-Infor-MongooseConfig`.",
+            "SyteLine runs the request as that user, with that user's authorization group, and answers `{ Success, Message, ... }`."
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "Credentials are secrets. Keep the `.ionapi` file in `backend/secrets/` (git-ignored) or the deployment's secret store. Never commit it, paste it in chat, or email it."
+        },
+        {
+          "t": "children"
+        }
+      ],
+      "related": [
+        "syteline-api-credentials",
+        "syteline-api-ido",
+        "syteline-api-lot-tracking"
+      ],
+      "aliases": [],
+      "subtitle": "Infor ION API → SyteLine IDO REST, for Enflite automations",
+      "groups": [
+        "Setup",
+        "Automations",
+        "Reference"
+      ]
+    },
+    {
+      "path": "syteline-api-credentials",
+      "type": "guide",
+      "title": "Step 1: Credentials with a service account",
+      "icon": "procedure",
+      "summary": "Create a Backend Service app in ION API and download its .ionapi file with Create Service Account turned on (saak/sask).",
+      "parent": "syteline-api",
+      "group": "Setup",
+      "order": 2,
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Status (2026-10-05, TRN): ION sign-in, the IDO service, and the Mongoose configuration are confirmed on **TRN**. Reading and writing SyteLine data is **not yet confirmed**: it needs credentials with a service account (see [Step 1](/developers/syteline-api-credentials)). This page will be updated once that is tested."
+        },
+        {
+          "t": "p",
+          "text": "SyteLine runs every API request as a SyteLine user. A `.ionapi` file downloaded **without** a service account only identifies the app, so SyteLine answers every data request with `Invalid token`. The fix is to download the credentials with **Create Service Account** turned on."
+        },
+        {
+          "t": "h2",
+          "text": "1a. Prepare the SyteLine user"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick or create a user for automations, e.g. `svc_enflite_automation`. Use a dedicated user, not a person's account.",
+            "In **Infor OS → User Management**, make sure the user exists and has access to SyteLine in this environment (**TRN** first).",
+            "In SyteLine, give the user's authorization group what the automations need. For lot tracking: read **Items** and **Item Warehouses** (`SLItems`, `SLItemwhses`) and update **Items** (`SLItems`)."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1b. Create the authorized app"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Sign in to the Infor OS portal (Ming.le) for the environment and open **ION API**.",
+            "Go to **Authorized Apps** and click **+** (Add).",
+            "Set **Type** to **Backend Service**. Name it, e.g. `Enflite Automations TRN`, and add a description.",
+            "Click **Save**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "1c. Download the credentials"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open the app and click **Download Credentials**.",
+            "Turn on **Create Service Account**.",
+            "In **User Name**, select the user from 1a.",
+            "Click **Download**. Store the file securely: the service-account secret is shown only at download time."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Check the file"
+        },
+        {
+          "t": "p",
+          "text": "Open the `.ionapi` file in a text editor. It must contain both `saak` and `sask`. If they are missing, it was downloaded without **Create Service Account**: download it again."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Field",
+            "What it is",
+            "Used for"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "`ti`",
+              "Tenant id, e.g. `Y9NSZBDJK6SCKTXH_TRN`",
+              "URL of every request"
+            ],
+            [
+              "`cn`",
+              "App name",
+              "Display only"
+            ],
+            [
+              "`ci` / `cs`",
+              "OAuth client id / client secret",
+              "Token request"
+            ],
+            [
+              "`saak`",
+              "Service account access key (the username)",
+              "Token request (`username`)"
+            ],
+            [
+              "`sask`",
+              "Service account secret key (the password)",
+              "Token request (`password`)"
+            ],
+            [
+              "`iu`",
+              "ION API base URL",
+              "SyteLine requests: `{iu}/{ti}/CSI/...`"
+            ],
+            [
+              "`pu` + `ot`",
+              "Sign-in server + token path",
+              "Token URL `{pu}{ot}`"
+            ],
+            [
+              "`gt`",
+              "Grant type the app was created with",
+              "Informational"
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "text": "With `saak`/`sask` the token request is the password grant: `grant_type=password`, `username=saak`, `password=sask`, `client_id=ci`, `client_secret=cs`, posted to `{pu}{ot}`. The Enflite backend does this automatically when the fields are present."
+        },
+        {
+          "t": "h3",
+          "text": "Infor documentation"
+        },
+        {
+          "t": "list",
+          "items": [
+            "[Service Authorized App (.ionapi)](https://docs.infor.com/inforos/latest/en-us/useradminlib_cloud/etl_dl_ag/oda1623328668051.html): Backend Service, **Create Service Account**, select a user, **Download**.",
+            "[Registering an authorized app with the Password Credentials grant type](https://docs.infor.com/ln/2026.x/en-us/lnesolh/lnrestapiag/dlr1698245101470.html): the file contains `cn, ci, cs, pu, ot, saak, sask`.",
+            "[Infor CloudSuite Industrial (SyteLine) integration guide (MachineMetrics)](https://docs.machinemetrics.com/docs/integrations/erp-connectors/infor-syteline-cloud-connector/): the same setup for SyteLine, from a third party."
+          ]
+        }
+      ],
+      "related": [
+        "syteline-api-configuration",
+        "syteline-api-troubleshooting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "syteline-api-configuration",
+      "type": "guide",
+      "title": "Step 2: Find the Mongoose configuration",
+      "icon": "procedure",
+      "summary": "Every SyteLine request through ION needs the X-Infor-MongooseConfig header. Find the configuration name for the environment.",
+      "parent": "syteline-api",
+      "group": "Setup",
+      "order": 3,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "SyteLine needs to know which configuration (site database) to log into. Through ION that is the request header `X-Infor-MongooseConfig`. On CloudSuite the name is usually `<tenant>_Default`."
+        },
+        {
+          "t": "table",
+          "head": [
+            "Environment",
+            "Configuration",
+            "Status"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "TRN (`Y9NSZBDJK6SCKTXH_TRN`)",
+              "`Y9NSZBDJK6SCKTXH_TRN_Default`",
+              "Confirmed 2026-10-05"
+            ],
+            [
+              "Production",
+              "To be confirmed",
+              "Find it with the steps below"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Option A: ask SyteLine"
+        },
+        {
+          "t": "p",
+          "text": "List the configurations in the tenant's group. On CloudSuite the plain list is empty; you must pass `configGroup`."
+        },
+        {
+          "t": "code",
+          "label": "Request",
+          "code": "GET {iu}/{ti}/CSI/IDORequestService/ido/configurations?configGroup={ti}\nAuthorization: Bearer <token>\n\n-> {\"Success\": true, \"Configurations\": [\"Y9NSZBDJK6SCKTXH_TRN_Default\"]}"
+        },
+        {
+          "t": "p",
+          "text": "The Postman request **List Mongoose configurations** does this and fills `mongoose_config` for you."
+        },
+        {
+          "t": "h2",
+          "text": "Option B: from the browser"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Open SyteLine in the browser for the environment.",
+            "Press **F12** to open the developer tools and select the **Network** tab.",
+            "Open any form, select a request to the IDO service, and find `X-Infor-MongooseConfig` under **Request Headers**."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Where it goes"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Where",
+            "Setting"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "Backend (`backend/.env`)",
+              "`SYTELINE_MONGOOSE_CONFIG=Y9NSZBDJK6SCKTXH_TRN_Default`"
+            ],
+            [
+              "Postman environment",
+              "`mongoose_config`"
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "syteline-api-credentials",
+        "syteline-api-connect"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "syteline-api-connect",
+      "type": "guide",
+      "title": "Step 3: Connect the backend and test",
+      "icon": "procedure",
+      "summary": "Put the .ionapi file and configuration into the Enflite backend, then test with the script, Postman and the Studio.",
+      "parent": "syteline-api",
+      "group": "Setup",
+      "order": 4,
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Status (2026-10-05, TRN): ION sign-in, the IDO service, and the Mongoose configuration are confirmed on **TRN**. Reading and writing SyteLine data is **not yet confirmed**: it needs credentials with a service account (see [Step 1](/developers/syteline-api-credentials)). This page will be updated once that is tested."
+        },
+        {
+          "t": "h2",
+          "text": "Configure the backend"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Save the `.ionapi` file from Step 1 as `backend/secrets/syteline.ionapi` in `Enflite/backend-ai`. The folder is git-ignored and docker-ignored; only `syteline.ionapi.example` is committed.",
+            "In `backend/.env` add `SYTELINE_IONAPI_FILE=/app/secrets/syteline.ionapi` (docker compose) or `SYTELINE_IONAPI_FILE=./secrets/syteline.ionapi` (running natively).",
+            "Add `SYTELINE_MONGOOSE_CONFIG=` with the name from [Step 2](/developers/syteline-api-configuration).",
+            "Restart the backend: `docker compose restart backend`."
+          ]
+        },
+        {
+          "t": "p",
+          "text": "The backend mints and refreshes the token itself, and uses the service account automatically when `saak`/`sask` are in the file. `SYTELINE_BASE_URL` can stay unset; it defaults to `{iu}/{ti}`."
+        },
+        {
+          "t": "h2",
+          "text": "Test 1: the command-line check"
+        },
+        {
+          "t": "p",
+          "text": "From `backend/` (with docker: `docker compose exec backend` in front). Read-only."
+        },
+        {
+          "t": "code",
+          "label": "Commands",
+          "code": "npm run syteline:test -- token                     # sign-in works\nnpm run syteline:test -- probe                     # IDO service reachable\nnpm run syteline:test -- items --item 91300-017    # item, lot tracked, on hand\nnpm run syteline:test -- ido SLItems --props Item,Description,LotTracked --where \"Item = '91300-017'\""
+        },
+        {
+          "t": "table",
+          "head": [
+            "Check",
+            "Pass looks like"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "`token`",
+              "`Token acquired ... sign-in works`"
+            ],
+            [
+              "`probe`",
+              "`syteline.ido.load`, `syteline.ido.update`, `syteline.ido.invoke` show `ok`"
+            ],
+            [
+              "`items`",
+              "A row with the item, **Lot tracked** and **On hand**; `automation IDO steps → ok`"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Test 2: Postman"
+        },
+        {
+          "t": "p",
+          "text": "Import `backend/postman/SyteLine-ION.postman_collection.json` and the example environment, fill the environment from the `.ionapi` file (mark `ci`, `cs`, `sask` as secret), and run:"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "**1. ION sign-in → Get token (service account)**: **Token carries a SyteLine user** must pass.",
+            "**2. SyteLine IDO reads**: configurations, **IDO property info (SLItems)**, **Get item**, **Get on hand by warehouse**.",
+            "**5. Lot tracking at zero OH**: see [the worked example](/developers/syteline-api-lot-tracking)."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Test 3: the Automation Studio"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In the Enflite AI app open **Studio → Connections** and click **Test** on the `default` connection.",
+            "The three IDO actions show as available.",
+            "Open **Studio → Templates** to build an automation, or test a single action from **APIs**."
+          ]
+        }
+      ],
+      "related": [
+        "syteline-api-configuration",
+        "syteline-api-ido",
+        "syteline-api-troubleshooting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "syteline-api-ido",
+      "type": "guide",
+      "title": "Working with any IDO",
+      "icon": "procedure",
+      "summary": "Read, update and call any SyteLine IDO from an automation: load, update, invoke, filters, row keys and property names.",
+      "parent": "syteline-api",
+      "group": "Automations",
+      "order": 5,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "Automations use SyteLine's IDO REST API, the same API SyteLine's own forms use. Anything a form can read or save through an IDO, an automation can do with the same IDO and property names. The tenant publishes the full reference at `{iu}/{ti}/CSI/IDORequestService/ido/ionapi-doc`."
+        },
+        {
+          "t": "h2",
+          "text": "The three automation actions"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Studio action",
+            "IDO REST call",
+            "Changes data"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "`syteline.ido.load`",
+              "`GET /load/{ido}`",
+              "No"
+            ],
+            [
+              "`syteline.ido.update`",
+              "`POST /update/{ido}?refresh=true`",
+              "Yes"
+            ],
+            [
+              "`syteline.ido.invoke`",
+              "`POST /invoke/{ido}?method=`",
+              "Yes"
+            ]
+          ]
+        },
+        {
+          "t": "table",
+          "head": [
+            "Action",
+            "Parameters"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "load",
+              "`ido`, `properties` (comma list or `*`), `where` (`{ Property: value }`), `filter`, `orderBy`, `recordCap` (0 = all)"
+            ],
+            [
+              "update",
+              "`ido`, `action` (`update`, `insert`, `delete`), `itemId` (the row `_ItemId`), `properties` (`{ Property: value }`)"
+            ],
+            [
+              "invoke",
+              "`ido`, `method`, `parameters` (list)"
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "text": "Actions that change data (**update**, **invoke**) need explicit confirmation when the automation is deployed, are skipped in test runs, and can be placed after an **Approval** step."
+        },
+        {
+          "t": "h2",
+          "text": "Find the IDO and property names"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "In SyteLine open the form, switch to **Design Mode**, and select the field: its **Binding** shows the IDO property; the form's collection shows the IDO (e.g. `SLItems`).",
+            "List every property of an IDO with its type and read-only flag: `GET {ido base}/info/{ido}` (Postman **IDO property info**).",
+            "Check real values with a load: `npm run syteline:test -- ido <IDO> --props <list> --where \"<Property> = '<value>'\"`."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Common IDOs"
+        },
+        {
+          "t": "table",
+          "head": [
+            "IDO",
+            "What",
+            "Useful properties"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "`SLItems`",
+              "Item master",
+              "`Item`, `Description`, `LotTracked`, `SerialTracked`, `UM`, `ProductCode`"
+            ],
+            [
+              "`SLItemwhses`",
+              "Item by warehouse",
+              "`Item`, `Whse`, `QtyOnHand`"
+            ],
+            [
+              "`SLCustomers`",
+              "Customers",
+              "`CustNum`, `Name`, `CreditHold`"
+            ],
+            [
+              "`SLPoitems`",
+              "Purchase order lines",
+              "`PoNum`, `PoLine`, `Item`, `QtyOrdered`, `DueDate`, `Stat`"
+            ],
+            [
+              "`SLJobs`",
+              "Jobs",
+              "`Job`, `Suffix`, `Item`, `Stat`"
+            ]
+          ]
+        },
+        {
+          "t": "notice",
+          "text": "These are SyteLine's standard names. Confirm them on your tenant with **IDO property info** before relying on them; custom (UET) fields appear as `Uf_ENF_*` properties."
+        },
+        {
+          "t": "h2",
+          "text": "Filters"
+        },
+        {
+          "t": "p",
+          "text": "Use `where` for any value that comes from an input, a webhook or an earlier step. The backend quotes and escapes it (`Item = 'O''Brien'`). Use the raw `filter` only for fixed text you write yourself, e.g. `Stat = 'O'`."
+        },
+        {
+          "t": "h2",
+          "text": "Updating a row"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "**Load** the row first; every row comes back with `_ItemId`, SyteLine's row key.",
+            "**Update** with `itemId` = that `_ItemId` (template: `{{steps.<load step>.output.data.Items[0]._ItemId}}`) and only the properties to change.",
+            "**Verify** with another load that the value changed."
+          ]
+        },
+        {
+          "t": "code",
+          "label": "Update request the backend sends",
+          "code": "POST {iu}/{ti}/CSI/IDORequestService/ido/update/SLItems?refresh=true\nAuthorization: Bearer <token>\nX-Infor-MongooseConfig: <configuration>\n\n{\n  \"IDOName\": \"SLItems\",\n  \"RefreshAfterSave\": true,\n  \"Changes\": [{\n    \"Action\": 2,\n    \"ItemId\": \"<_ItemId from the load>\",\n    \"UpdateLocking\": 1,\n    \"Properties\": [{ \"Name\": \"LotTracked\", \"Value\": \"1\", \"Modified\": true, \"IsNull\": false }]\n  }]\n}"
+        },
+        {
+          "t": "h2",
+          "text": "Reading results in later steps"
+        },
+        {
+          "t": "table",
+          "head": [
+            "You want",
+            "Template / step"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "A property of the first row",
+              "`{{steps.<id>.output.data.Items[0].<Property>}}`"
+            ],
+            [
+              "The number of rows",
+              "Transform **Count items** on `{{steps.<id>.output.data.Items}}`"
+            ],
+            [
+              "A total (e.g. on hand over all warehouses)",
+              "Transform **Sum a column** with column `QtyOnHand`"
+            ],
+            [
+              "A yes/no decision",
+              "**Condition** → **Compare values** (numbers compare as numbers: `0.00000000` is 0)"
+            ]
+          ]
+        },
+        {
+          "t": "p",
+          "text": "SyteLine can answer HTTP 200 with `\"Success\": false`. The backend treats that as a failed step (`STUDIO_IDO_FAILED`) and stops the run, so an automation never acts on a failed read."
+        }
+      ],
+      "related": [
+        "syteline-api-lot-tracking",
+        "syteline-api-connect",
+        "syteline-api-troubleshooting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "syteline-api-lot-tracking",
+      "type": "guide",
+      "title": "Example: lot tracking when on hand reaches zero",
+      "icon": "procedure",
+      "summary": "Automatically turn on an item's lot tracking when its on-hand quantity reaches zero, with an approval first.",
+      "parent": "syteline-api",
+      "group": "Automations",
+      "order": 6,
+      "blocks": [
+        {
+          "t": "notice",
+          "text": "Status (2026-10-05, TRN): ION sign-in, the IDO service, and the Mongoose configuration are confirmed on **TRN**. Reading and writing SyteLine data is **not yet confirmed**: it needs credentials with a service account (see [Step 1](/developers/syteline-api-credentials)). This page will be updated once that is tested."
+        },
+        {
+          "t": "p",
+          "text": "**Request:** when an item's on-hand quantity (OH Qty) reaches zero, turn on the item's lot tracking automatically. The Studio template **Enable lot tracking at zero on hand** does this with SyteLine's IDO API."
+        },
+        {
+          "t": "h2",
+          "text": "What the automation does"
+        },
+        {
+          "t": "table",
+          "head": [
+            "#",
+            "Step",
+            "Type",
+            "What happens"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "",
+              "Trigger",
+              "SyteLine event",
+              "Checks `SLItemwhses` for the item on a schedule (default every 15 minutes) and runs when its quantities change"
+            ],
+            [
+              "1",
+              "`onHand`",
+              "Load",
+              "`SLItemwhses`: `Item, Whse, QtyOnHand` for the item, all warehouses"
+            ],
+            [
+              "2",
+              "`total`",
+              "Transform",
+              "Sum `QtyOnHand` over the warehouses"
+            ],
+            [
+              "3",
+              "`reachedZero`",
+              "Condition",
+              "Total `<= 0`? No → finish"
+            ],
+            [
+              "4",
+              "`item`",
+              "Load",
+              "`SLItems`: `Item, Description, LotTracked` and the row `_ItemId`"
+            ],
+            [
+              "5",
+              "`alreadyTracked`",
+              "Condition",
+              "`LotTracked = 1`? Yes → finish (nothing to do)"
+            ],
+            [
+              "6",
+              "`review`",
+              "Approval",
+              "A Studio manager approves (expires after 24 hours)"
+            ],
+            [
+              "7",
+              "`enableLotTracking`",
+              "Update",
+              "`SLItems` row `_ItemId`: `LotTracked = 1`"
+            ],
+            [
+              "8",
+              "`confirm`",
+              "Verify",
+              "Reloads the item and checks `LotTracked = 1`"
+            ],
+            [
+              "9",
+              "`tellOperations`",
+              "Notification",
+              "Tells everyone in the Studio"
+            ],
+            [
+              "10",
+              "`finish`",
+              "Log",
+              "Records the check in the run log"
+            ]
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Set it up"
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Complete Steps 1 to 3 ([credentials](/developers/syteline-api-credentials), [configuration](/developers/syteline-api-configuration), [connect](/developers/syteline-api-connect)) for **TRN**.",
+            "In the Enflite AI app open **Studio → Templates → Inventory control → Enable lot tracking at zero on hand** and click **Use template**.",
+            "Enter the **Item**, how often to check, and the timezone; pick the connection; click **Create draft**.",
+            "On the canvas, click **Test run**. Reads run for real; the approval and the update are skipped and shown as skipped.",
+            "Save, then switch **Live** on. Confirm the destructive step when asked (the update changes SyteLine data).",
+            "When on hand reaches zero, the run pauses at the approval. A manager opens **Studio → Approvals** and clicks **Approve & resume**; the update and verify run, then the notification."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Test it by hand first (Postman)"
+        },
+        {
+          "t": "p",
+          "text": "Folder **5. Lot tracking at zero OH** in the Postman collection runs the same calls in order. Run it with the **Collection Runner**."
+        },
+        {
+          "t": "steps",
+          "items": [
+            "Pick a **TRN** test item with zero on hand and set `item`.",
+            "Run folder 5 with `allow_write` = `false` (dry run). The console shows `DRY RUN: ... would set LotTracked = 1`.",
+            "Set `allow_write` = `true` and run again. **LotTracked is now 1** must pass.",
+            "Run it a third time: it stops at **already lot tracked**, nothing is written."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Rules it follows"
+        },
+        {
+          "t": "list",
+          "items": [
+            "It never writes when on hand is above zero or the item is already lot tracked.",
+            "The write happens only after an approval, and only in a deployed automation whose destructive step was confirmed.",
+            "If SyteLine rejects a read (`Success: false`), the run stops before any write.",
+            "Every run is in **Studio → Runs**; the approval decision and the notification are kept."
+          ]
+        },
+        {
+          "t": "h2",
+          "text": "Variations"
+        },
+        {
+          "t": "table",
+          "head": [
+            "Want",
+            "Change"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "One warehouse only",
+              "Add `Whse` to the `where` of `onHand` and the trigger"
+            ],
+            [
+              "No approval",
+              "Delete the `review` step (still needs the deploy confirmation)"
+            ],
+            [
+              "Many items",
+              "Use a scheduled trigger and a load without the `Item` filter, or call this automation as a reusable workflow per item"
+            ],
+            [
+              "Serial tracking instead",
+              "Use `SerialTracked` instead of `LotTracked`"
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "syteline-api-ido",
+        "syteline-api-connect",
+        "syteline-api-troubleshooting"
+      ],
+      "aliases": []
+    },
+    {
+      "path": "syteline-api-troubleshooting",
+      "type": "guide",
+      "title": "Troubleshooting the SyteLine API",
+      "icon": "procedure",
+      "summary": "Symptoms, causes and fixes for ION sign-in and SyteLine IDO errors.",
+      "parent": "syteline-api",
+      "group": "Reference",
+      "order": 7,
+      "blocks": [
+        {
+          "t": "table",
+          "head": [
+            "Symptom (exact text)",
+            "Cause",
+            "Fix"
+          ],
+          "align": "left",
+          "rows": [
+            [
+              "`\"Success\": false, \"Message\": \"Invalid token\"` (HTTP 200) on every load",
+              "The token has no SyteLine user: the `.ionapi` file has no `saak`/`sask`. Confirmed on TRN 2026-10-05 with the original file, with and without the configuration.",
+              "Download the credentials with **Create Service Account** ([Step 1](/developers/syteline-api-credentials))."
+            ],
+            [
+              "Postman **Get token (service account)** returns HTTP 400",
+              "`saak`/`sask` are empty or wrong",
+              "Fill them from the new `.ionapi` file"
+            ],
+            [
+              "Configuration list is `[]`",
+              "CloudSuite only lists configurations inside the tenant's group",
+              "Add `?configGroup={ti}` ([Step 2](/developers/syteline-api-configuration))"
+            ],
+            [
+              "`STUDIO_IDO_FAILED: SyteLine rejected ...`",
+              "SyteLine answered `Success: false`; the message says why",
+              "Read the message: property name, filter, or permission. Check names with **IDO property info**."
+            ],
+            [
+              "`STUDIO_ACTION_UNPROBED`",
+              "The connection was not tested, or the IDO service did not answer",
+              "**Studio → Connections → Test**; check `npm run syteline:test -- probe`"
+            ],
+            [
+              "HTTP 400/404 on `/api/items...`",
+              "That path is the old Enflite REST facade; CloudSuite does not serve it",
+              "Use the `syteline.ido.*` actions"
+            ],
+            [
+              "Update fails: `itemId ... is required`",
+              "The update has no `_ItemId`",
+              "Load the row first and pass `{{steps.<load>.output.data.Items[0]._ItemId}}`"
+            ],
+            [
+              "Run waits at `STUDIO_APPROVAL_PENDING`",
+              "The approval step is waiting",
+              "A Studio manager approves in **Studio → Approvals**"
+            ],
+            [
+              "`Token request rejected: HTTP 401`",
+              "`ci`/`cs` wrong or the app was deleted",
+              "Download the credentials again"
+            ]
+          ]
+        }
+      ],
+      "related": [
+        "syteline-api-credentials",
+        "syteline-api-connect",
+        "syteline-api-ido"
+      ],
+      "aliases": []
+    }
+  ]
+}

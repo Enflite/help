@@ -92,3 +92,10 @@ glossary. It comes from two recorded walkthroughs (creating a new table, up to t
 IDO wizard; adding terms and conditions to the Purchase Order detail report) and the eCMRs build
 ([Enflite/eCMRs](https://github.com/Enflite/eCMRs) `docs/Implementation-Plan.md` and
 `docs/troubleshooting.md`, confirmed on TRN).
+
+`developers/syteline-api.json` (2026-10-05) is the SyteLine API connection guide: ION API credentials
+with a service account, the Mongoose configuration, connecting `Enflite/backend-ai`, the IDO REST
+actions automations use (any IDO), the lot-tracking-at-zero-on-hand example, and troubleshooting.
+It follows [Enflite/backend-ai](https://github.com/Enflite/backend-ai) (`docs/studio/architecture.md`,
+`backend/src/studio/catalog/ido.ts`, `backend/postman/`) and the tenant's published IDO REST spec.
+What was tested on TRN is dated in the pages' status notes; update them as the rest is confirmed.
