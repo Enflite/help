@@ -15,6 +15,7 @@
         "Header",
         "Description tab",
         "Correction/Containment tab",
+        "Costs tab",
         "User Defined tab"
       ],
       "blocks": [
@@ -28,7 +29,7 @@
         },
         {
           "t": "p",
-          "text": "Fields Enflite added or changed are shaded purple on the form, and each has a page here. For the fields that work as on Infor's form (Description, the Cause text, Correction/Containment, Corrective Action, Follow Up Date, the User Defined fields), see [Infor's TRRs help](https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=qcs_user_cl_sl/mergedprojects/sl_qcs/forms/nonmaterial/qctrrs.html)."
+          "text": "The fields the TRR request added (Priority, Dept and Addt'l Topics) are shaded purple on the form. Each Enflite field has a page here. For the fields that work as on Infor's form (Description, the Cause text, Correction/Containment, Corrective Action, Follow Up Date, the User Defined fields), see [Infor's TRRs help](https://docs.infor.com/csi/latest/en-us/csbiolh/default.html?helpcontent=qcs_user_cl_sl/mergedprojects/sl_qcs/forms/nonmaterial/qctrrs.html)."
         },
         {
           "t": "p",
@@ -55,14 +56,14 @@
       "title": "TRR Num",
       "eyebrow": "Header",
       "subtitle": "Enflite field on the eTRRs form",
-      "summary": "The TRR's number on eTRRs. It is given automatically when a new TRR is saved: 1, 2, 3 and so on.",
+      "summary": "The TRR's number on eTRRs: TRR- followed by the date and time it was created, for example TRR-260929-111742.",
       "parent": "etrrs",
       "group": "Header",
       "order": 1,
       "blocks": [
         {
           "t": "p",
-          "text": "The TRR's number on eTRRs. It is given automatically when a new TRR is saved: 1, 2, 3 and so on."
+          "text": "The TRR's number on eTRRs: TRR- followed by the date and time it was created, for example TRR-260929-111742."
         },
         {
           "t": "h3",
@@ -70,7 +71,7 @@
         },
         {
           "t": "p",
-          "text": "Nothing to type. Click **New**, fill in the TRR and save: the number appears. TRRs copied from the TRRs form get a new number too; their old number is in **Legacy TRR**."
+          "text": "Nothing to type. Click **New** and the number fills in. TRRs copied from the TRRs form are numbered TRR- and their old number (for example TRR-1234); the old number on its own is in **Legacy TRR**."
         }
       ],
       "related": [],
@@ -688,6 +689,44 @@
       ]
     },
     {
+      "path": "etrrs/fields/costs",
+      "type": "field",
+      "icon": "field",
+      "title": "Costs",
+      "eyebrow": "Costs tab · grid",
+      "subtitle": "Enflite field on the eTRRs form",
+      "summary": "The TRR's cost lines: one row per cost, with Sequence, Action, Cost Type, Qty, Unit Cost, Description and Note, as on Infor's TRRs form. On eTRRs the lines are the TRR's own.",
+      "parent": "etrrs",
+      "group": "Costs tab",
+      "order": 35,
+      "blocks": [
+        {
+          "t": "p",
+          "text": "The TRR's cost lines: one row per cost, with Sequence, Action, Cost Type, Qty, Unit Cost, Description and Note, as on Infor's TRRs form. On eTRRs the lines are the TRR's own."
+        },
+        {
+          "t": "h3",
+          "text": "How it's filled"
+        },
+        {
+          "t": "p",
+          "text": "On the **Costs** tab, add a row: type the **Sequence** (1, 2, 3 …, unique within the TRR), pick the **Action** and **Cost Type** from their lists, then type **Qty**, **Unit Cost**, **Description** and **Note**, and save. TRRs copied from the TRRs form bring their cost lines with them."
+        }
+      ],
+      "related": [],
+      "aliases": [
+        "gridColumn1",
+        "gridColumn2",
+        "gridColumn3",
+        "gridColumn4",
+        "gridColumn5",
+        "gridColumn6",
+        "gridColumn8",
+        "gridColumn9",
+        "grid1"
+      ]
+    },
+    {
       "path": "etrrs/fields/copy_trrs",
       "type": "field",
       "icon": "field",
@@ -709,7 +748,7 @@
         },
         {
           "t": "p",
-          "text": "Click the button on the **User Defined** tab and wait for the message: it says how many TRRs were copied and how many were already here. It is safe to click again: TRRs already copied are skipped. Costs are not copied."
+          "text": "Click the button on the **User Defined** tab and wait for the message: it says how many TRRs were copied and how many were already here. It is safe to click again: TRRs already copied are skipped. Each TRR's cost lines are copied with it, onto the **Costs** tab."
         }
       ],
       "related": [],
